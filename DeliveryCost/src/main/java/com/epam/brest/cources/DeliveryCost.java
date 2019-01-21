@@ -29,8 +29,9 @@ public class DeliveryCost {
             float minCoeff = Float.valueOf(doc.getElementsByTagName("minCoefficient").item(0).getTextContent());
             float averageCoeff = Float.valueOf(doc.getElementsByTagName("averageCoefficient").item(0).getTextContent());
 
-            float weight=inputFloatNumber(scanner,"Weight: ");;
-            float distance=inputFloatNumber(scanner,"Distance: ");
+            float weight = takeFloatNumber(scanner, "Weight: ");
+            ;
+            float distance = takeFloatNumber(scanner, "Distance: ");
 
             float deliveryCost = weight * distance;
 
@@ -50,24 +51,22 @@ public class DeliveryCost {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InputMismatchException e) {
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
+        } catch (InputMismatchException | NumberFormatException e) {
             e.printStackTrace();
         }
     }
 
-    private static float inputFloatNumber(Scanner scanner, String message) {
+    private static float takeFloatNumber(Scanner scanner, String message) {
         float number = 0;
         boolean isCorrectNumber = false;
         System.out.print(message);
         while (!isCorrectNumber) {
             number = scanner.nextFloat();
-            if(number>0){
-                isCorrectNumber=true;
-            }else{
+            if (number > 0) {
+                isCorrectNumber = true;
+            } else {
                 System.out.println("Invalid input! Try again");
-                System.out.println(message);
+                System.out.print(message);
             }
         }
         return number;
