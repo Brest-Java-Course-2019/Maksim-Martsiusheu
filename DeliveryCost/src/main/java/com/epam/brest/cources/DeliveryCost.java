@@ -1,5 +1,8 @@
 package com.epam.brest.cources;
 
+import com.epam.brest.cources.menu.UserConsoleMenu;
+import com.epam.brest.cources.parser.Coefficient;
+import com.epam.brest.cources.parser.XmlCoefficientParser;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -10,51 +13,18 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DeliveryCost {
-    private static final int MAX_WEIGHT_LITTLE_PROD = 5;
-    private static final int MIN_WEIGHT_LARGE_PROD = 10;
-
-    public static void main(String[] args) {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        Scanner scanner = new Scanner(System.in);
-
-        try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse("src/main/resources/settings.xml");
-
-            float maxCoeff = Float.valueOf(doc.getElementsByTagName("maxCoefficient").item(0).getTextContent());
-            float minCoeff = Float.valueOf(doc.getElementsByTagName("minCoefficient").item(0).getTextContent());
-            float averageCoeff = Float.valueOf(doc.getElementsByTagName("averageCoefficient").item(0).getTextContent());
-
-            float weight = takeFloatNumber(scanner, "Weight: ");
-            ;
-            float distance = takeFloatNumber(scanner, "Distance: ");
-
-            float deliveryCost = weight * distance;
-
-            if (weight < MAX_WEIGHT_LITTLE_PROD) {
-                deliveryCost *= minCoeff;
-            } else if ((weight >= MIN_WEIGHT_LARGE_PROD) && (weight < MAX_WEIGHT_LITTLE_PROD)) {
-                deliveryCost *= averageCoeff;
-            } else {
-                deliveryCost *= maxCoeff;
-            }
-
-            System.out.println("Delivery cost: " + deliveryCost + "$");
-
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InputMismatchException | NumberFormatException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws Exception {
+        XmlCoefficientParser parser = new XmlCoefficientParser();
+        UserConsoleMenu menu = new UserConsoleMenu();
+        menu.showMenu();
+        //ArrayList<Coefficient> coefficients = parser.getCoefficients("/home/maksim/development/DeliveryCost/src/main/resources/coefficient.xml")
     }
+
 
     private static float takeFloatNumber(Scanner scanner, String message) {
         float number = 0;

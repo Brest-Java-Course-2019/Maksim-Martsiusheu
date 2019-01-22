@@ -1,0 +1,5 @@
+<coefficients>
+    <coefficient from="0" to="5">1.25</coefficient>
+    <coefficient from="5" to="10">1.75</coefficient>
+    <coefficient from="10" to="">2.25</coefficient>
+</coefficients>
