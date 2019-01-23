@@ -1,22 +1,22 @@
-package com.epam.brest.cources.menu;
+package com.epam.brest.course.menu;
 
-import com.epam.brest.cources.calc.CalculatorImpl;
-import com.epam.brest.cources.calc.DataItem;
-import com.epam.brest.cources.parser.Coefficient;
-import com.epam.brest.cources.parser.XmlCoefficientParser;
-import com.epam.brest.cources.parser.XmlParserException;
+import com.epam.brest.course.calculator.CalculatorImpl;
+import com.epam.brest.course.calculator.DataItem;
+import com.epam.brest.course.parser.Coefficient;
+import com.epam.brest.course.parser.XmlCoefficientParser;
+import com.epam.brest.course.parser.XmlParserException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class UserConsoleMenu {
+public class UserConsoleMenu implements UserMenu {
     final static String FILE_NAME = "coefficient.xml";
     final static String TAGS_NAME = "coefficient";
 
-    final static String HEADER = "+--------------DeliveryCost--------------+";
-    final static String MESSAGE_TO_USER = "Pleas, enter ";
+    final static String HEADER = "+------------------DeliveryCost--------------+";
+    final static String MESSAGE_TO_USER = "Please, enter ";
     final static String ERROR_INPUT = "Entered number should be more than 0! Try again";
     final static String RESULT = "Delivery cost is ";
 
@@ -25,6 +25,7 @@ public class UserConsoleMenu {
             Scanner scanner = new Scanner(System.in);
 
             String filePath = getClass().getClassLoader().getResource(FILE_NAME).getPath();
+
             XmlCoefficientParser parser = new XmlCoefficientParser();
             ArrayList<Coefficient> coefficients = parser.getCoefficients(filePath, TAGS_NAME);
 
@@ -50,7 +51,7 @@ public class UserConsoleMenu {
             }
 
             CalculatorImpl calc = new CalculatorImpl();
-            BigDecimal cost = calc.calc(data);
+            BigDecimal cost = calc.calculateCost(data);
 
             System.out.println(RESULT + cost);
 
@@ -68,7 +69,6 @@ public class UserConsoleMenu {
     }
 
     private BigDecimal takeCorrectValue(Scanner scanner, String message) {
-        //TODO: write right method
         System.out.println(message);
 
         boolean isCorrect = false;

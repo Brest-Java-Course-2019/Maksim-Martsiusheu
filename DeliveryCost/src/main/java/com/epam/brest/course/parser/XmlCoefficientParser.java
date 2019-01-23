@@ -1,15 +1,18 @@
-package com.epam.brest.cources.parser;
+package com.epam.brest.course.parser;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 public class XmlCoefficientParser implements XmlParser {
     @Override
@@ -19,7 +22,6 @@ public class XmlCoefficientParser implements XmlParser {
             DocumentBuilder builder = factory.newDocumentBuilder();
 
             Document doc = builder.parse(filePath);
-            Node root = doc.getDocumentElement();
             NodeList xmlCoefficients = doc.getElementsByTagName(tagName);
 
             ArrayList<Coefficient> coefficients = new ArrayList<>();
@@ -29,7 +31,8 @@ public class XmlCoefficientParser implements XmlParser {
 
                 Coefficient coeff = new Coefficient();
                 coeff.setLowBorder(new BigDecimal(coeffAttributes.getNamedItem("from").getNodeValue()));
-                if (coeffAttributes.getNamedItem("to").getNodeValue().equals("")) {
+
+                if (coeffAttributes.getNamedItem("to").getNodeValue().isEmpty()) {
                     coeff.setUpperBorder(new BigDecimal(Double.MAX_VALUE));
                 } else {
                     coeff.setUpperBorder(new BigDecimal(coeffAttributes.getNamedItem("to").getNodeValue()));
@@ -40,12 +43,13 @@ public class XmlCoefficientParser implements XmlParser {
             }
 
             return coefficients;
+
         } catch (ParserConfigurationException | SAXException e) {
-            throw new XmlParserException(e.getMessage());
+            throw new XmlParserException(e.getCause());
         } catch (IOException e) {
-            throw new XmlParserException(e.getMessage());
+            throw new XmlParserException(e.getCause());
         } catch (NumberFormatException e) {
-            throw new XmlParserException(e.getMessage());
+            throw new XmlParserException(e.getCause());
         }
     }
 }

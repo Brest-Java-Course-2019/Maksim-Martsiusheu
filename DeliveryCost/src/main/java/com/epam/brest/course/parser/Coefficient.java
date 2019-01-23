@@ -1,4 +1,4 @@
-package com.epam.brest.cources.parser;
+package com.epam.brest.course.parser;
 
 import java.math.BigDecimal;
 
@@ -29,5 +29,14 @@ public class Coefficient {
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return "Coefficient{" +
+                "lowBorder=" + lowBorder +
+                ", upperBorder=" + upperBorder +
+                ", value=" + value +
+                '}';
     }
 }

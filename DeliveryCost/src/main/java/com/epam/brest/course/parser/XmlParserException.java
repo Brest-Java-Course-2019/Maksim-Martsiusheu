@@ -1,11 +1,12 @@
-package com.epam.brest.cources.parser;
+package com.epam.brest.course.parser;
 
 public class XmlParserException extends Exception {
-    public XmlParserException() {
-        super();
+    public XmlParserException(Throwable cause) {
+        super(cause);
     }
 
     public XmlParserException(String message) {
         super(message);
     }
+
 }

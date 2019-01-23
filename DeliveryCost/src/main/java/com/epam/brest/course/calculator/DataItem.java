@@ -1,4 +1,4 @@
-package com.epam.brest.cources.calc;
+package com.epam.brest.course.calculator;
 
 import java.math.BigDecimal;
 
