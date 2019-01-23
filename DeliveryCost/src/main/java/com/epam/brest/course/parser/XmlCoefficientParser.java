@@ -45,11 +45,11 @@ public class XmlCoefficientParser implements XmlParser {
             return coefficients;
 
         } catch (ParserConfigurationException | SAXException e) {
-            throw new XmlParserException(e.getCause());
+            throw new XmlParserException(e.getMessage(), e.getCause());
         } catch (IOException e) {
-            throw new XmlParserException(e.getCause());
+            throw new XmlParserException(e.getMessage(), e.getCause());
         } catch (NumberFormatException e) {
-            throw new XmlParserException(e.getCause());
+            throw new XmlParserException(e.getMessage(), e.getCause());
         }
     }
 }

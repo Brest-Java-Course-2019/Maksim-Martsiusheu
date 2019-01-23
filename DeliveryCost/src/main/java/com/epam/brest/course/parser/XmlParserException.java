@@ -9,4 +9,7 @@ public class XmlParserException extends Exception {
         super(message);
     }
 
+    public XmlParserException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
