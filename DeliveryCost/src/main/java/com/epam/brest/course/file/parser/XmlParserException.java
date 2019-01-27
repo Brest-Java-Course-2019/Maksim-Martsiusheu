@@ -1,4 +1,4 @@
-package com.epam.brest.course.parser;
+package com.epam.brest.course.file;
 
 public class XmlParserException extends Exception {
     public XmlParserException(Throwable cause) {
