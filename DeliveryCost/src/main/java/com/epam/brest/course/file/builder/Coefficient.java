@@ -1,8 +1,9 @@
-package com.epam.brest.course.file;
+package com.epam.brest.course.file.builder;
 
 import java.math.BigDecimal;
 
 public class Coefficient {
+
     private BigDecimal lowBorder;
     private BigDecimal upperBorder;
     private BigDecimal value;

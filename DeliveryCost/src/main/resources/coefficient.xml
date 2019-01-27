@@ -1,5 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <coefficients>
-    <coefficient from="0" to="5">1.25</coefficient>
-    <coefficient from="5" to="10">1.75</coefficient>
-    <coefficient from="10" to="">2.25</coefficient>
+    <pricePerKm>
+        <coefficient from="0" to="5" value="1.25"/>
+        <coefficient from="5" to="infinity" value="2.25"/>
+    </pricePerKm>
+    <pricePerKg>
+        <coefficient from="2" to="8" value="2.75"/>
+    </pricePerKg>
 </coefficients>
