@@ -2,10 +2,8 @@
 <coefficients>
     <pricePerKm>
         <coefficient from="0" to="5" value="1.25"/>
-        <coefficient from="5" to="infinity" value="2.25"/>
     </pricePerKm>
     <pricePerKg>
-        <coefficient from="0" to="8" value="2.75"/>
-        <coefficient from="8" to="infinity" value="3.2"/>
+        <coefficient from="2" to="8" value="2.75"/>
     </pricePerKg>
 </coefficients>
