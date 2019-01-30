@@ -13,6 +13,15 @@ public class Coefficient {
     private BigDecimal upperBorder;
     private BigDecimal value;
 
+    public Coefficient() {
+    }
+
+    public Coefficient(BigDecimal lowBorder, BigDecimal upperBorder, BigDecimal value) {
+        this.lowBorder = lowBorder;
+        this.upperBorder = upperBorder;
+        this.value = value;
+    }
+
     public void setLowBorder(BigDecimal lowBorder) {
         LOGGER.debug("Set low border");
         this.lowBorder = lowBorder;

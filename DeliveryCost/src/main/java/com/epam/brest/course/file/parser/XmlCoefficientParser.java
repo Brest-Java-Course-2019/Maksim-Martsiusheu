@@ -47,16 +47,16 @@ public class XmlCoefficientParser implements XmlParser {
             return correctCoefficient;
 
         } catch (ParserConfigurationException e) {
-            LOGGER.error("Incorrect parser configuration! Error: [{}]", e);
+            LOGGER.error("Incorrect parser configuration!", e);
             throw new XmlParserException(e.getMessage(), e.getCause());
         } catch (SAXException e) {
-            LOGGER.error("Incorrect parser configuration! Error: [{}]", e);
+            LOGGER.error("Incorrect parser configuration!", e);
             throw new XmlParserException(e.getMessage(), e.getCause());
         } catch (FileNotFoundException e) {
-            LOGGER.error("File not found! Error: [{}]", e);
+            LOGGER.error("File not found!", e);
             throw new XmlParserException(e.getMessage(), e.getCause());
         } catch (IOException e) {
-            LOGGER.error("Incorrect parse data. Error: [{}]", e);
+            LOGGER.error("Incorrect parse data.", e);
             throw new XmlParserException(e.getMessage(), e.getCause());
         }
     }

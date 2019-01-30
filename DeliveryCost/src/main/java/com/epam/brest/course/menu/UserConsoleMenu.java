@@ -9,6 +9,7 @@ import com.epam.brest.course.file.builder.CoefficientBuilder;
 import com.epam.brest.course.file.parser.XmlCoefficientParser;
 import com.epam.brest.course.file.parser.XmlParserException;
 
+import com.epam.brest.course.selector.CoefficientSelector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Node;
@@ -42,6 +43,7 @@ public class UserConsoleMenu {
         XmlCoefficientParser parser = new XmlCoefficientParser();
         CoefficientBuilder builder = new CoefficientBuilder();
         CalculatorImpl calculator = new CalculatorImpl();
+        CoefficientSelector selector = new CoefficientSelector();
 
         BigDecimal weight;
         BigDecimal distance;
@@ -64,8 +66,8 @@ public class UserConsoleMenu {
             DataItem dataItem = new DataItem();
             dataItem.setWeight(weight);
             dataItem.setDistance(distance);
-            dataItem.setPricePerKg(chooseCoefficient(coefficientsForKg, weight).getValue());
-            dataItem.setPricePerKm(chooseCoefficient(coefficientsForKm, distance).getValue());
+            dataItem.setPricePerKg(selector.selectCoefficient(coefficientsForKg, weight).getValue());
+            dataItem.setPricePerKm(selector.selectCoefficient(coefficientsForKm,distance).getValue());
 
             totalCost = calculator.calculateCost(dataItem);
             showLine(RESULT + totalCost);
@@ -117,25 +119,6 @@ public class UserConsoleMenu {
             }
         }
         return value;
-    }
-
-    private Coefficient chooseCoefficient(ArrayList<Coefficient> coefficientList, BigDecimal param) {
-        Coefficient coefficient = null;
-        int i = 0;
-        boolean isCoefficientChose = false;
-        while (!isCoefficientChose && i < coefficientList.size()) {
-            if (isCorrectCoefficient(coefficientList.get(i), param)) {
-                coefficient = coefficientList.get(i);
-                isCoefficientChose = true;
-            }
-            i++;
-        }
-        return coefficient;
-    }
-
-    private boolean isCorrectCoefficient(Coefficient coefficient, BigDecimal param) {
-        return param.compareTo(coefficient.getLowBorder()) >= 0 &&
-                param.compareTo(coefficient.getUpperBorder()) < 0;
     }
 
 }

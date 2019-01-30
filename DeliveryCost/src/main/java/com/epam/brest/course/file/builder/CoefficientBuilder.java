@@ -13,7 +13,10 @@ public class CoefficientBuilder {
     private final static Logger LOGGER = LogManager.getLogger();
 
     private final static String INFINITY = "infinity";
-    private final static String INFINITY_VALUE = "10e30";
+    private final static String INFINITY_VALUE = "10e10";
+    private final static String TAG_ATTRIBUTE_FROM = "from";
+    private final static String TAG_ATTRIBUTE_TO = "to";
+    private final static String TAG_ATTRIBUTE_VALUE = "value";
 
     public ArrayList<Coefficient> createCoefficient(ArrayList<Node> nodeList) throws NumberFormatException {
         LOGGER.debug("Building coefficients start");
@@ -24,15 +27,15 @@ public class CoefficientBuilder {
 
             NamedNodeMap attributes = nodeList.get(i).getAttributes();
 
-            coefficient.setLowBorder(new BigDecimal(attributes.getNamedItem("from").getNodeValue()));
+            coefficient.setLowBorder(new BigDecimal(attributes.getNamedItem(TAG_ATTRIBUTE_FROM).getNodeValue()));
 
             if (attributes.getNamedItem("to").getNodeValue().equals(INFINITY)) {
                 coefficient.setUpperBorder(new BigDecimal(INFINITY_VALUE));
             } else {
-                coefficient.setUpperBorder(new BigDecimal(attributes.getNamedItem("to").getNodeValue()));
+                coefficient.setUpperBorder(new BigDecimal(attributes.getNamedItem(TAG_ATTRIBUTE_TO).getNodeValue()));
             }
 
-            coefficient.setValue(new BigDecimal(attributes.getNamedItem("value").getNodeValue()));
+            coefficient.setValue(new BigDecimal(attributes.getNamedItem(TAG_ATTRIBUTE_VALUE).getNodeValue()));
 
             coefficientList.add(coefficient);
         }
