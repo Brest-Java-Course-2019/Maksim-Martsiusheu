@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CoefficientSelectorTest {
 
     CoefficientSelector selector = new CoefficientSelector();
-    ArrayList<Coefficient> coefficients = new ArrayList<>();
+    ArrayList<Coefficient> coefficients;
     Coefficient firstCoefficient;
     Coefficient secondCoefficient;
 
@@ -29,6 +29,8 @@ class CoefficientSelectorTest {
 
     @BeforeEach
     void init() {
+        coefficients = new ArrayList<>();
+
         firstCoefficient = new Coefficient(new BigDecimal(FIRST_COEFFICIENT_LOW_BORDER),
                                                   new BigDecimal(FIRST_COEFFICIENT_UPPER_BORDER),
                                                   new BigDecimal(FIRST_COEFFICIENT_VALUE));
