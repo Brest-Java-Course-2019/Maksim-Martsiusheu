@@ -4,15 +4,13 @@ import com.epam.brest.course.calculator.CalculatorImpl;
 
 import com.epam.brest.course.calculator.DataItem;
 
-import com.epam.brest.course.file.builder.Coefficient;
-import com.epam.brest.course.file.builder.CoefficientBuilder;
-import com.epam.brest.course.file.parser.XmlCoefficientParser;
-import com.epam.brest.course.file.parser.XmlParserException;
+import com.epam.brest.course.file.Coefficient;
+import com.epam.brest.course.file.XmlCoefficientParser;
+import com.epam.brest.course.file.XmlParserException;
 
 import com.epam.brest.course.selector.CoefficientSelector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Node;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,7 +39,6 @@ public class UserConsoleMenu {
         showLine(HEADER_MESSAGE);
 
         XmlCoefficientParser parser = new XmlCoefficientParser();
-        CoefficientBuilder builder = new CoefficientBuilder();
         CalculatorImpl calculator = new CalculatorImpl();
         CoefficientSelector selector = new CoefficientSelector();
 
@@ -54,11 +51,8 @@ public class UserConsoleMenu {
         try {
             LOGGER.debug("Price calculation start");
 
-            ArrayList<Node> coefficientsFromFile = parser.parse(FILE_NAME, PRICE_PER_KG);
-            ArrayList<Coefficient> coefficientsForKg = builder.createCoefficient(coefficientsFromFile);
-
-            coefficientsFromFile = parser.parse(FILE_NAME, PRICE_PER_KM);
-            ArrayList<Coefficient> coefficientsForKm = builder.createCoefficient(coefficientsFromFile);
+            ArrayList<Coefficient> coefficientsForKg = parser.parse(FILE_NAME, PRICE_PER_KG);
+            ArrayList<Coefficient> coefficientsForKm = parser.parse(FILE_NAME, PRICE_PER_KM);
 
             weight = takeCorrectValue(scanner, PREFIX + "weight: ");
             distance = takeCorrectValue(scanner, PREFIX + "distance:");

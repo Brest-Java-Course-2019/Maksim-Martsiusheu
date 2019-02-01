@@ -1,9 +1,10 @@
-package com.epam.brest.course.file.builder;
+package com.epam.brest.course.file;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Coefficient {
 
@@ -47,6 +48,25 @@ public class Coefficient {
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Coefficient that = (Coefficient) o;
+        return Objects.equals(lowBorder, that.lowBorder) &&
+                Objects.equals(upperBorder, that.upperBorder) &&
+                Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lowBorder, upperBorder, value);
     }
 
     @Override

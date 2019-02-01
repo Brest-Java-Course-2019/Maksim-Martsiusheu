@@ -1,14 +1,12 @@
 package com.epam.brest.course.selector;
 
-import com.epam.brest.course.file.builder.Coefficient;
+import com.epam.brest.course.file.Coefficient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CoefficientSelectorTest {
 

@@ -1,6 +1,6 @@
 package com.epam.brest.course.selector;
 
-import com.epam.brest.course.file.builder.Coefficient;
+import com.epam.brest.course.file.Coefficient;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

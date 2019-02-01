@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <coefficients>
-    <pricePerKm>
-        <coefficient from="0" to="5" value="1.25"/>
-    </pricePerKm>
     <pricePerKg>
-        <coefficient from="2" to="8" value="2.75"/>
+        <coefficient from="0" to="5" value="1.75"/>
+        <coefficient from="5" to="infinity" value="2.25"/>
     </pricePerKg>
+    <pricePerKm>
+        <coefficient from="0" to="asd" value="1.85"/>
+    </pricePerKm>
+
 </coefficients>
