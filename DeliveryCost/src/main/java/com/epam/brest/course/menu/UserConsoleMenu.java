@@ -1,19 +1,22 @@
 package com.epam.brest.course.menu;
 
-import com.epam.brest.course.calculator.CalculatorImpl;
+import com.epam.brest.course.calculator.Calculator;
 
 import com.epam.brest.course.calculator.DataItem;
 
 import com.epam.brest.course.file.Coefficient;
-import com.epam.brest.course.file.XmlCoefficientParser;
+import com.epam.brest.course.file.XmlParser;
 import com.epam.brest.course.file.XmlParserException;
 
 import com.epam.brest.course.selector.CoefficientSelector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class UserConsoleMenu {
@@ -23,10 +26,8 @@ public class UserConsoleMenu {
     final static String LINE_SYMBOL = "-";
     final static String CORNER_SYMBOL = "+";
 
-    final static String PREFIX = "Please, enter ";
     final static String INCORRECT_INPUT_MESSAGE = "Entered number should be more than 0! Try again";
     final static String INCORRECT_INPUT_VALUE = "It's not a number!";
-    final static String RESULT = "Delivery cost is ";
 
     final static String FILE_NAME = "coefficient.xml";
     final static String PRICE_PER_KG = "pricePerKg";
@@ -36,17 +37,22 @@ public class UserConsoleMenu {
 
     public void showMenu() {
 
-        showLine(HEADER_MESSAGE);
+        ApplicationContext context = new ClassPathXmlApplicationContext("app.xml", "messages.xml");
 
-        XmlCoefficientParser parser = new XmlCoefficientParser();
-        CalculatorImpl calculator = new CalculatorImpl();
-        CoefficientSelector selector = new CoefficientSelector();
+        XmlParser parser = (XmlParser) context.getBean("parser");
+        Calculator calculator = (Calculator) context.getBean("calc");
+        CoefficientSelector selector = (CoefficientSelector) context.getBean("selector");
+
+        Properties messages = (Properties) context.getBean("message");
+
+        Scanner scanner = (Scanner) context.getBean("scanner");
+
+        showLine(HEADER_MESSAGE);
 
         BigDecimal weight;
         BigDecimal distance;
         BigDecimal totalCost;
 
-        Scanner scanner = new Scanner(System.in, "UTF-8");
 
         try {
             LOGGER.debug("Price calculation start");
@@ -54,17 +60,17 @@ public class UserConsoleMenu {
             ArrayList<Coefficient> coefficientsForKg = parser.parse(FILE_NAME, PRICE_PER_KG);
             ArrayList<Coefficient> coefficientsForKm = parser.parse(FILE_NAME, PRICE_PER_KM);
 
-            weight = takeCorrectValue(scanner, PREFIX + "weight: ");
-            distance = takeCorrectValue(scanner, PREFIX + "distance:");
+            weight = takeCorrectValue(scanner, messages.getProperty("weight.messageToEnter"));
+            distance = takeCorrectValue(scanner, messages.getProperty("distance.messageToEnter"));
 
             DataItem dataItem = new DataItem();
             dataItem.setWeight(weight);
             dataItem.setDistance(distance);
             dataItem.setPricePerKg(selector.selectCoefficient(coefficientsForKg, weight).getValue());
-            dataItem.setPricePerKm(selector.selectCoefficient(coefficientsForKm,distance).getValue());
+            dataItem.setPricePerKm(selector.selectCoefficient(coefficientsForKm, distance).getValue());
 
             totalCost = calculator.calculateCost(dataItem);
-            showLine(RESULT + totalCost);
+            showLine(messages.getProperty("result.message") + totalCost);
 
             LOGGER.debug("Price calculation end");
 

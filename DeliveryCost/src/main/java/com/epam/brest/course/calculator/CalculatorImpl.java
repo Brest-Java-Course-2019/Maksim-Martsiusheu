@@ -20,10 +20,7 @@ public class CalculatorImpl implements Calculator {
 
     public BigDecimal calculateCost(DataItem dataItem) {
         LOGGER.debug("Calculate cost by DataItem");
-
-        BigDecimal weightCost = dataItem.getWeight().multiply(dataItem.getPricePerKg());
-        BigDecimal distanceCost = dataItem.getDistance().multiply(dataItem.getPricePerKm());
-
-        return weightCost.add(distanceCost);
+        return calculateCost(dataItem.getWeight(), dataItem.getDistance(),
+                dataItem.getPricePerKg(), dataItem.getPricePerKm());
     }
 }
