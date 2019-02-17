@@ -1,4 +1,4 @@
-package com.epam.course.model;
+package com.epam.courses.hr.model;
 
 import java.math.BigDecimal;
 
@@ -48,5 +48,16 @@ public class Employee {
 
     public void setSalary(BigDecimal salary) {
         this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeId=" + employeeId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", departmentId=" + departmentId +
+                ", salary=" + salary +
+                '}';
     }
 }

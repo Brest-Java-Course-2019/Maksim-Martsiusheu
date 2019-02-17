@@ -5,19 +5,54 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.epam.course</groupId>
-    <artifactId>human-resources</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-  </parent>
+  <profiles>
+    <profile>
+      <id>local</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <serverName>localhost</serverName>
+        <portNumber>5432</portNumber>
+        <dbName>hrdb</dbName>
+        <userName>hrdba</userName>
+        <password>admin123</password>
+      </properties>
+    </profile>
+  </profiles>
 
-  <artifactId>hr-db</artifactId>
+    <groupId>com.epam.course.hr</groupId>
+    <artifactId>hr-db</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
 
   <build>
     <plugins>
       <plugin>
         <groupId>org.flywaydb</groupId>
         <artifactId>flyway-maven-plugin</artifactId>
+        <configuration>
+          <driver>org.postgresql.Driver</driver>
+          <url>jdbc:postgresql://${serverName}:${portNumber}/${dbName}</url>
+          <user>${userName}</user>
+          <password>${password}</password>
+          <table>schema_version</table>
+          <sqlMigrationSeparator>__</sqlMigrationSeparator>
+          <encoding>UTF-8</encoding>
+          <placeholderReplacement>false</placeholderReplacement>
+          <validateOnMigrate>true</validateOnMigrate>
+          <cleanOnValidationError>false</cleanOnValidationError>
+          <ignoreFutureMigrations>false</ignoreFutureMigrations>
+
+          <cleanDisabled>false</cleanDisabled>
+          <skip>false</skip>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
