@@ -12,4 +12,10 @@ public interface DepartmentDao {
     Optional<Department> findById(Integer departmentId);
 
     Optional<Department> add(Department department);
+
+    void update(Department department);
+
+    void delete(Integer departmentId);
+
+
 }

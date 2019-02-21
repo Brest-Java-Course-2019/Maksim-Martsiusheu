@@ -8,14 +8,11 @@
         <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="departmentDao" class="com.epam.courses.hr.dao.DepartmentDaoJpaImpl">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
-
-    <bean id="testDepartment" class="com.epam.courses.hr.model.Department">
-        <property name="departmentId" value="1"/>
-        <property name="departmentName" value="DEV"/>
-        <property name="departmentDescription" value="Development Department"/>
-    </bean>
-
 </beans>
