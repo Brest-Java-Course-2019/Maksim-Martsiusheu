@@ -1,6 +1,7 @@
 package com.epam.courses.hr.dao;
 
 import com.epam.courses.hr.model.Department;
+import com.epam.courses.hr.stub.DepartmentStub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,36 +22,39 @@ import java.util.stream.Stream;
 
 @Configuration
 @PropertySource("classpath:sql-query.properties")
-public class DepartmentDaoJpaImpl implements DepartmentDao {
+public class DepartmentDaoJdbcImpl implements DepartmentDao {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DepartmentDaoJpaImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DepartmentDaoJdbcImpl.class);
 
     @Value("${dept.selectAll}")
     private String getAllDepartmentsSql;
 
     @Value("${dept.selectById}")
-    private String getDepartmentById;
+    private String getDepartmentByIdSql;
 
     @Value("${dept.getDepartmentsAmountByName}")
-    private String getDepartmentsAmountByName;
-
+    private String getDepartmentsAmountByNameSql;
 
     @Value("${dept.insert}")
-    private String INSERT;
+    private String insertDepartmentSql;
 
     @Value("${dept.update}")
-    private String UPDATE;
+    private String updateDepartmentSql;
 
     @Value("${dept.delete}")
-    private String DELETE;
+    private String deleteDepartmentSql;
+
+    @Value("${dept.selectStubs}")
+    private String getAllDepartmentStubsSql;
 
     private static final String DEPARTMENT_ID = "dept_id";
     private static final String DEPARTMENT_NAME = "dept_name";
     private static final String DEPARTMENT_DESCRIPTION = "dept_description";
+    public static final String AVG_SALARY = "avg_salary";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public DepartmentDaoJpaImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public DepartmentDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
@@ -68,9 +72,19 @@ public class DepartmentDaoJpaImpl implements DepartmentDao {
         LOGGER.debug("findAll({})", departmentId);
 
         SqlParameterSource namedParameters = new MapSqlParameterSource(DEPARTMENT_ID, departmentId);
-        Department department = namedParameterJdbcTemplate.queryForObject(getDepartmentById, namedParameters, new DepartmentRowMapper());
+        Department department = namedParameterJdbcTemplate.queryForObject(getDepartmentByIdSql, namedParameters, new DepartmentRowMapper());
 
         return Optional.ofNullable(department);
+    }
+
+    @Override
+    public Stream<DepartmentStub> findAllStubs(){
+        LOGGER.debug("findAllStubs");
+
+        List<DepartmentStub> departmentStubList = namedParameterJdbcTemplate
+                .query(getAllDepartmentStubsSql, new DepartmentStubRowMapper());
+
+        return departmentStubList.stream();
     }
 
     @Override
@@ -84,7 +98,7 @@ public class DepartmentDaoJpaImpl implements DepartmentDao {
     }
 
     private boolean isNameUnique(Department department) {
-        return namedParameterJdbcTemplate.queryForObject(getDepartmentsAmountByName,
+        return namedParameterJdbcTemplate.queryForObject(getDepartmentsAmountByNameSql,
                 new MapSqlParameterSource(DEPARTMENT_NAME, department.getDepartmentName()),
                 Integer.class) == 0;
     }
@@ -95,7 +109,7 @@ public class DepartmentDaoJpaImpl implements DepartmentDao {
         mapSqlParameterSource.addValue(DEPARTMENT_DESCRIPTION, department.getDepartmentDescription());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(INSERT, mapSqlParameterSource, generatedKeyHolder);
+        namedParameterJdbcTemplate.update(insertDepartmentSql, mapSqlParameterSource, generatedKeyHolder);
         department.setDepartmentId(generatedKeyHolder.getKey().intValue());
         return Optional.of(department);
     }
@@ -107,7 +121,7 @@ public class DepartmentDaoJpaImpl implements DepartmentDao {
         mapSqlParameterSource.addValue(DEPARTMENT_NAME, department.getDepartmentName());
         mapSqlParameterSource.addValue(DEPARTMENT_DESCRIPTION, department.getDepartmentDescription());
 
-        Optional.of(namedParameterJdbcTemplate.update(UPDATE, mapSqlParameterSource))
+        Optional.of(namedParameterJdbcTemplate.update(updateDepartmentSql, mapSqlParameterSource))
                 .filter(this::successfullyUpdated)
                 .orElseThrow(() -> new RuntimeException("Failed to update department in DB"));
     }
@@ -120,7 +134,7 @@ public class DepartmentDaoJpaImpl implements DepartmentDao {
     public void delete(Integer departmentId) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue(DEPARTMENT_ID, departmentId);
-        Optional.of(namedParameterJdbcTemplate.update(DELETE, mapSqlParameterSource))
+        Optional.of(namedParameterJdbcTemplate.update(deleteDepartmentSql, mapSqlParameterSource))
                 .filter(this::successfullyUpdated)
                 .orElseThrow(() -> new RuntimeException("Failed to delete department from DB"));
     }
@@ -136,6 +150,19 @@ public class DepartmentDaoJpaImpl implements DepartmentDao {
             department.setDepartmentDescription(resultSet.getString(DEPARTMENT_DESCRIPTION));
 
             return department;
+        }
+    }
+
+    private class DepartmentStubRowMapper implements RowMapper<DepartmentStub>{
+        @Override
+        public DepartmentStub mapRow(ResultSet resultSet, int i) throws SQLException {
+
+            DepartmentStub stub = new DepartmentStub();
+            stub.setId(resultSet.getInt(DEPARTMENT_ID));
+            stub.setName(resultSet.getString(DEPARTMENT_NAME));
+            stub.setAvgSalary(resultSet.getInt(AVG_SALARY));
+
+            return stub;
         }
     }
 

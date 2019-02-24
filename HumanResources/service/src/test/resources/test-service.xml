@@ -13,7 +13,7 @@
         <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="departmentDao" class="com.epam.courses.hr.dao.DepartmentDaoJpaImpl">
+    <bean id="departmentDao" class="com.epam.courses.hr.dao.DepartmentDaoJdbcImpl">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 

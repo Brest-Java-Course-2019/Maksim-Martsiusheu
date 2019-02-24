@@ -46,7 +46,8 @@ class DepartmentServiceImplTest {
 
         long newCount = departmentService.findAll().count();
         LOGGER.debug("Count after: {}", newCount);
-        assertTrue(count == newCount);
+        assertTrue(count == newCount
+        );
     }
 
     private Department create() {

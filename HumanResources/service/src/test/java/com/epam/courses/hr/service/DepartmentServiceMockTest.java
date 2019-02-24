@@ -36,7 +36,6 @@ public class DepartmentServiceMockTest {
         Mockito.verifyNoMoreInteractions(departmentDao);
 
     }
-
     private Department create() {
         Department department = new Department();
         department.setDepartmentName("name");

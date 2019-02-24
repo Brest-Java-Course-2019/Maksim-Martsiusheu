@@ -1,6 +1,7 @@
 package com.epam.courses.hr.dao;
 
 import com.epam.courses.hr.model.Department;
+import com.epam.courses.hr.stub.DepartmentStub;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath:test-dao.xml"})
 @Transactional
 @Rollback
-class DepartmentDaoJpaImplTest {
+class DepartmentDaoJdbcImplTest {
 
     private static final int FIRST_DEPARTMENT_ID = 1;
     private static final int FULL_DEPARTMENT_LIST = 4;
@@ -35,6 +36,13 @@ class DepartmentDaoJpaImplTest {
     void findAll() {
         Stream<Department> departments = departmentDao.findAll();
         assertNotNull(departments);
+    }
+
+    @Test
+    void findAllStubs() {
+        Stream<DepartmentStub> departmentStubs = departmentDao.findAllStubs();
+        assertNotNull(departmentStubs);
+        assertTrue(departmentStubs.count() == FULL_DEPARTMENT_LIST);
     }
 
     @Test
