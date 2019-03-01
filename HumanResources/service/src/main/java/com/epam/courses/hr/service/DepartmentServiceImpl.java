@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.stream.Stream;
 
 @Transactional
@@ -36,14 +35,15 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Stream<DepartmentStub> findAllStub() {
+    public Stream<DepartmentStub> findAllStubs() {
         LOGGER.debug("findAllStubs()");
         return dao.findAllStubs();
     }
 
     @Override
-    public Optional<Department> findById(Integer departmentId) {
-        return dao.findById(departmentId);
+    public Department findById(Integer departmentId) {
+        return dao.findById(departmentId)
+                .orElseThrow(()->new RuntimeException("Failed to get department from DB"));
     }
 
     @Override

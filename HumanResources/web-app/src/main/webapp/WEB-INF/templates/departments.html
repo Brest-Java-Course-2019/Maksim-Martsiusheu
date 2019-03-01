@@ -45,7 +45,8 @@
             <nav class="navbar">
                 <span class="text-uppercase mr-auto">Departments</span>
                 <a class="float-right btn btn-primary"
-                   href="/department"
+                   href="department.html"
+                   th:href="@{/department}"
                    title="Add departments"
                    data-toggle="tooltip">
                     <i class="fa fa-plus"></i>
@@ -64,22 +65,32 @@
                         <thead class="table-head">
                         <tr>
                             <th scope="col">Department</th>
-                            <th scope="col">Number of employees</th>
+                            <th scope="col">Average salary</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">DEV</th>
-                            <td>50</td>
+                        <tr th:each="stub : ${departmentStubs}">
+                            <td th:text="${stub.name}" scope="row">DEV</td>
+                            <td th:text="${stub.avgSalary}">50</td>
                             <td>
-                                <a><i class="fa fa-pencil-alt"></i></a>
+                                <a href="department.html"
+                                   th:href="@{|/department/${stub.id}|}"
+                                   data-toggle="tooltip"
+                                   title="Edit department">
+                                    <i class="fa fa-pencil-alt"></i>
+                                </a>
                                 <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash"
+                                       th:attr="data-id=${stub.id}"
+                                       data-toggle="tooltip"
+                                       title="Delete Department"
+                                       th:onclick="@{'deleteDepartment(this)'}">
+                                    </i>
                                 </a>
                             </td>
                         </tr>
-                        <tr>
+                        <tr th:remove="all">
                             <th scope="row">ACCOUNTING</th>
                             <td>50</td>
                             <td>
@@ -89,7 +100,7 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr>
+                        <tr th:remove="all">
                             <th scope="row">MARKETING</th>
                             <td>50</td>
                             <td>
@@ -121,8 +132,8 @@
                 <p class="h3 text-center">Are you sure you want to delete the selected category?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-primary">Yes</button>
+                <a class="btn btn-outline-primary" data-dismiss="modal">No</a>
+                <a id="confirmDelete" class="btn btn-primary">Yes</a>
             </div>
         </div>
     </div>
@@ -147,6 +158,12 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+</script>
+<script>
+    function deleteDepartment(element) {
+        document.getElementById("confirmDelete")
+            .href = "/departments/" + element.dataset.id + "/delete";
+    }
 </script>
 </body>
 </html>

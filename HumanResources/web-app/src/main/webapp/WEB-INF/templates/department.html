@@ -43,9 +43,21 @@
     <div class="container-fluid">
         <div class="card">
             <nav class="navbar">
-                <span class="text-uppercase mr-auto">Adding department</span>
-                <a class="float-right btn btn-primary">Add</i></a>
-                <a class="float-right btn btn-primary" href="/departments">Back</i></a>
+                <span th:text="${isNew} ?'Adding department' : 'Edit department'"
+                      class="text-uppercase mr-auto">Adding department</span>
+                <a class="float-right btn btn-primary"
+                   href="departments.html"
+                   th:href="@{/departments}"
+                   th:onclick="@{document.forms['departmentForm'].submit(); return false;}"
+                   th:text="${isNew} ? 'Add' : 'Edit'"
+                   data-toggle="tooltip"
+                   th:title="${isNew}? 'Add department':'Edit department'">
+                    Add</a>
+                <a class="float-right btn btn-primary"
+                   href="/departments.html"
+                   th:href="@{/departments}"
+                   data-toggle="tooltip"
+                   title="Return to departments">Back</a>
             </nav>
         </div>
     </div>
@@ -57,9 +69,32 @@
             <div class="row justify-content-center">
                 <div class="col-6">
                     <p class="h2 text-center">Department</p>
-                    <form>
-                        <input class="form-control mt-4" type="text"
-                               placeholder="Input department name">
+                    <form id="departmentForm"
+                          th:object="${department}"
+                          action="departments.html"
+                          th:action="@{${#httpServletRequest.servletPath}}"
+                          th:method="@{post}">
+
+                        <input type="hidden"
+                               th:field="*{departmentId}"/>
+
+                        <div class="form-group">
+                            <label class="form-control-label"
+                                   for="inputDepartmentName">Department Name</label>
+                            <input class="form-control "
+                                   id="inputDepartmentName"
+                                   type="text" value="CEO"
+                                   th:field="*{departmentName}"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label"
+                                   for="inputDepartmentDescription">Department Description</label>
+                            <input class="form-control"
+                                   id="inputDepartmentDescription"
+                                   type="text"
+                                   value="CEO department"
+                                   th:field="*{departmentDescription}">
+                        </div>
                     </form>
                 </div>
             </div>
