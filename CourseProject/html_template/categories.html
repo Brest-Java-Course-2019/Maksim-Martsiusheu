@@ -40,7 +40,12 @@
       <div class="card">
         <nav class="navbar">
           <span class="text-uppercase mr-auto">Категории</span>
-          <a class="float-right btn btn-green" href="category.html"><i class="fa fa-plus"></i></a>
+          <a class="float-right btn btn-green"
+              href="category.html"
+              title="Добавить категорию"
+              data-toggle="tooltip">
+                <i class="fa fa-plus"></i>
+           </a>
         </nav>
     </div>  
   </header>
@@ -224,6 +229,11 @@
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="js/mdb.js"></script>
+  <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
 </body>
 
 </html>
