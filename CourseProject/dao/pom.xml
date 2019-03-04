@@ -15,7 +15,6 @@
         <dependency>
             <groupId>com.epam.brest.course.cp</groupId>
             <artifactId>model</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

@@ -1,0 +1,25 @@
+<web-app>
+
+    <context-para>
+        <param-name>contextConfigLocation</param-name>
+        <param-value></param-value>
+    </context-para>
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+        </init-param>
+        <load-on-setup>1</load-on-setup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-patterm>/</url-patterm>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+</web-app>
