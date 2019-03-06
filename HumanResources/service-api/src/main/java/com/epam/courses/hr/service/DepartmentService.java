@@ -1,14 +1,16 @@
 package com.epam.courses.hr.service;
 
+
 import com.epam.courses.hr.model.Department;
 import com.epam.courses.hr.stub.DepartmentStub;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 public interface DepartmentService {
-    Stream<Department> findAll();
 
-    Stream<DepartmentStub> findAllStubs();
+    List<Department> findAll();
+
+    List<DepartmentStub> findAllStubs();
 
     Department findById(Integer departmentId);
 

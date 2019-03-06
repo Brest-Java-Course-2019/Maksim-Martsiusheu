@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public class DepartmentServiceMockTest {
@@ -27,15 +28,16 @@ public class DepartmentServiceMockTest {
     void testFindAll() {
         Mockito.when(departmentDao.findAll()).thenReturn(Stream.of(create()));
 
-        Stream<Department> result = departmentService.findAll();
+        List<Department> result = departmentService.findAll();
 
         assertNotNull(result);
-        assertEquals(1, result.count());
+        assertEquals(1, result.size());
 
         Mockito.verify(departmentDao, Mockito.times(1)).findAll();
         Mockito.verifyNoMoreInteractions(departmentDao);
 
     }
+
     private Department create() {
         Department department = new Department();
         department.setDepartmentName("name");

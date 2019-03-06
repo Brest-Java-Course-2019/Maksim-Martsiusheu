@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,14 +26,14 @@ class DepartmentServiceImplTest {
 
     @Test
     void findAll() {
-        Stream<Department> departments = departmentService.findAll();
+        List<Department> departments = departmentService.findAll();
         assertNotNull(departments);
     }
 
     @Test
     void add() {
 
-        long count = departmentService.findAll().count();
+        long count = departmentService.findAll().size();
         LOGGER.debug("Count before: {}", count);
 
         Department department = create();
@@ -42,7 +42,7 @@ class DepartmentServiceImplTest {
         });
 
 
-        long newCount = departmentService.findAll().count();
+        long newCount = departmentService.findAll().size();
         LOGGER.debug("Count after: {}", newCount);
         assertTrue(count == newCount
         );

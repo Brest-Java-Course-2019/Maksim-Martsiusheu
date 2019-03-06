@@ -17,6 +17,10 @@
             <artifactId>dao</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.epam.courses.hr</groupId>
+            <artifactId>service-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>

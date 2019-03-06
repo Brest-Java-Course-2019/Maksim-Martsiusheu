@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.stream.Collectors;
-
 @Controller
 public class DepartmentController {
 
@@ -28,8 +26,7 @@ public class DepartmentController {
 
     @GetMapping(value = "/departments")
     public String departments(Model model) {
-        model.addAttribute("departmentStubs", service.findAllStubs()
-                .collect(Collectors.toList()));
+        model.addAttribute("departmentStubs", service.findAllStubs());
         return "departments";
     }
 
