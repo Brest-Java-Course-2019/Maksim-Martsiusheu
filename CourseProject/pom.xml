@@ -11,12 +11,12 @@
 
     <modules>
         <module>dao</module>
-        <module>test</module>
+        <module>dao-api</module>
+        <module>test-db</module>
         <module>service</module>
         <module>model</module>
         <module>web-app</module>
-        <module>daoImpl</module>
-        <module>serviceImpl</module>
+        <module>service-api</module>
     </modules>
 
     <properties>
@@ -46,7 +46,7 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest.course.cp</groupId>
-                <artifactId>daoImpl</artifactId>
+                <artifactId>dao-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -56,12 +56,12 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest.course.cp</groupId>
-                <artifactId>serviceImpl</artifactId>
+                <artifactId>service-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.epam.brest.course.cp</groupId>
-                <artifactId>test</artifactId>
+                <artifactId>test-db</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

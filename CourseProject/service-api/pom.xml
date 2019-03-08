@@ -9,13 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>service</artifactId>
+    <artifactId>service-api</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.epam.brest.course.cp</groupId>
-            <artifactId>service-api</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

@@ -20,15 +20,15 @@
         </dependency>
         <dependency>
             <groupId>com.epam.brest.course.cp</groupId>
-            <artifactId>daoImpl</artifactId>
+            <artifactId>dao</artifactId>
         </dependency>
         <dependency>
             <groupId>com.epam.brest.course.cp</groupId>
-            <artifactId>serviceImpl</artifactId>
+            <artifactId>service</artifactId>
         </dependency>
         <dependency>
             <groupId>com.epam.brest.course.cp</groupId>
-            <artifactId>test</artifactId>
+            <artifactId>test-db</artifactId>
         </dependency>
 
         <dependency>
