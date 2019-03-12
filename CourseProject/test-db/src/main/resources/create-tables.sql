@@ -1,13 +1,13 @@
-DROP TABLE IF EXISTS category
+DROP TABLE IF EXISTS category;
 
 CREATE TABLE category (
   category_id INT NOT NULL AUTO_INCREMENT,
   category_name VARCHAR(255) NOT NULL UNIQUE,
-  parent_id INT,
+  parent_id INT NOT NULL,
   PRIMARY KEY (category_id)
 );
 
-DROP TABLE IF EXISTS prodcut
+DROP TABLE IF EXISTS prodcut;
 
 CREATE TABLE product (
   prod_id INT NOT NULL AUTO_INCREMENT,
