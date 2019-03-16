@@ -29,6 +29,8 @@ class CategoryDaoJdbcImplTest {
     private static final String NEW_CATEGORY_NAME = "New Category";
     private static final Integer NEW_CATEGORY_PARENT_ID = 1;
 
+    private static final Integer CATEGORY_ID_TO_DELETE = 4;
+
     @Autowired
     private CategoryDao categoryDao;
 
@@ -43,7 +45,7 @@ class CategoryDaoJdbcImplTest {
     }
 
     @Test
-    void shouldFindCategoryById(){
+    void shouldFindCategoryById() {
 
         Category category = categoryDao.findById(TEST_CATEGORY_ID).get();
         assertEquals(TEST_CATEGORY_NAME, category.getCategoryName());
@@ -52,7 +54,7 @@ class CategoryDaoJdbcImplTest {
     }
 
     @Test
-    void shouldAddNewCategory(){
+    void shouldAddNewCategory() {
 
         List<Category> categoriesBeforeInsert = categoryDao.findAll();
 
@@ -69,7 +71,8 @@ class CategoryDaoJdbcImplTest {
     }
 
     @Test
-    void shouldUpdateCategory(){
+    void shouldUpdateCategory() {
+
         Category category = new Category();
         category.setCategoryName(NEW_CATEGORY_NAME);
         category.setParentId(NEW_CATEGORY_PARENT_ID);
@@ -87,13 +90,11 @@ class CategoryDaoJdbcImplTest {
     }
 
     @Test
-    void shouldDeleteCategory(){
-        List<Category> categoryList = categoryDao.findAll();
-        Category category = categoryList.get(0);
+    void shouldDeleteCategory() {
 
-        categoryDao.delete(category.getCategoryId());
-        assertThrows(DataAccessException.class, ()->{
-            categoryDao.findById(category.getCategoryId());
+        categoryDao.delete(CATEGORY_ID_TO_DELETE);
+        assertThrows(DataAccessException.class, () -> {
+            categoryDao.findById(CATEGORY_ID_TO_DELETE);
         });
     }
 }

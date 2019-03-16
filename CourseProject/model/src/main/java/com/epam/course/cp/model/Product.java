@@ -30,7 +30,25 @@ public class Product {
         return categoryId;
     }
 
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
 
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setProductAmount(Integer productAmount) {
+        this.productAmount = productAmount;
+    }
+
+    public void setDateAdded(LocalDate dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 
     @Override
     public String toString() {

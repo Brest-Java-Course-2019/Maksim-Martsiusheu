@@ -25,7 +25,6 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
     private final static String INSERT = "INSERT INTO category (category_name, parent_id) VALUES (:category_name, :parent_id)";
     private final static String UPDATE = "UPDATE category SET category_name = :category_name, parent_id = :parent_id WHERE category_id = :category_id";
     private final static String DELETE = "DELETE FROM category WHERE category_id = :category_id";
-
     private final static String CATEGORY_ID = "category_id";
     private static final String CATEGORY_NAME = "category_name";
     private static final String PARENT_ID = "parent_id";
@@ -58,17 +57,14 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         LOGGER.debug("add({})", category);
 
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue(CATEGORY_NAME, category.getCategoryName());
-        namedParameters.addValue(PARENT_ID, category.getParentId());
+        MapSqlParameterSource namedParameters = getNamedParameters(category);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(INSERT, namedParameters, keyHolder);
 
         category.setCategoryId(keyHolder.getKey().intValue());
+
         return Optional.of(category);
-
-
     }
 
     @Override
@@ -76,21 +72,13 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         LOGGER.debug("update({})", category);
 
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue(CATEGORY_ID, category.getCategoryId());
-        namedParameters.addValue(CATEGORY_NAME, category.getCategoryName());
-        namedParameters.addValue(PARENT_ID, category.getParentId());
+        MapSqlParameterSource namedParameters = getNamedParameters(category);
 
         Optional.of(namedParameterJdbcTemplate.update(UPDATE, namedParameters))
                 .filter(this::successfullyUpdate)
-                .orElseThrow(()->new RuntimeException("Failed to update category in DB"));
+                .orElseThrow(() -> new RuntimeException("Failed to update category in DB"));
 
     }
-
-    private boolean successfullyUpdate(Integer numRowsUpdated) {
-        return numRowsUpdated > 0;
-    }
-
 
     @Override
     public void delete(Integer categoryId) {
@@ -100,9 +88,23 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource(CATEGORY_ID, categoryId);
         Optional.of(namedParameterJdbcTemplate.update(DELETE, namedParameters))
                 .filter(this::successfullyUpdate)
-                .orElseThrow(()->new RuntimeException("Failed to delete category"))
-                ;
+                .orElseThrow(() -> new RuntimeException("Failed to delete category"))
+        ;
 
+    }
+
+    private boolean successfullyUpdate(Integer numRowsUpdated) {
+        return numRowsUpdated > 0;
+    }
+
+    private MapSqlParameterSource getNamedParameters(Category category) {
+
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue(CATEGORY_ID, category.getCategoryId());
+        namedParameters.addValue(CATEGORY_NAME, category.getCategoryName());
+        namedParameters.addValue(PARENT_ID, category.getParentId());
+
+        return namedParameters;
     }
 
     private class CategoryMapper implements RowMapper<Category> {

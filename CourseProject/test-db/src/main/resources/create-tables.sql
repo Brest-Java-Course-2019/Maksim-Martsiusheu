@@ -13,7 +13,7 @@ CREATE TABLE product (
   prod_id INT NOT NULL AUTO_INCREMENT,
   prod_name VARCHAR (255) NOT NULL,
   prod_amount INT NOT NULL ,
-  date_added DATETIME NOT NULL,
+  date_added DATE NOT NULL,
   category_id INT NOT NULL,
   PRIMARY KEY (prod_id, category_id),
   FOREIGN KEY (category_id) REFERENCES category(category_id)
