@@ -90,7 +90,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
         LOGGER.debug("add({})", product);
 
-        MapSqlParameterSource namedParameters = getNamedParameters(product);
+        MapSqlParameterSource namedParameters = getProductSqlParametersSource(product);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(INSERT, namedParameters, keyHolder);
@@ -104,7 +104,8 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
         LOGGER.debug("update({})", product);
 
-        MapSqlParameterSource namedParameters = getNamedParameters(product);
+        MapSqlParameterSource namedParameters = getProductSqlParametersSource(product);
+        namedParameters.addValue(PRODUCT_ID, product.getProductId());
 
         Optional.of(namedParameterJdbcTemplate.update(UPDATE, namedParameters))
                 .filter(this::successfullyUpdate)
@@ -125,10 +126,9 @@ public class ProductDaoJdbcImpl implements ProductDao {
         return numRowsUpdated > 0;
     }
 
-    private MapSqlParameterSource getNamedParameters(Product product) {
+    private MapSqlParameterSource getProductSqlParametersSource(Product product) {
 
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue(PRODUCT_ID, product.getProductId());
         namedParameters.addValue(PRODUCT_NAME, product.getProductName());
         namedParameters.addValue(PRODUCT_AMOUNT, product.getProductAmount());
         namedParameters.addValue(DATE_ADDED, product.getDateAdded());

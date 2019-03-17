@@ -48,6 +48,7 @@ class CategoryDaoJdbcImplTest {
     void shouldFindCategoryById() {
 
         Category category = categoryDao.findById(TEST_CATEGORY_ID).get();
+
         assertEquals(TEST_CATEGORY_NAME, category.getCategoryName());
         assertEquals(TEST_CATEGORY_PARENT_ID, category.getParentId());
 
@@ -93,6 +94,7 @@ class CategoryDaoJdbcImplTest {
     void shouldDeleteCategory() {
 
         categoryDao.delete(CATEGORY_ID_TO_DELETE);
+
         assertThrows(DataAccessException.class, () -> {
             categoryDao.findById(CATEGORY_ID_TO_DELETE);
         });

@@ -49,6 +49,7 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         MapSqlParameterSource namedParameters = new MapSqlParameterSource(CATEGORY_ID, categoryId);
         Category category = namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID, namedParameters, new CategoryMapper());
+
         return Optional.ofNullable(category);
     }
 
@@ -57,7 +58,7 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         LOGGER.debug("add({})", category);
 
-        MapSqlParameterSource namedParameters = getNamedParameters(category);
+        MapSqlParameterSource namedParameters = getCategorySqlParametersSource(category);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(INSERT, namedParameters, keyHolder);
@@ -72,7 +73,8 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         LOGGER.debug("update({})", category);
 
-        MapSqlParameterSource namedParameters = getNamedParameters(category);
+        MapSqlParameterSource namedParameters = getCategorySqlParametersSource(category);
+        namedParameters.addValue(CATEGORY_ID, category.getCategoryId());
 
         Optional.of(namedParameterJdbcTemplate.update(UPDATE, namedParameters))
                 .filter(this::successfullyUpdate)
@@ -97,10 +99,9 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         return numRowsUpdated > 0;
     }
 
-    private MapSqlParameterSource getNamedParameters(Category category) {
+    private MapSqlParameterSource getCategorySqlParametersSource(Category category) {
 
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue(CATEGORY_ID, category.getCategoryId());
         namedParameters.addValue(CATEGORY_NAME, category.getCategoryName());
         namedParameters.addValue(PARENT_ID, category.getParentId());
 
