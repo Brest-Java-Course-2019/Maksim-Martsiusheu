@@ -11,6 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,10 +38,10 @@ class CategoryDaoJdbcImplTest {
     @Test
     void shouldFindAllCategories() {
 
-        List<Category> categories = categoryDao.findAll();
+        Stream<Category> categories = categoryDao.findAll();
 
         assertNotNull(categories);
-        assertTrue(categories.size() == CATEGORIES_AMOUNT);
+        assertTrue(categories.count() == CATEGORIES_AMOUNT);
 
     }
 
@@ -57,18 +58,18 @@ class CategoryDaoJdbcImplTest {
     @Test
     void shouldAddNewCategory() {
 
-        List<Category> categoriesBeforeInsert = categoryDao.findAll();
+        Stream<Category> categoriesBeforeInsert = categoryDao.findAll();
 
         Category category = new Category();
         category.setCategoryName(NEW_CATEGORY_NAME);
         category.setParentId(NEW_CATEGORY_PARENT_ID);
 
         Category addedCategory = categoryDao.add(category).get();
+        assertNotNull(addedCategory.getCategoryId());
 
-        List<Category> categoriesAfterInsert = categoryDao.findAll();
+        Stream<Category> categoriesAfterInsert = categoryDao.findAll();
 
-        assertTrue(1 == categoriesAfterInsert.size() - categoriesBeforeInsert.size());
-
+        assertTrue(1 == categoriesAfterInsert.count() - categoriesBeforeInsert.count());
     }
 
     @Test

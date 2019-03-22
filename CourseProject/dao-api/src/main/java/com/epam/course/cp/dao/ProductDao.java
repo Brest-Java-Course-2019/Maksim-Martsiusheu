@@ -3,18 +3,18 @@ package com.epam.course.cp.dao;
 import com.epam.course.cp.model.Product;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface ProductDao {
 
-    List<Product> findAll();
+    Stream<Product> findAll();
 
     Optional<Product> findById(Integer productId);
 
-    List<Product> findByCategory(Integer categoryId);
+    Stream<Product> findByCategory(Integer categoryId);
 
-    List<Product> findFromDateInterval(LocalDate dateBegin, LocalDate dateEnd);
+    Stream<Product> findFromDateInterval(LocalDate dateBegin, LocalDate dateEnd);
 
     Optional<Product> add(Product product);
 

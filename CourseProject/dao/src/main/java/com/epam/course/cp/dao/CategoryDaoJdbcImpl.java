@@ -1,45 +1,57 @@
 package com.epam.course.cp.dao;
 
+import com.epam.course.cp.dao.mapper.CategoryMapper;
 import com.epam.course.cp.model.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
+@Component
 public class CategoryDaoJdbcImpl implements CategoryDao {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(CategoryDaoJdbcImpl.class);
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final CategoryMapper categoryMapper;
 
-    private final static String SELECT_ALL = "SELECT category_id, category_name, parent_id FROM category";
-    private final static String SELECT_BY_ID = "SELECT category_id, category_name, parent_id FROM category WHERE category_id = :category_id";
-    private final static String INSERT = "INSERT INTO category (category_name, parent_id) VALUES (:category_name, :parent_id)";
-    private final static String UPDATE = "UPDATE category SET category_name = :category_name, parent_id = :parent_id WHERE category_id = :category_id";
-    private final static String DELETE = "DELETE FROM category WHERE category_id = :category_id";
-    private final static String CATEGORY_ID = "category_id";
-    private static final String CATEGORY_NAME = "category_name";
-    private static final String PARENT_ID = "parent_id";
+    @Value("${category.selectAll}")
+    private String getAllCategoriesSql;
 
-    public CategoryDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    @Value("${category.selectById}")
+    private String getCategoryByIdSql;
+
+    @Value("${category.insert}")
+    private String insertCategorySql;
+
+    @Value("${category.update}")
+    private String updateCategorySql;
+
+    @Value("${category.delete}")
+    private String deleteCategorySql;
+
+    @Autowired
+    public CategoryDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate, CategoryMapper categoryMapper) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.categoryMapper = categoryMapper;
     }
 
     @Override
-    public List<Category> findAll() {
+    public Stream<Category> findAll() {
 
         LOGGER.debug("findAll()");
 
-        List<Category> categoryList = namedParameterJdbcTemplate.query(SELECT_ALL, new CategoryMapper());
-        return categoryList;
+        List<Category> categoryList = namedParameterJdbcTemplate.query(getAllCategoriesSql, categoryMapper);
+        return categoryList.stream();
     }
 
     @Override
@@ -47,8 +59,8 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         LOGGER.debug("findById({})", categoryId);
 
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource(CATEGORY_ID, categoryId);
-        Category category = namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID, namedParameters, new CategoryMapper());
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(CategoryMapper.CATEGORY_ID, categoryId);
+        Category category = namedParameterJdbcTemplate.queryForObject(getCategoryByIdSql, namedParameters, categoryMapper);
 
         return Optional.ofNullable(category);
     }
@@ -61,7 +73,7 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         MapSqlParameterSource namedParameters = getCategorySqlParametersSource(category);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(INSERT, namedParameters, keyHolder);
+        namedParameterJdbcTemplate.update(insertCategorySql, namedParameters, keyHolder);
 
         category.setCategoryId(keyHolder.getKey().intValue());
 
@@ -74,11 +86,12 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         LOGGER.debug("update({})", category);
 
         MapSqlParameterSource namedParameters = getCategorySqlParametersSource(category);
-        namedParameters.addValue(CATEGORY_ID, category.getCategoryId());
+        namedParameters.addValue(CategoryMapper.CATEGORY_ID, category.getCategoryId());
 
-        Optional.of(namedParameterJdbcTemplate.update(UPDATE, namedParameters))
+        Optional.of(namedParameterJdbcTemplate.update(updateCategorySql, namedParameters))
                 .filter(this::successfullyUpdate)
-                .orElseThrow(() -> new RuntimeException("Failed to update category in DB"));
+                .orElseThrow(() -> new RuntimeException("Failed to update category in DB"))
+        ;
 
     }
 
@@ -87,8 +100,8 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         LOGGER.debug("delete({})", categoryId);
 
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource(CATEGORY_ID, categoryId);
-        Optional.of(namedParameterJdbcTemplate.update(DELETE, namedParameters))
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(CategoryMapper.CATEGORY_ID, categoryId);
+        Optional.of(namedParameterJdbcTemplate.update(deleteCategorySql, namedParameters))
                 .filter(this::successfullyUpdate)
                 .orElseThrow(() -> new RuntimeException("Failed to delete category"))
         ;
@@ -102,25 +115,9 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
     private MapSqlParameterSource getCategorySqlParametersSource(Category category) {
 
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue(CATEGORY_NAME, category.getCategoryName());
-        namedParameters.addValue(PARENT_ID, category.getParentId());
+        namedParameters.addValue(CategoryMapper.CATEGORY_NAME, category.getCategoryName());
+        namedParameters.addValue(CategoryMapper.PARENT_ID, category.getParentId());
 
         return namedParameters;
-    }
-
-    private class CategoryMapper implements RowMapper<Category> {
-
-        @Override
-        public Category mapRow(ResultSet resultSet, int i) throws SQLException {
-
-            Category category = new Category();
-
-            category.setCategoryId(resultSet.getInt(CATEGORY_ID));
-            category.setCategoryName(resultSet.getString(CATEGORY_NAME));
-            category.setParentId(resultSet.getInt(PARENT_ID));
-
-            return category;
-
-        }
     }
 }

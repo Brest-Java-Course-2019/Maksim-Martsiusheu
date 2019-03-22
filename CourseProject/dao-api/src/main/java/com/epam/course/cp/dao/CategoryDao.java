@@ -2,12 +2,12 @@ package com.epam.course.cp.dao;
 
 import com.epam.course.cp.model.Category;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface CategoryDao {
 
-    List<Category> findAll();
+    Stream<Category> findAll();
 
     Optional<Category> findById(Integer categoryId);
 

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,10 +49,10 @@ class ProductDaoJdbcImplTest {
     @Test
     void shouldFindAllProducts() {
 
-        List<Product> productList = productDao.findAll();
+        Stream<Product> productList = productDao.findAll();
 
         assertNotNull(productList);
-        assertTrue(PRODUCTS_AMOUNT == productList.size());
+        assertTrue(PRODUCTS_AMOUNT == productList.count());
     }
 
     @Test
@@ -68,34 +69,34 @@ class ProductDaoJdbcImplTest {
     @Test
     void shouldFindProductByCategory() {
 
-        List<Product> productList = productDao.findByCategory(BLOCKS_CATEGORY_ID);
+        Stream<Product> productList = productDao.findByCategory(BLOCKS_CATEGORY_ID);
 
         assertNotNull(productList);
-        assertTrue(BLOCKS_CATEGORY_PRODUCTS_AMOUNT == productList.size());
+        assertTrue(BLOCKS_CATEGORY_PRODUCTS_AMOUNT == productList.count());
     }
 
     @Test
     void shouldFindProductFromDateInterval() {
 
-        List<Product> productList = productDao.findFromDateInterval(DATE_INTERVAL_BEGIN, DATE_INTERVAL_END);
+        Stream<Product> productList = productDao.findFromDateInterval(DATE_INTERVAL_BEGIN, DATE_INTERVAL_END);
 
         assertNotNull(productList);
-        assertTrue(4 == productList.size());
+        assertTrue(4 == productList.count());
 
     }
 
     @Test
     void shouldAddNewProduct() {
 
-        List<Product> productsBeforeInsert = productDao.findAll();
+        Stream<Product> productsBeforeInsert = productDao.findAll();
 
         Product product = createProduct();
 
         Product newProduct = productDao.add(product).get();
         assertNotNull(newProduct.getProductId());
 
-        List<Product> productsAfterInsert = productDao.findAll();
-        assertTrue(1 == productsAfterInsert.size() - productsBeforeInsert.size());
+        Stream<Product> productsAfterInsert = productDao.findAll();
+        assertTrue(1 == productsAfterInsert.count() - productsBeforeInsert.count());
 
     }
 
