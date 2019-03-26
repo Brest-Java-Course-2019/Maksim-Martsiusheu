@@ -1,5 +1,6 @@
 package com.epam.course.cp.dao;
 
+import com.epam.course.cp.dto.ProductDTO;
 import com.epam.course.cp.model.Product;
 
 import java.time.LocalDate;
@@ -12,9 +13,11 @@ public interface ProductDao {
 
     Optional<Product> findById(Integer productId);
 
-    Stream<Product> findByCategory(Integer categoryId);
+    Stream<ProductDTO> findAllProductDTOs();
 
-    Stream<Product> findFromDateInterval(LocalDate dateBegin, LocalDate dateEnd);
+    Stream<ProductDTO> findProductDTOsByCategoryId(Integer categoryId);
+
+    Stream<ProductDTO> findProductDTOsFromDateInterval(LocalDate dateBegin, LocalDate dateEnd);
 
     Optional<Product> add(Product product);
 

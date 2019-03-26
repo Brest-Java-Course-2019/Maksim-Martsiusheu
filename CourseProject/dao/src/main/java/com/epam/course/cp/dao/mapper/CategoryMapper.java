@@ -10,7 +10,7 @@ import java.sql.SQLException;
 @Component
 public class CategoryMapper implements RowMapper<Category> {
 
-    public final static String CATEGORY_ID = "category_id";
+    public static final String CATEGORY_ID = "category_id";
     public static final String CATEGORY_NAME = "category_name";
     public static final String PARENT_ID = "parent_id";
 

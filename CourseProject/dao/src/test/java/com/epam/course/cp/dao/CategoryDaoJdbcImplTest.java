@@ -1,5 +1,7 @@
 package com.epam.course.cp.dao;
 
+import com.epam.course.cp.dto.CategoryDTO;
+import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class CategoryDaoJdbcImplTest {
 
     private static final Integer CATEGORIES_AMOUNT = 7;
+    private static final Integer CATEGORY_DTOS_AMOUNT = 4;
+
+    private static final Integer PARENT_CATEGORY_ID = 1;
+    private static final Integer PARENT_CATEGORY_DTO_AMOUNT = 2;
 
     private static final Integer TEST_CATEGORY_ID = 5;
     private static final String TEST_CATEGORY_NAME = "Bricks";
@@ -41,7 +46,7 @@ class CategoryDaoJdbcImplTest {
         Stream<Category> categories = categoryDao.findAll();
 
         assertNotNull(categories);
-        assertTrue(categories.count() == CATEGORIES_AMOUNT);
+        assertTrue(CATEGORIES_AMOUNT == categories.count());
 
     }
 
@@ -53,6 +58,24 @@ class CategoryDaoJdbcImplTest {
         assertEquals(TEST_CATEGORY_NAME, category.getCategoryName());
         assertEquals(TEST_CATEGORY_PARENT_ID, category.getParentId());
 
+    }
+
+    @Test
+    void shouldFindAllCategoryDTOs() {
+
+        Stream<CategoryDTO> categoryDTOs = categoryDao.findAllCategoryDTOs();
+
+        assertNotNull(categoryDTOs);
+        assertTrue(CATEGORY_DTOS_AMOUNT == categoryDTOs.count());
+    }
+
+    @Test
+    void shouldFindSubCategoryDTOsByCategoryId() {
+
+        Stream<SubCategoryDTO> subCategoryDTOs = categoryDao.findSubCategoryDTOsByCategoryId(PARENT_CATEGORY_ID);
+
+        assertNotNull(subCategoryDTOs);
+        assertTrue(PARENT_CATEGORY_DTO_AMOUNT == subCategoryDTOs.count());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.epam.course.cp.dao;
 
+import com.epam.course.cp.dto.ProductDTO;
 import com.epam.course.cp.model.Product;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,13 +35,14 @@ class ProductDaoJdbcImplTest {
     private static final LocalDate NEW_PRODUCT_DATE_ADDED = LocalDate.parse("2016-07-16");
     private static final Integer NEW_PRODUCT_CATEGORY_ID = 1;
 
-    private static final Integer BLOCKS_CATEGORY_ID = 6;
-    private static final Integer BLOCKS_CATEGORY_PRODUCTS_AMOUNT = 3;
+    private static final Integer PARENT_CATEGORY_ID = 1;
+    private static final Integer PARENT_CATEGORY_PRODUCTS_AMOUNT = 4;
 
     private static final Integer PRODUCT_ID_TO_DELETE = 1;
 
     private static final LocalDate DATE_INTERVAL_BEGIN = LocalDate.parse("2018-01-01");
     private static final LocalDate DATE_INTERVAL_END = LocalDate.parse("2019-01-01");
+    private static final Integer PRODUCTS_AMOUNT_IN_DATE_INTERVAL = 4;
 
     @Autowired
     private ProductDao productDao;
@@ -49,10 +50,10 @@ class ProductDaoJdbcImplTest {
     @Test
     void shouldFindAllProducts() {
 
-        Stream<Product> productList = productDao.findAll();
+        Stream<Product> products = productDao.findAll();
 
-        assertNotNull(productList);
-        assertTrue(PRODUCTS_AMOUNT == productList.count());
+        assertNotNull(products);
+        assertTrue(PRODUCTS_AMOUNT == products.count());
     }
 
     @Test
@@ -67,21 +68,30 @@ class ProductDaoJdbcImplTest {
     }
 
     @Test
-    void shouldFindProductByCategory() {
+    void shouldFindAllProductDTOs() {
 
-        Stream<Product> productList = productDao.findByCategory(BLOCKS_CATEGORY_ID);
+        Stream<ProductDTO> productDTOs = productDao.findAllProductDTOs();
 
-        assertNotNull(productList);
-        assertTrue(BLOCKS_CATEGORY_PRODUCTS_AMOUNT == productList.count());
+        assertNotNull(productDTOs);
+        assertTrue(productDTOs.count() == PRODUCTS_AMOUNT);
     }
 
     @Test
-    void shouldFindProductFromDateInterval() {
+    void shouldFindProductDTOsByCategoryId() {
 
-        Stream<Product> productList = productDao.findFromDateInterval(DATE_INTERVAL_BEGIN, DATE_INTERVAL_END);
+        Stream<ProductDTO> productDTOs = productDao.findProductDTOsByCategoryId(PARENT_CATEGORY_ID);
+
+        assertNotNull(productDTOs);
+        assertTrue(PARENT_CATEGORY_PRODUCTS_AMOUNT == productDTOs.count());
+    }
+
+    @Test
+    void shouldFindProductDTOsFromDateInterval() {
+
+        Stream<ProductDTO> productList = productDao.findProductDTOsFromDateInterval(DATE_INTERVAL_BEGIN, DATE_INTERVAL_END);
 
         assertNotNull(productList);
-        assertTrue(4 == productList.count());
+        assertTrue(PRODUCTS_AMOUNT_IN_DATE_INTERVAL == productList.count());
 
     }
 
@@ -120,7 +130,7 @@ class ProductDaoJdbcImplTest {
     }
 
     @Test
-    void delete() {
+    void shouldDeleteProduct() {
 
         productDao.delete(PRODUCT_ID_TO_DELETE);
 

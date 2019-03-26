@@ -4842,7 +4842,7 @@ module.exports = function(Chart) {
 
 	/**
 	 * Removes the given array event listener and cleanup extra attached properties (such as
-	 * the _chartjs stub and overridden methods) if array doesn't have any more listeners.
+	 * the _chartjs dto and overridden methods) if array doesn't have any more listeners.
 	 */
 	function unlistenArrayEvents(array, listener) {
 		var stub = array._chartjs;

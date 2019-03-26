@@ -3,39 +3,39 @@ package com.epam.course.cp.dto;
 public class SubCategoryDTO {
 
     private Integer subCategoryId;
-    private Integer productsAmount;
     private String subCategoryName;
+    private Integer productsAmount;
 
     public Integer getSubCategoryId() {
         return subCategoryId;
-    }
-
-    public Integer getProductsAmount() {
-        return productsAmount;
     }
 
     public String getSubCategoryName() {
         return subCategoryName;
     }
 
-    public void setSubCategoryId(Integer subCategoryId) {
-        this.subCategoryId = subCategoryId;
+    public Integer getProductsAmount() {
+        return productsAmount;
     }
 
-    public void setProductsAmount(Integer productsAmount) {
-        this.productsAmount = productsAmount;
+    public void setSubCategoryId(Integer subCategoryId) {
+        this.subCategoryId = subCategoryId;
     }
 
     public void setSubCategoryName(String subCategoryName) {
         this.subCategoryName = subCategoryName;
     }
 
+    public void setProductsAmount(Integer productsAmount) {
+        this.productsAmount = productsAmount;
+    }
+
     @Override
     public String toString() {
         return "SubCategoryDTO{" +
                 "subCategoryId=" + subCategoryId +
-                ", productsAmount=" + productsAmount +
                 ", subCategoryName='" + subCategoryName + '\'' +
+                ", productsAmount=" + productsAmount +
                 '}';
     }
 }
