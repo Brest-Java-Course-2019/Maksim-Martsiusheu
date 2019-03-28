@@ -19,6 +19,8 @@ public interface ProductDao {
 
     Stream<ProductDTO> findProductDTOsFromDateInterval(LocalDate dateBegin, LocalDate dateEnd);
 
+    Stream<ProductDTO> findProductDTOsByMixedFilter(LocalDate dateBegin, LocalDate dateEnd, Integer categoryId);
+
     Optional<Product> add(Product product);
 
     void update(Product product);

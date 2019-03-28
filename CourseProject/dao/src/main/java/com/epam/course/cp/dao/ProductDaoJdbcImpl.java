@@ -43,6 +43,9 @@ public class ProductDaoJdbcImpl implements ProductDao {
     @Value("${productDTO.selectFromDateInterval}")
     private String getProductDTOsFromDateIntervalSql;
 
+    @Value("${productDTO.selectByMixedFilter}")
+    private String getProductDTOsByMixedFilterSql;
+
     @Value("${product.insert}")
     private String insertProductSql;
 
@@ -119,6 +122,20 @@ public class ProductDaoJdbcImpl implements ProductDao {
         List<ProductDTO> productDTOList = namedParameterJdbcTemplate.query(getProductDTOsFromDateIntervalSql, namedParameters, productDTOMapper);
 
         return productDTOList.stream();
+    }
+
+    @Override
+    public Stream<ProductDTO> findProductDTOsByMixedFilter(LocalDate dateBegin, LocalDate dateEnd, Integer categoryId) {
+
+        LOGGER.debug("findProductDTOsByMixedFilter({}, {}, {})", dateBegin, dateEnd, categoryId);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue(DATE_INTERVAL_BEGIN, dateBegin);
+        namedParameters.addValue(DATE_INTERVAL_END, dateEnd);
+        namedParameters.addValue(ProductDTOMapper.PRODUCT_DTO_CATEGORY_ID, categoryId);
+
+        List<ProductDTO> productDTOList = namedParameterJdbcTemplate.query(getProductDTOsByMixedFilterSql, namedParameters, productDTOMapper);
+        return productDTOList.stream();
+
     }
 
     @Override

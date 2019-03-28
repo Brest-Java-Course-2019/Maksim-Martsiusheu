@@ -44,6 +44,8 @@ class ProductDaoJdbcImplTest {
     private static final LocalDate DATE_INTERVAL_END = LocalDate.parse("2019-01-01");
     private static final Integer PRODUCTS_AMOUNT_IN_DATE_INTERVAL = 4;
 
+    private static final Integer PRODUCTS_AMOUNT_BY_MIXED_FILTER = 2;
+
     @Autowired
     private ProductDao productDao;
 
@@ -88,11 +90,21 @@ class ProductDaoJdbcImplTest {
     @Test
     void shouldFindProductDTOsFromDateInterval() {
 
-        Stream<ProductDTO> productList = productDao.findProductDTOsFromDateInterval(DATE_INTERVAL_BEGIN, DATE_INTERVAL_END);
+        Stream<ProductDTO> productDTOs = productDao.findProductDTOsFromDateInterval(DATE_INTERVAL_BEGIN, DATE_INTERVAL_END);
 
-        assertNotNull(productList);
-        assertTrue(PRODUCTS_AMOUNT_IN_DATE_INTERVAL == productList.count());
+        assertNotNull(productDTOs);
+        assertTrue(PRODUCTS_AMOUNT_IN_DATE_INTERVAL == productDTOs.count());
 
+    }
+
+    @Test
+    void shouldFindProductDTOsByMixedFilter() {
+
+        Stream<ProductDTO> productDTOs = productDao
+                .findProductDTOsByMixedFilter(DATE_INTERVAL_BEGIN, DATE_INTERVAL_END, PARENT_CATEGORY_ID);
+
+        assertNotNull(productDTOs);
+        assertTrue(PRODUCTS_AMOUNT_BY_MIXED_FILTER == productDTOs.count());
     }
 
     @Test
