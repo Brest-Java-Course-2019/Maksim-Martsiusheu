@@ -3,11 +3,12 @@ DROP TABLE IF EXISTS category;
 CREATE TABLE category (
   category_id INT NOT NULL AUTO_INCREMENT,
   category_name VARCHAR(255) NOT NULL UNIQUE,
-  parent_id INT NOT NULL,
-  PRIMARY KEY (category_id)
+  parent_id INT,
+  PRIMARY KEY (category_id),
+  FOREIGN KEY (parent_id) REFERENCES category(category_id)
 );
 
-DROP TABLE IF EXISTS prodcut;
+DROP TABLE IF EXISTS product;
 
 CREATE TABLE product (
   prod_id INT NOT NULL AUTO_INCREMENT,
@@ -18,4 +19,3 @@ CREATE TABLE product (
   PRIMARY KEY (prod_id, category_id),
   FOREIGN KEY (category_id) REFERENCES category(category_id)
 );
-
