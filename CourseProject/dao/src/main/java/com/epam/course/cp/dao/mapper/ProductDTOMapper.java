@@ -26,7 +26,7 @@ public class ProductDTOMapper implements RowMapper<ProductDTO> {
         productDTO.setProductId(resultSet.getInt(PRODUCT_DTO_ID));
         productDTO.setCategoryName(resultSet.getString(PRODUCT_DTO_CATEGORY_NAME));
         productDTO.setSubCategoryName(resultSet.getString(PRODUCT_DTO_SUBCATEGORY_NAME));
-        productDTO.setCategoryName(resultSet.getString(PRODUCT_DTO_NAME));
+        productDTO.setProductName(resultSet.getString(PRODUCT_DTO_NAME));
         productDTO.setProductAmount(resultSet.getInt(PRODUCT_DTO_AMOUNT));
         productDTO.setDateAdded(resultSet.getDate(PRODUCT_DTO_DATE_ADDED).toLocalDate());
         productDTO.setCategoryId(resultSet.getInt(PRODUCT_DTO_CATEGORY_ID));

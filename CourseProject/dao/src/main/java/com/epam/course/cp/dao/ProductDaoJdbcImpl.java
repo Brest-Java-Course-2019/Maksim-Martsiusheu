@@ -143,6 +143,8 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
         LOGGER.debug("add({})", product);
 
+        product.setDateAdded(LocalDate.now());
+
         MapSqlParameterSource namedParameters = getProductSqlParametersSource(product);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();

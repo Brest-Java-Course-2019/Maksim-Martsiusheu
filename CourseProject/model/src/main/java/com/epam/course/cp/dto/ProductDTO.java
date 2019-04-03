@@ -1,5 +1,7 @@
 package com.epam.course.cp.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 
 public class ProductDTO {
@@ -9,7 +11,10 @@ public class ProductDTO {
     private String subCategoryName;
     private String productName;
     private Integer productAmount;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateAdded;
+
     private Integer categoryId;
 
     public Integer getProductId() {
