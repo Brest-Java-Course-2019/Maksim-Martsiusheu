@@ -29,7 +29,7 @@ import static org.mockito.ArgumentMatchers.*;
 
 
 @ExtendWith(MockitoExtension.class)
-class CategoryRestControllerTest {
+class CategoryRestControllerMockTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -143,7 +143,7 @@ class CategoryRestControllerTest {
         Mockito.when(categoryService.findAllCategoryDTOs()).thenReturn(ARRAY_LIST_OF_CATEGORY_DTOS);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/categories/dtos")
+                MockMvcRequestBuilders.get("/categories/info")
                         .accept(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -163,7 +163,7 @@ class CategoryRestControllerTest {
                 .thenReturn(ARRAY_LIST_OF_SUBCATEGORY_DTOS);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/categories/1/dtos")
+                MockMvcRequestBuilders.get("/categories/info/1")
                         .accept(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -191,7 +191,7 @@ class CategoryRestControllerTest {
     @Test
     void shouldUpdateCategory() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/categories")
+                MockMvcRequestBuilders.put("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(MAPPER.writeValueAsString(FIRST_CATEGORY))
         ).andExpect(MockMvcResultMatchers.status().isOk());
@@ -202,9 +202,7 @@ class CategoryRestControllerTest {
     @Test
     void shouldDeleteCategory() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/categories")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(MAPPER.writeValueAsString(1))
+                MockMvcRequestBuilders.delete("/categories/1")
         ).andExpect(MockMvcResultMatchers.status().isOk());
 
         Mockito.verify(categoryService, Mockito.times(ONCE)).delete(anyInt());

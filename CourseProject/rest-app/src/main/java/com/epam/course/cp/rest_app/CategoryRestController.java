@@ -24,14 +24,14 @@ public class CategoryRestController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "")
     public List<Category> findAll() {
 
         LOGGER.debug("get all categories");
         return categoryService.findAll();
     }
 
-    @GetMapping(value = "/dtos")
+    @GetMapping(value = "/info")
     public List<CategoryDTO> findAllCategoryDTOs() {
 
         LOGGER.debug("get all categoryDTOs");
@@ -45,7 +45,7 @@ public class CategoryRestController {
         return categoryService.findById(id);
     }
 
-    @GetMapping(value = "/{id}/dtos")
+    @GetMapping(value = "/info/{id}")
     public List<SubCategoryDTO> findSubCategoryDTOsByCategoryId(@PathVariable Integer id) {
 
         LOGGER.debug("get subCategoryDTOs by category id = {}", id);
@@ -53,24 +53,24 @@ public class CategoryRestController {
     }
 
     @PostMapping
-    public void add(@RequestBody Category category) {
+    public Category add(@RequestBody Category category) {
 
         LOGGER.debug("add category {}", category);
-        categoryService.add(category);
+        return categoryService.add(category);
     }
 
-    @PutMapping
+    @PutMapping(value ="/{id}" )
     public void update(@RequestBody Category category) {
 
         LOGGER.debug("update category in DB {}", category);
         categoryService.update(category);
     }
 
-    @DeleteMapping
-    public void delete(@RequestBody Integer categoryId) {
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable Integer id) {
 
-        LOGGER.debug("delete category with id = {} from DB", categoryId);
-        categoryService.delete(categoryId);
+        LOGGER.debug("delete category with id = {} from DB", id);
+        categoryService.delete(id);
     }
 
 }
