@@ -6,6 +6,7 @@ import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -103,13 +104,13 @@ class CategoryRestControllerTest {
         Mockito.when(categoryService.findAll()).thenReturn(ARRAY_LIST_OF_CATEGORIES);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/categories/all")
+                MockMvcRequestBuilders.get("/categories")
                         .accept(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(
                         MockMvcResultMatchers.content()
-                                .string(Matchers.is(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORIES)))
+                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORIES))
                 )
         ;
 
@@ -129,7 +130,7 @@ class CategoryRestControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(
                         MockMvcResultMatchers.content()
-                                .string(Matchers.is(MAPPER.writeValueAsString(SECOND_CATEGORY)))
+                                .string(MAPPER.writeValueAsString(SECOND_CATEGORY))
                 )
         ;
 
@@ -148,7 +149,7 @@ class CategoryRestControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(
                         MockMvcResultMatchers.content()
-                                .string(Matchers.is(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORY_DTOS)))
+                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORY_DTOS))
                 )
         ;
 
@@ -168,7 +169,7 @@ class CategoryRestControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(
                         MockMvcResultMatchers.content()
-                                .string(Matchers.is(MAPPER.writeValueAsString(ARRAY_LIST_OF_SUBCATEGORY_DTOS)))
+                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_SUBCATEGORY_DTOS))
                 )
         ;
 
@@ -207,6 +208,12 @@ class CategoryRestControllerTest {
         ).andExpect(MockMvcResultMatchers.status().isOk());
 
         Mockito.verify(categoryService, Mockito.times(ONCE)).delete(anyInt());
+    }
+
+    @AfterEach
+    void afterEach() {
+
+        Mockito.verifyNoMoreInteractions(categoryService);
     }
 
     private static Category createCategory(Integer id) {
