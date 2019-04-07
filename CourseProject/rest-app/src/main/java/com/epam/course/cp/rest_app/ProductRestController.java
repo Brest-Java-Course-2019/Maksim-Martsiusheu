@@ -46,7 +46,7 @@ public class ProductRestController {
         return productService.findAllProductDTOs();
     }
 
-    @PostMapping(value = "/filter")
+    @GetMapping(value = "/filter")
     public List<ProductDTO> findProductDTOsByMixedFilter(
             @RequestParam(value = "from", defaultValue = "1970-01-01")
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateBegin,
