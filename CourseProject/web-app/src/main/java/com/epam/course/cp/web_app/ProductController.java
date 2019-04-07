@@ -1,5 +1,6 @@
 package com.epam.course.cp.web_app;
 
+import com.epam.course.cp.model.Product;
 import com.epam.course.cp.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -26,13 +24,40 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(value = "/products/{id}")
-    public final String findProductById(@PathVariable Integer id, Model model) {
-        LOGGER.debug("find product with id ={}", id);
+    @GetMapping(value = "/product/{id}")
+    public final String gotoUpdateProduct(@PathVariable Integer id, Model model) {
+
+        LOGGER.debug("go to update product with id ={}", id);
 
         model.addAttribute("product", productService.findById(id));
-
+        model.addAttribute("isNew", false);
         return "product";
+    }
+
+    @PostMapping(value = "/product/{id}")
+    public final String updateProduct(Product product, Model model) {
+
+        LOGGER.debug("update product {}", product);
+        productService.update(product);
+        return "redirect:/products";
+    }
+
+    @GetMapping(value = "/product")
+    public final String gotoAddProduct(Model model) {
+
+        LOGGER.debug("gotoAddProduct({})", model);
+        Product product = new Product();
+        model.addAttribute("isNew", true);
+        model.addAttribute("product", product);
+        return "product";
+    }
+
+    @PostMapping(value = "/product")
+    public final String addProduct(Product product) {
+
+        LOGGER.debug("addProduct({})", product);
+        productService.add(product);
+        return "redirect:/products";
     }
 
     @GetMapping(value = "/products")
@@ -66,7 +91,7 @@ public class ProductController {
         return "productsDTOs";
     }
 
-    @GetMapping(value = "/product/{id}")
+    @GetMapping(value = "/products/{id}")
     public final String deleteProduct(@PathVariable Integer id) {
         LOGGER.debug("delete product by id = {}", id);
 

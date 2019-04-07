@@ -70,7 +70,7 @@ public class ProductRestController {
     }
 
     @PutMapping(value = "/{id}")
-    public void update(Product product) {
+    public void update(@RequestBody Product product) {
 
        LOGGER.debug("update({})", product);
        productService.update(product);

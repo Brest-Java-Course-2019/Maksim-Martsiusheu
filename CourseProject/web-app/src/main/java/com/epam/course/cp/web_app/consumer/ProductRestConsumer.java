@@ -27,6 +27,7 @@ public class ProductRestConsumer implements ProductService {
     private RestTemplate restTemplate;
 
     public ProductRestConsumer(String url, RestTemplate restTemplate) {
+
         this.url = url;
         this.restTemplate = restTemplate;
         ClientHttpRequestInterceptor clientHttpRequestInterceptor = new ClientHttpRequestInterceptor() {
@@ -50,6 +51,7 @@ public class ProductRestConsumer implements ProductService {
 
     @Override
     public Product findById(Integer productId) {
+
         LOGGER.debug("Find product with id = {}", productId);
 
         ResponseEntity<Product> responseEntity = restTemplate.getForEntity(url + "/" + productId, Product.class);
@@ -59,6 +61,7 @@ public class ProductRestConsumer implements ProductService {
 
     @Override
     public List<ProductDTO> findAllProductDTOs() {
+
         LOGGER.debug("Find all products");
 
         ResponseEntity<List> responseEntity = restTemplate.getForEntity(url + "/info", List.class);
@@ -97,6 +100,7 @@ public class ProductRestConsumer implements ProductService {
 
     @Override
     public List<ProductDTO> findProductDTOsByMixedFilter(LocalDate dateBegin, LocalDate dateEnd, Integer categoryId) {
+
         LOGGER.debug("find product DTOs from date interval");
 
         UriComponentsBuilder builder = UriComponentsBuilder
@@ -112,16 +116,21 @@ public class ProductRestConsumer implements ProductService {
 
     @Override
     public Product add(Product product) {
-        return null;
+
+        LOGGER.debug("add({})", product);
+        return restTemplate.postForEntity(url, product, Product.class).getBody();
     }
 
     @Override
     public void update(Product product) {
 
+        LOGGER.debug("update({})", product);
+        restTemplate.put(url + "/" + product.getProductId(), product);
     }
 
     @Override
     public void delete(Integer productId) {
+
         LOGGER.debug("delete product with id = {}", productId);
         restTemplate.delete(url + "/" + productId);
     }

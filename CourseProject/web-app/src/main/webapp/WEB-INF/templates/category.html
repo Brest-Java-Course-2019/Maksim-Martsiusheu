@@ -19,6 +19,7 @@
                    th:href="@{/categories}" href="categories.html">Назад</a>
             </nav>
         </div>
+    </div>
 </header>
 
 <div class="container-fluid pt-2">
@@ -44,7 +45,8 @@
                                th:class="${#fields.hasErrors('categoryName')} ? 'form-control is-invalid' : 'form-control'"/>
                         <div th:if="${#fields.hasErrors('categoryName')}"
                              class="invalid-feedback"
-                             th:errors="*{categoryName}">[errors]</div>
+                             th:errors="*{categoryName}">[errors]
+                        </div>
 
                         <select class="form-control mt-4">
                             <option>Создать самостоятульную категорию</option>

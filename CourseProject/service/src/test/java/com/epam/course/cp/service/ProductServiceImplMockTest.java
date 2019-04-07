@@ -153,7 +153,7 @@ class ProductServiceImplMockTest {
     void add() {
 
         Mockito.when(productDao.add(any())).thenReturn(Optional.of(FIRST_PRODUCT));
-        productService.add(any());
+        productService.add(new Product());
         Mockito.verify(productDao, Mockito.times(ONCE)).add(any());
         Mockito.verifyNoMoreInteractions(productDao);
     }

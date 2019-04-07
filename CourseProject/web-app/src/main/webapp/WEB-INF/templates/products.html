@@ -15,12 +15,14 @@
                     <span class="text-uppercase">Список продуктов</span>
                 </div>
                 <a class="float-right btn btn-green"
-                   href="category.html"
+                   th:href="@{/product}"
+                   href="product.html"
                    title="Добавить продукт"
                    data-toggle="tooltip">
                     <i class="fa fa-plus"></i>
                 </a>
                 <a class="float-right btn btn-green"
+                   th:href="@{/products}"
                    href="products.html"
                    title="Обновить"
                    data-toggle="tooltip">
@@ -55,7 +57,7 @@
                             <td th:text="${product.dateAdded}">2018-01-01</td>
                             <td th:text="${product.productAmount}">2500</td>
                             <td>
-                                <a><i class="fa fa-pencil-alt"></i></a>
+                                <a th:href="${'/product/' + product.productId}"><i class="fa fa-pencil-alt"></i></a>
                                 <a class="pl-3" data-toggle="modal" data-target="#userDialog">
                                     <i class="fa fa-trash"></i>
                                 </a>

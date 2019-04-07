@@ -70,6 +70,9 @@ public class ProductServiceImpl implements ProductService {
     public Product add(Product product) {
 
         LOGGER.debug("add({})", product);
+
+        product.setDateAdded(LocalDate.now());
+
         return productDao.add(product)
                 .orElseThrow(()->new RuntimeException("Field to add product to DB"));
     }
