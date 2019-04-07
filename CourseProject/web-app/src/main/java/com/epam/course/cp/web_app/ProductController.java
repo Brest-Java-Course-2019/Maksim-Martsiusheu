@@ -26,15 +26,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(value = "/products")
-    public final String findAllProducts(Model model) {
-
-        LOGGER.debug("find allProducts({})", model);
-        model.addAttribute("products", productService.findAll());
-        return "products";
-
-    }
-
     @GetMapping(value = "/products/{id}")
     public final String findProductById(@PathVariable Integer id, Model model) {
         LOGGER.debug("find product with id ={}", id);
@@ -44,12 +35,12 @@ public class ProductController {
         return "product";
     }
 
-    @GetMapping(value = "/products/info")
+    @GetMapping(value = "/products")
     public final String findAllProductsDTOs(Model model) {
 
         LOGGER.debug("find allProducts({})", model);
-        model.addAttribute("productsDTOs", productService.findAll());
-        return "productsDTOs";
+        model.addAttribute("products", productService.findAllProductDTOs());
+        return "products";
 
     }
 

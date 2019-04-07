@@ -5,24 +5,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light white">
-    <a class="navbar-brand" href="#"><i class="fa fa-cubes"></i></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="nav nav-pills mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Категории</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Товары</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<nav th:replace="includes/navigation::top-header"></nav>
 
 <header class="pt-2">
     <div class="container-fluid">
@@ -53,8 +36,7 @@
         <div class="col-9">
             <div class="card">
                 <div class="card-body">
-                    <table th:remove="all"
-                           class="table table-striped mt-4 text-center">
+                    <table class="table table-striped mt-4 text-center">
                         <thead class="table-head text-white">
                         <tr>
                             <th scope="col">Категории</th>
@@ -66,7 +48,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="product : ${products}">
+                            <th th:text="${product.categoryName}" scope="row">Кирпичи и блоки</th>
+                            <td th:text="${product.subCategoryName}">Кирпичи</td>
+                            <td th:text="${product.productName}">Кирпич красный</td>
+                            <td th:text="${product.dateAdded}">2018-01-01</td>
+                            <td th:text="${product.productAmount}">2500</td>
+                            <td>
+                                <a><i class="fa fa-pencil-alt"></i></a>
+                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:remove="all">
                             <th scope="row">Кирпичи и блоки</th>
                             <td>Кирпичи</td>
                             <td>Кирпич красный</td>
@@ -79,20 +74,7 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <th scope="row">Кирпичи и блоки</th>
-                            <td>Кирпичи</td>
-                            <td>Кирпич красный</td>
-                            <td>2018-01-01</td>
-                            <td>2500</td>
-                            <td>
-                                <a><i class="fa fa-pencil-alt"></i></a>
-                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
+                        <tr th:remove="all">
                             <th scope="row">Кирпичи и блоки</th>
                             <td>Кирпичи</td>
                             <td>Кирпич красный</td>
