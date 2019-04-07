@@ -4,11 +4,15 @@ import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
+import com.epam.course.cp.service.ServiceResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.List;
 
 public class CategoryRestConsumer implements CategoryService {
@@ -61,17 +65,19 @@ public class CategoryRestConsumer implements CategoryService {
     }
 
     @Override
-    public void update(Category category) {
+    public ServiceResult update(Category category) {
 
         LOGGER.debug("update({})", category);
         restTemplate.put(url + "/" + category.getCategoryId(), category);
+        return null;
     }
 
     @Override
-    public void delete(Integer categoryId) {
+    public ServiceResult delete(Integer categoryId) {
 
         LOGGER.debug("delete category with id = {}", categoryId);
-        restTemplate.delete(url + "/" + categoryId);
+        return restTemplate.exchange(new RequestEntity(HttpMethod.DELETE, URI.create(url+"/"+categoryId)), ServiceResult.class)
+                .getBody();
     }
 
 }

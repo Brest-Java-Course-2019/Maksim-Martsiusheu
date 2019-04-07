@@ -67,11 +67,7 @@ public class CategoryRestController {
 
         LOGGER.debug("update category in DB {}", category);
         ServiceResult result = categoryService.update(category);
-        if (result.isOk()) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -79,11 +75,7 @@ public class CategoryRestController {
 
         LOGGER.debug("delete category with id = {} from DB", id);
         ServiceResult result = categoryService.delete(id);
-        if (result.isOk()) {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

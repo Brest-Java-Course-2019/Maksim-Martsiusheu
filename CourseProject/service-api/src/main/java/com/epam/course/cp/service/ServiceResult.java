@@ -22,6 +22,9 @@ public class ServiceResult {
         return result;
     }
 
+    public ServiceResult() {
+    }
+
     private ServiceResult(String title, String message) {
 
         this.title = title;
