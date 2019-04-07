@@ -31,6 +31,7 @@ public class ProductController {
 
         model.addAttribute("product", productService.findById(id));
         model.addAttribute("isNew", false);
+        model.addAttribute("location", "products");
         return "product";
     }
 
@@ -39,6 +40,7 @@ public class ProductController {
 
         LOGGER.debug("update product {}", product);
         productService.update(product);
+        model.addAttribute("location", "products");
         return "redirect:/products";
     }
 
@@ -49,14 +51,16 @@ public class ProductController {
         Product product = new Product();
         model.addAttribute("isNew", true);
         model.addAttribute("product", product);
+        model.addAttribute("location", "products");
         return "product";
     }
 
     @PostMapping(value = "/product")
-    public final String addProduct(Product product) {
+    public final String addProduct(Product product, Model model) {
 
         LOGGER.debug("addProduct({})", product);
         productService.add(product);
+        model.addAttribute("location", "products");
         return "redirect:/products";
     }
 
@@ -65,6 +69,7 @@ public class ProductController {
 
         LOGGER.debug("find allProducts({})", model);
         model.addAttribute("products", productService.findAllProductDTOs());
+        model.addAttribute("location", "products");
         return "products";
 
     }
@@ -87,6 +92,8 @@ public class ProductController {
 
             model.addAttribute("productDTOs", productService.findProductDTOsByMixedFilter(dateBegin, dateEnd, categoryId));
         }
+
+        model.addAttribute("location", "products");
 
         return "productsDTOs";
     }

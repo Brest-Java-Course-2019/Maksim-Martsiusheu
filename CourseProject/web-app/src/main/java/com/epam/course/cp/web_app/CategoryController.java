@@ -34,6 +34,7 @@ public class CategoryController {
 
         LOGGER.debug("find allCategoryDTOs({})", model);
         model.addAttribute("categories", categoryService.findAllCategoryDTOs());
+        model.addAttribute("location", "categories");
         return "categories";
 
     }
@@ -43,7 +44,28 @@ public class CategoryController {
 
         LOGGER.debug("findSubCategoriesByCategoryId({}, {})", id, model);
         model.addAttribute("subcategories", categoryService.findSubCategoryDTOsByCategoryId(id));
+        model.addAttribute("location", "categories");
         return "subcategories-table";
+    }
+
+    @GetMapping(value = "/category")
+    public final String gotoAddCategory(Model model) {
+
+        LOGGER.debug("gotoAddCategory()");
+        Category category = new Category();
+        model.addAttribute("isNew", true);
+        model.addAttribute("category", category);
+        model.addAttribute("location", "categories");
+
+        return "category";
+    }
+
+    @PostMapping(value = "/category")
+    public final String addCategory(Category category, Model model) {
+
+        LOGGER.debug("addCategory({})", model);
+        categoryService.add(category);
+        return "redirect:/categories";
     }
 
     @GetMapping(value = "/category/{id}")
@@ -53,10 +75,11 @@ public class CategoryController {
         Category category = categoryService.findById(id);
         model.addAttribute("isNew", false);
         model.addAttribute("category", category);
+        model.addAttribute("location", "categories");
         return "category";
     }
 
-    @PostMapping(value = "/category/{id}")
+    @PutMapping(value = "/category/{id}")
     public final String updateCategory(@Valid Category category, BindingResult result) {
 
         LOGGER.debug("updateCategory({}, {})", category, result);
@@ -83,7 +106,7 @@ public class CategoryController {
 
         LOGGER.debug("delete");
         ServiceResult result = categoryService.delete(id);
-        if(!result.isOk()){
+        if (!result.isOk()) {
             model.addAttribute("hasErrors", true);
             model.addAttribute("errorMessage", result.getMessage());
         }

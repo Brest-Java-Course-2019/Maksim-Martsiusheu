@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 </head>
 <body>
@@ -13,10 +13,12 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="nav nav-pills mr-auto">
             <li class="nav-item">
-                <a class="nav-link active" th:href="@{/categories}">Категории</a>
+                <a th:class="${location == 'categories'} ? 'nav-link active' : 'nav-link'"
+                   th:href="@{/categories}">Категории</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Товары</a>
+                <a th:class="${location == 'products'} ? 'nav-link active' : 'nav-link'"
+                   th:href="@{/products}">Товары</a>
             </li>
         </ul>
     </div>
