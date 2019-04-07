@@ -4,9 +4,12 @@ import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
+import com.epam.course.cp.service.ServiceResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,18 +62,28 @@ public class CategoryRestController {
         return categoryService.add(category);
     }
 
-    @PutMapping(value ="/{id}" )
-    public void update(@RequestBody Category category) {
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> update(@RequestBody Category category) {
 
         LOGGER.debug("update category in DB {}", category);
-        categoryService.update(category);
+        ServiceResult result = categoryService.update(category);
+        if (result.isOk()) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
 
         LOGGER.debug("delete category with id = {} from DB", id);
-        categoryService.delete(id);
+        ServiceResult result = categoryService.delete(id);
+        if (result.isOk()) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
+import com.epam.course.cp.service.ServiceResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
@@ -190,6 +191,9 @@ class CategoryRestControllerMockTest {
 
     @Test
     void shouldUpdateCategory() throws Exception {
+
+        Mockito.when(categoryService.update(any())).thenReturn(ServiceResult.ok("Test","Test"));
+
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -201,6 +205,8 @@ class CategoryRestControllerMockTest {
 
     @Test
     void shouldDeleteCategory() throws Exception {
+
+        Mockito.when(categoryService.delete(anyInt())).thenReturn(ServiceResult.ok("Test","Test"));
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/categories/1")
         ).andExpect(MockMvcResultMatchers.status().isOk());

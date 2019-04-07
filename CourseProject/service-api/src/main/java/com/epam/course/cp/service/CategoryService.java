@@ -18,7 +18,7 @@ public interface CategoryService {
 
     Category add(Category category);
 
-    void update(Category category);
+    ServiceResult update(Category category);
 
-    void delete(Integer categoryId);
+    ServiceResult delete(Integer categoryId);
 }

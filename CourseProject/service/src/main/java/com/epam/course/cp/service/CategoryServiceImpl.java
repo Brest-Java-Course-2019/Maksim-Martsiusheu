@@ -1,6 +1,7 @@
 package com.epam.course.cp.service;
 
 import com.epam.course.cp.dao.CategoryDao;
+import com.epam.course.cp.dao.exception.DaoException;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
@@ -61,16 +62,38 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void update(Category category) {
+    public ServiceResult update(Category category) {
 
         LOGGER.debug("update({})", category);
-        categoryDao.update(category);
+        try {
+
+            categoryDao.update(category);
+
+            return ServiceResult.ok("Category updating", "Category category updated successfully");
+
+        } catch (DaoException ex) {
+
+            return ServiceResult.error("Category updating", ex.getMessage());
+        }
     }
 
     @Override
-    public void delete(Integer categoryId) {
+    public ServiceResult delete(Integer categoryId) {
 
         LOGGER.debug("delete({})", categoryId);
-        categoryDao.delete(categoryId);
+        ServiceResult result;
+        try {
+
+            categoryDao.delete(categoryId);
+            result = ServiceResult.ok("Category deleting", "Category deleted successfully");
+
+            return result;
+
+        } catch (DaoException ex) {
+
+            result = ServiceResult.error("Category deleting", ex.getMessage());
+
+            return result;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.epam.course.cp.dao;
 
+import com.epam.course.cp.dao.exception.DaoException;
 import com.epam.course.cp.dao.mapper.CategoryDTOMapper;
 import com.epam.course.cp.dao.mapper.CategoryMapper;
 import com.epam.course.cp.dao.mapper.SubCategoryDTOMapper;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -138,15 +140,20 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
     }
 
     @Override
-    public void delete(Integer categoryId) {
+    public void delete(Integer categoryId) throws DaoException {
 
         LOGGER.debug("delete({})", categoryId);
 
         MapSqlParameterSource namedParameters = new MapSqlParameterSource(CategoryMapper.CATEGORY_ID, categoryId);
-        Optional.of(namedParameterJdbcTemplate.update(deleteCategorySql, namedParameters))
-                .filter(this::successfullyUpdate)
-                .orElseThrow(() -> new RuntimeException("Failed to delete category"))
-        ;
+        try {
+            Optional.of(namedParameterJdbcTemplate.update(deleteCategorySql, namedParameters))
+                    .filter(this::successfullyUpdate)
+                    .orElseThrow(() -> new RuntimeException("Failed to delete category"))
+            ;
+        } catch (DataIntegrityViolationException ex) {
+            throw new DaoException("There ara some products in category", ex);
+        }
+
 
     }
 
