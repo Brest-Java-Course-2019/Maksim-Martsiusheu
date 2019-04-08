@@ -27,7 +27,7 @@
         <div class="card-body">
             <div class="row justify-content-center">
                 <div class="col-6">
-                    <p class="h2 text-center">Данные продукта</p>
+                    <p th:text="#{product.details}" class="h2 text-center">Данные продукта</p>
                     <form id="productForm" th:object="${product}"
                           th:action="@{${#httpServletRequest.servletPath}}"
                           th:method="@{post}">
@@ -36,14 +36,13 @@
                                type="hidden"
                                th:field="*{productId}"/>
                         <input class="form-control mt-4" type="text"
-                               placeholder="Введите название продукта"
+                               th:placeholder="#{product.enter_name}"
                                th:field="*{productName}">
                         <input class="form-control mt-4" type="text"
-                               placeholder="Введите количество продукта"
+                               th:placeholder="#{product.enter_amount}"
                                th:field="*{productAmount}">
 
                         <select class="form-control mt-4" name="categoryId">
-                            <option value="0">Создать самостоятульную категорию</option>
                             <option value="5">Bricks</option>
                             <option value="6">Blocks</option>
                             <option value="7">Screws</option>

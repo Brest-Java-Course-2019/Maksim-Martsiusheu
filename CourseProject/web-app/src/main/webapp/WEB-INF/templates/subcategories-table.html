@@ -3,8 +3,8 @@
 <table class="table table-striped mt-4 text-center">
     <thead class="table-head text-white">
     <tr>
-        <th scope="col">Подкатегория</th>
-        <th scope="col">Количество товаров</th>
+        <th th:text="#{subcategory.name}" scope="col">Подкатегория</th>
+        <th th:text="#{subcategory.total_amount_of_products}" scope="col">Количество товаров</th>
         <th scope="col"></th>
     </tr>
     </thead>
@@ -13,12 +13,17 @@
         <th th:text="${subcategory.subCategoryName}" scope="row">Лаковые</th>
         <td th:text="${subcategory.productsAmount}">50</td>
         <td>
-            <a th:href="@{'/category/' + ${subcategory.subCategoryId}}"><i class="fa fa-pencil-alt"></i></a>
-            <a class="pl-3" data-toggle="modal" data-target="#userDialog"
-               th:attr="data-id=${subcategory.subCategoryId}"
-               th:onclick="@{'deleteCategory(this)'}">
-                <i class="fa fa-trash"></i>
+            <a th:href="@{'/category/' + ${subcategory.subCategoryId}}"
+               th:title="#{subcategory.edit}" data-toggle="tooltip">
+                <i class="fa fa-pencil-alt"></i>
             </a>
+            <span th:title="#{subcategory.delete}" data-toggle="tooltip">
+                <a class="pl-3" data-toggle="modal" data-target="#userDialog"
+                   th:attr="data-id=${subcategory.subCategoryId}"
+                   th:onclick="@{'deleteCategory(this)'}">
+                <i class="fa fa-trash"></i>
+                </a>
+            </span>
         </td>
     </tr>
     </tbody>

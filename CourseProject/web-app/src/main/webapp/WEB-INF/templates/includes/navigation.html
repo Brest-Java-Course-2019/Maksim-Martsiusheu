@@ -14,11 +14,13 @@
         <ul class="nav nav-pills mr-auto">
             <li class="nav-item">
                 <a th:class="${location == 'categories'} ? 'nav-link active' : 'nav-link'"
-                   th:href="@{/categories}">Категории</a>
+                   th:href="@{/categories}"
+                   th:text="#{navigation.categories}">Категории</a>
             </li>
             <li class="nav-item">
                 <a th:class="${location == 'products'} ? 'nav-link active' : 'nav-link'"
-                   th:href="@{/products}">Товары</a>
+                   th:href="@{/products}"
+                   th:text="#{navigation.products}">Товары</a>
             </li>
         </ul>
     </div>
