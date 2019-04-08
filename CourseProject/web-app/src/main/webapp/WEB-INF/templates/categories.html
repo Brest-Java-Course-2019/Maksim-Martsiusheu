@@ -20,6 +20,16 @@
                 </a>
             </nav>
         </div>
+        <div th:if="${hasErrors}" id="error-plate" class="row pt-2">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <p th:text="'Oopsss! ' + ${errorMessage}"
+                           class="h3 text-danger"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </header>
 
@@ -41,15 +51,6 @@
                 </div>
             </div>
         </div>
-        <div th:if="${hasErrors}" class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <span>ERROR</span>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="col-xl-9">
             <div class="tab-content">
                 <div class="tab-pane fade"
@@ -67,7 +68,9 @@
                                         <div class="col-2 h3">
                                             <a th:href="@{'/category/' + ${category.categoryId}}"><i
                                                     class="fa fa-pencil-alt"></i></a>
-                                            <a class="pl-3" data-toggle="modal" data-target="#userDialog">
+                                            <a class="pl-3" data-toggle="modal" data-target="#userDialog"
+                                               th:attr="data-id=${category.categoryId}"
+                                                th:onclick="@{'deleteCategory(this)'}">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         </div>
@@ -108,8 +111,8 @@
                 <p class="h3 text-center">Вы точно хотите удалить выбранную категорию?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-green" data-dismiss="modal">Нет</button>
-                <button type="button" class="btn btn-green">Да</button>
+                <a class="btn btn-outline-green" data-dismiss="modal">No</a>
+                <a id="confirmDelete" class="btn btn-green">Yes</a>
             </div>
         </div>
     </div>
@@ -121,19 +124,22 @@
     });
 
     function getTable(element) {
+        $('#error-plate').remove();
         if (element.dataset.updated === "false") {
-            if ($('#product-amount-' + element.dataset.num).text().match(/\d+/)[0] !== '0') {
-                $.ajax({
-                    url: '/categories/info/' + element.dataset.id,
-                    dataType: "html",
-                    success: function (data, textStatus) {
-                        $('#table-place-' + element.dataset.id).html(data);
-                    }
-                });
-            } else {
-                $('#table-place-' + element.dataset.id).html('<p class="h2">Oopss! This category is empty</p>')
-            }
+            $.ajax({
+                url: '/categories/info/' + element.dataset.id,
+                dataType: "html",
+                success: function (data, textStatus) {
+                    $('#table-place-' + element.dataset.id).html(data);
+                }
+            });
         }
+    }
+
+    function deleteCategory(element) {
+        console.log(123);
+        document.getElementById("confirmDelete")
+            .href = "/categories/" + element.dataset.id;
     }
 </script>
 </body>

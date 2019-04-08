@@ -12,10 +12,11 @@
         <div class="card">
             <nav class="navbar">
                 <span th:text="${isNew} ? 'Adding' : 'Edit'" class="text-uppercase mr-auto">Adding</span>
-                <a th:text="${isNew} ? 'Add' : 'Edit'"
+                <a th:text="${isNew} ? #{category.save} : 'Edit'"
                    th:onclick="@{document.forms['categoryForm'].submit(); return false;}"
                    class="float-right btn btn-green">Добавить</a>
                 <a class="float-right btn btn-green"
+                   th:text="#{category.cancel}"
                    th:href="@{/categories}" href="categories.html">Назад</a>
             </nav>
         </div>
@@ -27,7 +28,7 @@
         <div class="card-body">
             <div class="row justify-content-center">
                 <div class="col-6">
-                    <p th:text="#{category.msg}" class="h2 text-center">Данные категории</p>
+                    <p th:text="#{category.details}" class="h2 text-center">Данные категории</p>
                     <form id="categoryForm" th:object="${category}"
                           th:action="@{${#httpServletRequest.servletPath}}"
                           th:method="@{post}">
@@ -40,7 +41,7 @@
                                type="hidden"
                                th:field="*{categoryId}"/>
                         <input class="form-control mt-4" type="text"
-                               placeholder="Введите название категории (подкатегории)"
+                               th:placeholder="#{category.enter_name}"
                                th:field="*{categoryName}"
                                th:class="${#fields.hasErrors('categoryName')} ? 'form-control is-invalid' : 'form-control'"/>
                         <div th:if="${#fields.hasErrors('categoryName')}"
