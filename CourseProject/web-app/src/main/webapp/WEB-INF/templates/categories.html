@@ -36,30 +36,21 @@
                            th:onclick="@{'getTable(this)'}"
                            th:attr="data-id=${category.categoryId}, data-num=${iter.count}"
                            data-updated="false"
-                           aria-selected="false">Краски и лаки</a>
-                        <a th:remove="all" class="nav-link" id="pills-tab-2" data-toggle="pill" href="#pills-2"
-                           role="tab"
-                           aria-controls="pills-2" aria-selected="false">Кирпичи и блоки</a>
-                        <a th:remove="all" class="nav-link" id="pills-tab-3" data-toggle="pill" href="#pills-3"
-                           role="tab"
-                           aria-controls="pills-3" aria-selected="false">Арматура</a>
-                        <a th:remove="all" class="nav-link" id="pills-tab-4" data-toggle="pill" href="#pills-4"
-                           role="tab"
-                           aria-controls="pills-4" aria-selected="false">Крепёжные элементы</a>
+                           aria-selected="false">Category Name placeholder</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${hasErrors}" class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <span>ERROR</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-9">
-            <div th:if="${hasErrors}" class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <span>ERROR</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="tab-content">
                 <div class="tab-pane fade"
                      th:each="category, iter:${categories}"
@@ -74,7 +65,7 @@
                                             <p th:text="${category.categoryName}" class="h2">Краски и лаки</p>
                                         </div>
                                         <div class="col-2 h3">
-                                            <a th:href="${'/category/' + category.categoryId}"><i
+                                            <a th:href="@{'/category/' + ${category.categoryId}}"><i
                                                     class="fa fa-pencil-alt"></i></a>
                                             <a class="pl-3" data-toggle="modal" data-target="#userDialog">
                                                 <i class="fa fa-trash"></i>
@@ -92,138 +83,12 @@
                         <div class="col-xl-12">
                             <div class="card">
                                 <div class="card-body" th:id="${'table-place-' + iter.count}">
-                                    <table th:remove="all"
-                                           class="table table-striped mt-4 text-center">
-                                        <thead class="table-head text-white">
-                                        <tr>
-                                            <th scope="col">Подкатегория</th>
-                                            <th scope="col">Количество товаров</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <th scope="row">Лаковые</th>
-                                            <td>50</td>
-                                            <td>
-                                                <a><i class="fa fa-pencil-alt"></i></a>
-                                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Масляные</th>
-                                            <td>50</td>
-                                            <td>
-                                                <a><i class="fa fa-pencil-alt"></i></a>
-                                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Акриловые</th>
-                                            <td>50</td>
-                                            <td>
-                                                <a><i class="fa fa-pencil-alt"></i></a>
-                                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div th:remove="all" class="tab-pane fade" id="pills-2" role="tabpanel" aria-labelledby="pills-tab-2">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <p class="h2">Кирпичи и блоки</p>
-                                        </div>
-                                        <div class="col-2 h3">
-                                            <a><i class="fa fa-pencil-alt"></i></a>
-                                            <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </div>
-                                        <small>Товаров: 194</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row pt-2">
-                        <div class="col-xl-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <table class="table table-striped mt-4 text-center">
-                                        <thead class="table-head text-white">
-                                        <tr>
-                                            <th scope="col">Подкатегория</th>
-                                            <th scope="col">Количество товаров</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <th scope="row">Кирпичи</th>
-                                            <td>45</td>
-                                            <td>
-                                                <a><i class="fa fa-pencil-alt"></i></a>
-                                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Блоки</th>
-                                            <td>63</td>
-                                            <td>
-                                                <a><i class="fa fa-pencil-alt"></i></a>
-                                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Плиты перекрытия</th>
-                                            <td>12</td>
-                                            <td>
-                                                <a><i class="fa fa-pencil-alt"></i></a>
-                                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Декоративный камень</th>
-                                            <td>74</td>
-                                            <td>
-                                                <a><i class="fa fa-pencil-alt"></i></a>
-                                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div th:remove="all" class="tab-pane fade" id="pills-3" role="tabpanel"
-                     aria-labelledby="pills-tab-3"></div>
-                <div th:remove="all" class="tab-pane fade" id="pills-4" role="tabpanel"
-                     aria-labelledby="pills-tab-4"></div>
             </div>
         </div>
     </div>

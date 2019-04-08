@@ -65,6 +65,10 @@ public class CategoryController {
     public final String addCategory(Category category, Model model) {
 
         LOGGER.debug("addCategory({})", model);
+        if (category.getParentId() != null && category.getParentId() < 0) {
+            category.setParentId(null);
+        }
+
         categoryService.add(category);
         return "redirect:/categories";
     }
@@ -81,10 +85,15 @@ public class CategoryController {
         return "category";
     }
 
-    @PutMapping(value = "/category/{id}")
+    @PostMapping(value = "/category/{id}")
     public final String updateCategory(@Valid Category category, BindingResult result) {
 
         LOGGER.debug("updateCategory({}, {})", category, result);
+
+        if (category.getParentId() != null && category.getParentId() < 0) {
+            category.setParentId(null);
+        }
+
         categoryValidator.validate(category, result);
 
         if (result.hasErrors()) {

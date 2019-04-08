@@ -13,7 +13,7 @@
         <th th:text="${subcategory.subCategoryName}" scope="row">Лаковые</th>
         <td th:text="${subcategory.productsAmount}">50</td>
         <td>
-            <a><i class="fa fa-pencil-alt"></i></a>
+            <a th:href="@{'/category/' + ${subcategory.subCategoryId}}"><i class="fa fa-pencil-alt"></i></a>
             <a class="pl-3" data-toggle="modal" data-target="#userDialog">
                 <i class="fa fa-trash"></i>
             </a>
