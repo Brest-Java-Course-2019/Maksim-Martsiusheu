@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface CategoryService {
 
-    List<Category> findAll();
-
     Category findById(Integer categoryId);
 
     List<CategoryDTO> findAllCategoryDTOs();
@@ -21,4 +19,6 @@ public interface CategoryService {
     ServiceResult update(Category category);
 
     ServiceResult delete(Integer categoryId);
+
+    List<Category> findAllPossibleParentsForId(Integer id);
 }

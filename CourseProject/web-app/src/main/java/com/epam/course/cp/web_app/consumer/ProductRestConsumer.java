@@ -78,7 +78,7 @@ public class ProductRestConsumer implements ProductService {
                 .fromUriString(url + "/filter")
                 .queryParam("id", categoryId);
 
-        ResponseEntity<List> responseEntity = restTemplate.postForEntity(builder.toUriString(), null, List.class);
+        ResponseEntity<List> responseEntity = restTemplate.getForEntity(builder.toUriString(), List.class);
 
         return (List<ProductDTO>) responseEntity.getBody();
     }

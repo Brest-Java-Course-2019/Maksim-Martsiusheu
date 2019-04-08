@@ -48,12 +48,15 @@
                              th:errors="*{categoryName}">[errors]
                         </div>
 
-                        <select class="form-control mt-4">
-                            <option>Создать самостоятульную категорию</option>
-                            <option>Создать подкатегорию в категории "Краски и лаки"</option>
-                            <option>Создать подкатегорию в категории "Кирпичи и блоки"</option>
-                            <option>Создать подкатегорию в категории "Арматура"</option>
-                            <option>Создать подкатегорию в категории "Крепёжные элементы"</option>
+                        <select class="form-control mt-4" name="parentId">
+                            <option value="-1">Создать самостоятульную категорию</option>
+                            <option th:each="parent : ${parentCategories}"
+                                    th:text="${parent.categoryName}"
+                                    th:value="${parent.categoryId}"></option>
+                            <option th:remove="all">Создать подкатегорию в категории "Краски и лаки"</option>
+                            <option th:remove="all">Создать подкатегорию в категории "Кирпичи и блоки"</option>
+                            <option th:remove="all">Создать подкатегорию в категории "Арматура"</option>
+                            <option th:remove="all">Создать подкатегорию в категории "Крепёжные элементы"</option>
                         </select>
                     </form>
                 </div>

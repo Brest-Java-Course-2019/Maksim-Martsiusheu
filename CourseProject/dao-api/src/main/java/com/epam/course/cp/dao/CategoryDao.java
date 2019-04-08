@@ -23,4 +23,6 @@ public interface CategoryDao {
 
     void delete(Integer categoryId);
 
+    Stream<Category> findAllPossibleParentsForId(Integer id);
+
 }

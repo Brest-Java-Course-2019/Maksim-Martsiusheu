@@ -100,26 +100,6 @@ class CategoryRestControllerMockTest {
     }
 
     @Test
-    void shouldFindAllCategories() throws Exception {
-
-        Mockito.when(categoryService.findAll()).thenReturn(ARRAY_LIST_OF_CATEGORIES);
-
-        mockMvc.perform(
-                MockMvcRequestBuilders.get("/categories")
-                        .accept(MediaType.APPLICATION_JSON_UTF8)
-        ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(
-                        MockMvcResultMatchers.content()
-                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORIES))
-                )
-        ;
-
-        Mockito.verify(categoryService, Mockito.times(ONCE)).findAll();
-
-    }
-
-    @Test
     void shouldFindCategoryById() throws Exception {
 
         Mockito.when(categoryService.findById(anyInt())).thenReturn(SECOND_CATEGORY);

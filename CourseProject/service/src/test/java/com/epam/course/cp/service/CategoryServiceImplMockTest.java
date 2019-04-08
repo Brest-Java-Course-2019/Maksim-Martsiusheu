@@ -41,20 +41,6 @@ class CategoryServiceImplMockTest {
     private CategoryServiceImpl categoryService;
 
     @Test
-    void shouldFindAllCategories() {
-
-        Mockito.when(categoryDao.findAll())
-                .thenReturn(Stream.of(createCategory(FIRST_CATEGORY_ID), createCategory(SECOND_CATEGORY_ID)));
-
-        List<Category> categories = categoryService.findAll();
-        assertNotNull(categories);
-        assertTrue(2 == categories.size());
-
-        Mockito.verify(categoryDao, Mockito.times(ONCE)).findAll();
-        Mockito.verifyNoMoreInteractions(categoryDao);
-    }
-
-    @Test
     void shouldFindCategoryById() {
 
         Mockito.when(categoryDao.findById(any())).thenReturn(Optional.of(createCategory(FIRST_CATEGORY_ID)));

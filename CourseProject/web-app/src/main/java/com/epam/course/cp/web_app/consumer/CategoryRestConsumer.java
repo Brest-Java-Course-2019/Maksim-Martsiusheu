@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -27,10 +28,6 @@ public class CategoryRestConsumer implements CategoryService {
 
         this.url = url;
         this.restTemplate = restTemplate;
-    }
-
-    public List<Category> findAll() {
-        return null;
     }
 
     @Override
@@ -57,6 +54,7 @@ public class CategoryRestConsumer implements CategoryService {
         return (List<SubCategoryDTO>) responseEntity.getBody();
     }
 
+
     @Override
     public Category add(Category category) {
 
@@ -76,8 +74,20 @@ public class CategoryRestConsumer implements CategoryService {
     public ServiceResult delete(Integer categoryId) {
 
         LOGGER.debug("delete category with id = {}", categoryId);
-        return restTemplate.exchange(new RequestEntity(HttpMethod.DELETE, URI.create(url+"/"+categoryId)), ServiceResult.class)
+        return restTemplate.exchange(new RequestEntity(HttpMethod.DELETE, URI.create(url + "/" + categoryId)), ServiceResult.class)
                 .getBody();
+    }
+
+    @Override
+    public List<Category> findAllPossibleParentsForId(Integer id) {
+
+        LOGGER.debug("findAllPossibleParentsForId({})", id);
+
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromUriString(url + "/possibleparents")
+                .queryParam("id", id);
+
+        return (List<Category>) restTemplate.getForEntity(builder.toUriString(), List.class).getBody();
     }
 
 }

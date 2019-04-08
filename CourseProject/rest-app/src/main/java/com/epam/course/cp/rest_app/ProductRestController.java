@@ -72,8 +72,8 @@ public class ProductRestController {
     @PutMapping(value = "/{id}")
     public void update(@RequestBody Product product) {
 
-       LOGGER.debug("update({})", product);
-       productService.update(product);
+        LOGGER.debug("update({})", product);
+        productService.update(product);
     }
 
     @DeleteMapping(value = "/{id}")

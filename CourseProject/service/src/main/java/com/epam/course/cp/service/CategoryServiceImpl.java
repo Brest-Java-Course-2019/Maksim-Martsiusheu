@@ -25,13 +25,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findAll() {
-
-        LOGGER.debug("findAll()");
-        return categoryDao.findAll().collect(Collectors.toList());
-    }
-
-    @Override
     public Category findById(Integer categoryId) {
 
         LOGGER.debug("findById({})", categoryId);
@@ -95,5 +88,12 @@ public class CategoryServiceImpl implements CategoryService {
 
             return result;
         }
+    }
+
+    @Override
+    public List<Category> findAllPossibleParentsForId(Integer id) {
+
+        LOGGER.debug("findAllPossibleParentsForId({})", id);
+        return categoryDao.findAllPossibleParentsForId(id).collect(Collectors.toList());
     }
 }

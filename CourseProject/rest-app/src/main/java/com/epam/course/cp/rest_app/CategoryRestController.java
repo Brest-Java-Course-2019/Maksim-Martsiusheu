@@ -27,13 +27,6 @@ public class CategoryRestController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(value = "")
-    public List<Category> findAll() {
-
-        LOGGER.debug("get all categories");
-        return categoryService.findAll();
-    }
-
     @GetMapping(value = "/info")
     public List<CategoryDTO> findAllCategoryDTOs() {
 
@@ -78,4 +71,10 @@ public class CategoryRestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/possibleparents")
+    public List<Category> findAllPossibleParentsForId(@RequestParam(value = "id") Integer id) {
+
+        LOGGER.debug("findAllPossibleParentsForId({})", id);
+        return categoryService.findAllPossibleParentsForId(id);
+    }
 }
