@@ -2,7 +2,6 @@ package com.epam.course.cp.service;
 
 import com.epam.course.cp.dao.CategoryDao;
 import com.epam.course.cp.dto.CategoryDTO;
-import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -82,10 +81,10 @@ class CategoryServiceImplMockTest {
     void shouldFindCategoryDTOsByParentId() {
 
         Mockito.when(categoryDao.findSubCategoryDTOsByCategoryId(anyInt()))
-                .thenReturn(Stream.of(createSubCategoryDTO(FIRST_CATEGORY_ID),
-                        createSubCategoryDTO(SECOND_CATEGORY_ID)));
+                .thenReturn(Stream.of(createCategoryDTO(FIRST_CATEGORY_ID),
+                        createCategoryDTO(SECOND_CATEGORY_ID)));
 
-        List<SubCategoryDTO> subCategoryDTOs = categoryService.findSubCategoryDTOsByCategoryId(CATEGORY_PARENT_ID);
+        List<CategoryDTO> subCategoryDTOs = categoryService.findSubCategoryDTOsByCategoryId(CATEGORY_PARENT_ID);
         assertNotNull(subCategoryDTOs);
         assertTrue(2 == subCategoryDTOs.size());
 
@@ -133,18 +132,9 @@ class CategoryServiceImplMockTest {
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setCategoryId(id);
         categoryDTO.setCategoryName(CATEGORY_DTO_NAME + id);
-        categoryDTO.setTotalProductsAmount(CATEGORY_DTO_PRODUCT_AMOUNT);
+        categoryDTO.setProductsAmount(CATEGORY_DTO_PRODUCT_AMOUNT);
 
         return categoryDTO;
     }
 
-    private SubCategoryDTO createSubCategoryDTO(Integer id) {
-
-        SubCategoryDTO subCategoryDTO = new SubCategoryDTO();
-        subCategoryDTO.setSubCategoryId(id);
-        subCategoryDTO.setSubCategoryName(CATEGORY_DTO_NAME);
-        subCategoryDTO.setProductsAmount(CATEGORY_DTO_PRODUCT_AMOUNT);
-
-        return subCategoryDTO;
-    }
 }

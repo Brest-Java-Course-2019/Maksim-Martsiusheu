@@ -72,10 +72,10 @@ class CategoryDaoJdbcImplTest {
     @Test
     void shouldFindSubCategoryDTOsByCategoryId() {
 
-        Stream<SubCategoryDTO> subCategoryDTOs = categoryDao.findSubCategoryDTOsByCategoryId(PARENT_CATEGORY_ID);
+        Stream<CategoryDTO> categoryDTOs = categoryDao.findSubCategoryDTOsByCategoryId(PARENT_CATEGORY_ID);
 
-        assertNotNull(subCategoryDTOs);
-        assertTrue(PARENT_CATEGORY_DTO_AMOUNT == subCategoryDTOs.count());
+        assertNotNull(categoryDTOs);
+        assertTrue(PARENT_CATEGORY_DTO_AMOUNT == categoryDTOs.count());
     }
 
     @Test

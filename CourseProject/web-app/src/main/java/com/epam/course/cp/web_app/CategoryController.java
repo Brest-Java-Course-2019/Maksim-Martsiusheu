@@ -42,7 +42,7 @@ public class CategoryController {
 
     }
 
-    @GetMapping(value = "/categories/info/{id}")
+    @GetMapping(value = "/categories/info/{id}/subs")
     public final String findSubCategoriesByCategoryId(@PathVariable Integer id, Model model) {
 
         LOGGER.debug("findSubCategoriesByCategoryId({}, {})", id, model);
@@ -80,9 +80,9 @@ public class CategoryController {
     public final String gotoUpdateCategory(@PathVariable Integer id, Model model) {
 
         LOGGER.debug("gotoUpdateCategory({}, {})", id, model);
-        Category category = categoryService.findById(id);
         model.addAttribute("isNew", false);
-        model.addAttribute("category", category);
+        model.addAttribute("category", categoryService.findById(id));
+        model.addAttribute("productsAmount", categoryService.findCategoryDTOById(id).getProductsAmount());
         model.addAttribute("parentCategories", categoryService.findAllPossibleParentsForId(id));
         model.addAttribute("location", "categories");
         return "category";

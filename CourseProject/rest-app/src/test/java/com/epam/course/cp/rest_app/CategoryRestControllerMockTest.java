@@ -1,12 +1,10 @@
 package com.epam.course.cp.rest_app;
 
 import com.epam.course.cp.dto.CategoryDTO;
-import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
 import com.epam.course.cp.service.ServiceResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +24,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -52,11 +51,6 @@ class CategoryRestControllerMockTest {
 
     private static ArrayList<CategoryDTO> ARRAY_LIST_OF_CATEGORY_DTOS;
 
-    private static SubCategoryDTO FIRST_SUBCATEGORY_DTO;
-    private static SubCategoryDTO SECOND_SUBCATEGORY_DTO;
-
-    private static ArrayList<SubCategoryDTO> ARRAY_LIST_OF_SUBCATEGORY_DTOS;
-
     @Mock
     private CategoryService categoryService;
 
@@ -81,13 +75,6 @@ class CategoryRestControllerMockTest {
         ARRAY_LIST_OF_CATEGORY_DTOS = new ArrayList<>();
         ARRAY_LIST_OF_CATEGORY_DTOS.add(FIRST_CATEGORY_DTO);
         ARRAY_LIST_OF_CATEGORY_DTOS.add(SECOND_CATEGORY_DTO);
-
-        FIRST_SUBCATEGORY_DTO = createSubCategoryDTO(FIRST_ID);
-        SECOND_SUBCATEGORY_DTO = createSubCategoryDTO(SECOND_ID);
-
-        ARRAY_LIST_OF_SUBCATEGORY_DTOS = new ArrayList<>();
-        ARRAY_LIST_OF_SUBCATEGORY_DTOS.add(FIRST_SUBCATEGORY_DTO);
-        ARRAY_LIST_OF_SUBCATEGORY_DTOS.add(SECOND_SUBCATEGORY_DTO);
     }
 
 
@@ -141,16 +128,16 @@ class CategoryRestControllerMockTest {
     void shouldFindSubCategoryDTOsByCategoryId() throws Exception {
 
         Mockito.when(categoryService.findSubCategoryDTOsByCategoryId(anyInt()))
-                .thenReturn(ARRAY_LIST_OF_SUBCATEGORY_DTOS);
+                .thenReturn(ARRAY_LIST_OF_CATEGORY_DTOS);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/categories/info/1")
+                MockMvcRequestBuilders.get("/categories/info/1/subs")
                         .accept(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(
                         MockMvcResultMatchers.content()
-                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_SUBCATEGORY_DTOS))
+                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORY_DTOS))
                 )
         ;
 
@@ -172,7 +159,7 @@ class CategoryRestControllerMockTest {
     @Test
     void shouldUpdateCategory() throws Exception {
 
-        Mockito.when(categoryService.update(any())).thenReturn(ServiceResult.ok("Test","Test"));
+        Mockito.when(categoryService.update(any())).thenReturn(ServiceResult.ok("Test", "Test"));
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/categories/1")
@@ -186,7 +173,7 @@ class CategoryRestControllerMockTest {
     @Test
     void shouldDeleteCategory() throws Exception {
 
-        Mockito.when(categoryService.delete(anyInt())).thenReturn(ServiceResult.ok("Test","Test"));
+        Mockito.when(categoryService.delete(anyInt())).thenReturn(ServiceResult.ok("Test", "Test"));
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/categories/1")
         ).andExpect(MockMvcResultMatchers.status().isOk());
@@ -215,19 +202,8 @@ class CategoryRestControllerMockTest {
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setCategoryId(id);
         categoryDTO.setCategoryName(TEST_CATEGORY_NAME + id);
-        categoryDTO.setTotalProductsAmount(PRODUCTS_AMOUNT);
+        categoryDTO.setProductsAmount(PRODUCTS_AMOUNT);
 
         return categoryDTO;
     }
-
-    private static SubCategoryDTO createSubCategoryDTO(Integer id) {
-
-        SubCategoryDTO subCategoryDTO = new SubCategoryDTO();
-        subCategoryDTO.setSubCategoryId(id);
-        subCategoryDTO.setSubCategoryName(TEST_CATEGORY_NAME + id);
-        subCategoryDTO.setProductsAmount(PRODUCTS_AMOUNT);
-
-        return subCategoryDTO;
-    }
-
 }

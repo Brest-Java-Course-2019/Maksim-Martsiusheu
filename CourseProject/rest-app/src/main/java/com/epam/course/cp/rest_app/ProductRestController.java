@@ -77,9 +77,9 @@ public class ProductRestController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Integer productId) {
+    public void delete(@PathVariable Integer id) {
 
-        LOGGER.debug("delete({})", productId);
-        productService.delete(productId);
+        LOGGER.debug("delete({})", id);
+        productService.delete(id);
     }
 }

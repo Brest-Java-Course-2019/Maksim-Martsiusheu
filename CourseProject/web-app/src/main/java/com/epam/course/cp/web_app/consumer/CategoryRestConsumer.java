@@ -1,7 +1,6 @@
 package com.epam.course.cp.web_app.consumer;
 
 import com.epam.course.cp.dto.CategoryDTO;
-import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
 import com.epam.course.cp.service.ServiceResult;
@@ -47,11 +46,19 @@ public class CategoryRestConsumer implements CategoryService {
     }
 
     @Override
-    public List<SubCategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId) {
+    public CategoryDTO findCategoryDTOById(Integer categoryId) {
+
+        LOGGER.debug("findCategoryDTOById({})", categoryId);
+        ResponseEntity<CategoryDTO> responseEntity = restTemplate.getForEntity(url + "/info/" + categoryId, CategoryDTO.class);
+        return responseEntity.getBody();
+    }
+
+    @Override
+    public List<CategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId) {
 
         LOGGER.debug("find all categoryDTOs by id = {}", categoryId);
-        ResponseEntity responseEntity = restTemplate.getForEntity(url + "/info/" + categoryId, List.class);
-        return (List<SubCategoryDTO>) responseEntity.getBody();
+        ResponseEntity responseEntity = restTemplate.getForEntity(url + "/info/" + categoryId +"/subs", List.class);
+        return (List<CategoryDTO>) responseEntity.getBody();
     }
 
 

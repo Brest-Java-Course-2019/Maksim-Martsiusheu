@@ -3,9 +3,7 @@ package com.epam.course.cp.dao;
 import com.epam.course.cp.dao.exception.DaoException;
 import com.epam.course.cp.dao.mapper.CategoryDTOMapper;
 import com.epam.course.cp.dao.mapper.CategoryMapper;
-import com.epam.course.cp.dao.mapper.SubCategoryDTOMapper;
 import com.epam.course.cp.dto.CategoryDTO;
-import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +28,6 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final CategoryMapper categoryMapper;
     private final CategoryDTOMapper categoryDTOMapper;
-    private final SubCategoryDTOMapper subCategoryDTOMapper;
 
     @Value("${category.selectAll}")
     private String getAllCategoriesSql;
@@ -40,6 +37,9 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
     @Value("${category.selectById}")
     private String getCategoryByIdSql;
+
+    @Value("${categoryDTO.selectCategoryDTOById}")
+    private String getCategoryDTOByIdSql;
 
     @Value("${category.insert}")
     private String insertCategorySql;
@@ -59,13 +59,11 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
     @Autowired
     public CategoryDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                CategoryMapper categoryMapper,
-                               CategoryDTOMapper categoryDTOMapper,
-                               SubCategoryDTOMapper subCategoryDTOMapper) {
+                               CategoryDTOMapper categoryDTOMapper) {
 
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.categoryMapper = categoryMapper;
         this.categoryDTOMapper = categoryDTOMapper;
-        this.subCategoryDTOMapper = subCategoryDTOMapper;
     }
 
     @Override
@@ -98,18 +96,30 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
     }
 
     @Override
-    public Stream<SubCategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId) {
+    public Optional<CategoryDTO> findCategoryDTOById(Integer categoryId) {
+
+        LOGGER.debug("findCategoryDTOById()");
+
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(CategoryDTOMapper.CATEGORY_DTO_ID, categoryId);
+        CategoryDTO categoryDTO = namedParameterJdbcTemplate
+                .queryForObject(getCategoryDTOByIdSql, namedParameters, categoryDTOMapper);
+
+        return Optional.ofNullable(categoryDTO);
+    }
+
+    @Override
+    public Stream<CategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId) {
 
         LOGGER.debug("findSubCategoryDTOsByCategoryId()");
 
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource(SubCategoryDTOMapper.SUBCATEGORY_DTO_ID, categoryId);
-        List<SubCategoryDTO> subCategoryDTOList =
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(CategoryDTOMapper.CATEGORY_DTO_ID, categoryId);
+        List<CategoryDTO> categoryDTOs =
                 namedParameterJdbcTemplate
                         .query(getSubCategoryDTOsByCategoryIdSql,
                                 namedParameters,
-                                subCategoryDTOMapper);
+                                categoryDTOMapper);
 
-        return subCategoryDTOList.stream();
+        return categoryDTOs.stream();
     }
 
     @Override

@@ -12,7 +12,8 @@ public class CategoryDTOMapper implements RowMapper<CategoryDTO> {
 
     public final static String CATEGORY_DTO_ID = "category_id";
     public final static String CATEGORY_DTO_NAME = "category_name";
-    public final static String CATEGORY_DTO_TOTAL_AMOUNT = "total_amount";
+    public final static String CATEGORY_DTO_PARENT_ID = "parent_id";
+    public final static String CATEGORY_DTO_PRODUCT_AMOUNT = "product_amount";
 
     @Override
     public CategoryDTO mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -20,7 +21,8 @@ public class CategoryDTOMapper implements RowMapper<CategoryDTO> {
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setCategoryId(resultSet.getInt(CATEGORY_DTO_ID));
         categoryDTO.setCategoryName(resultSet.getString(CATEGORY_DTO_NAME));
-        categoryDTO.setTotalProductsAmount(resultSet.getInt(CATEGORY_DTO_TOTAL_AMOUNT));
+        categoryDTO.setParentId(resultSet.getInt(CATEGORY_DTO_PARENT_ID));
+        categoryDTO.setProductsAmount(resultSet.getInt(CATEGORY_DTO_PRODUCT_AMOUNT));
 
         return categoryDTO;
     }

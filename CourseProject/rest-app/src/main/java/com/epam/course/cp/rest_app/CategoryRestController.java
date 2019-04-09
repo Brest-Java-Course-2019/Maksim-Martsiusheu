@@ -1,7 +1,6 @@
 package com.epam.course.cp.rest_app;
 
 import com.epam.course.cp.dto.CategoryDTO;
-import com.epam.course.cp.dto.SubCategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
 import com.epam.course.cp.service.ServiceResult;
@@ -42,7 +41,14 @@ public class CategoryRestController {
     }
 
     @GetMapping(value = "/info/{id}")
-    public List<SubCategoryDTO> findSubCategoryDTOsByCategoryId(@PathVariable Integer id) {
+    public CategoryDTO findCategoryDTOById(@PathVariable Integer id) {
+
+        LOGGER.debug("indCategoryDTOById({})", id);
+        return categoryService.findCategoryDTOById(id);
+    }
+
+    @GetMapping(value = "/info/{id}/subs")
+    public List<CategoryDTO> findSubCategoryDTOsByCategoryId(@PathVariable Integer id) {
 
         LOGGER.debug("get subCategoryDTOs by category id = {}", id);
         return categoryService.findSubCategoryDTOsByCategoryId(id);
