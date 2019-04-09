@@ -11,13 +11,14 @@
     <div class="container-fluid">
         <div class="card">
             <nav class="navbar">
-                <span th:text="${isNew} ? 'Adding' : 'Edit'" class="text-uppercase mr-auto">Adding</span>
-                <a th:text="${isNew} ? #{category.save} : 'Edit'"
+                <span th:text="${isNew} ? #{category.add_new} : #{category.edit}" class="text-uppercase mr-auto">Adding</span>
+                <a th:text="#{category.save}"
                    th:onclick="@{document.forms['categoryForm'].submit(); return false;}"
                    class="float-right btn btn-green">Добавить</a>
                 <a class="float-right btn btn-green"
+                   th:href="@{/categories}"
                    th:text="#{category.cancel}"
-                   th:href="@{/categories}" href="categories.html">Назад</a>
+                   href="categories.html">Назад</a>
             </nav>
         </div>
     </div>
@@ -32,7 +33,6 @@
                     <form id="categoryForm" th:object="${category}"
                           th:action="@{${#httpServletRequest.servletPath}}"
                           th:method="@{post}">
-
                         <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                             <p>Please fix errors below:</p>
                         </div>
@@ -41,6 +41,7 @@
                                type="hidden"
                                th:field="*{categoryId}"/>
                         <input class="form-control mt-4" type="text"
+                               placeholder="Введите название категории (подкатегории)"
                                th:placeholder="#{category.enter_name}"
                                th:field="*{categoryName}"
                                th:class="${#fields.hasErrors('categoryName')} ? 'form-control is-invalid' : 'form-control'"/>
@@ -50,14 +51,14 @@
                         </div>
 
                         <select class="form-control mt-4" name="parentId">
-                            <option value="-1">Создать самостоятульную категорию</option>
+                             <!-- or product.amount == 0 -- th:remove="${${isNew} || (*{parentId} == 0) || (*{productsAmount == 0})}? all : none"-->
+                            <th:block th:if="${isNew} or *{parentId} == 0 or ${productsAmount} == 0"> <!-- or product.amount == 0 -->
+                                <option value="-1" th:text="#{category.as_top_level}">Создать самостоятельную категорию</option>
+                            </th:block>
                             <option th:each="parent : ${parentCategories}"
                                     th:text="${parent.categoryName}"
-                                    th:value="${parent.categoryId}"></option>
-                            <option th:remove="all">Создать подкатегорию в категории "Краски и лаки"</option>
-                            <option th:remove="all">Создать подкатегорию в категории "Кирпичи и блоки"</option>
-                            <option th:remove="all">Создать подкатегорию в категории "Арматура"</option>
-                            <option th:remove="all">Создать подкатегорию в категории "Крепёжные элементы"</option>
+                                    th:value="${parent.categoryId}">
+                            </option>
                         </select>
                     </form>
                 </div>

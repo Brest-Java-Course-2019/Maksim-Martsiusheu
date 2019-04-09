@@ -12,11 +12,12 @@
         <div class="card">
             <nav class="navbar">
                 <div class="mr-auto">
-                    <span th:text="#{product.list_name}" class="text-uppercase">Список продуктов</span>
+                    <span class="text-uppercase" th:text="#{product.list_name}">Список продуктов</span>
                 </div>
                 <a class="float-right btn btn-green"
                    th:href="@{/product}"
                    href="product.html"
+                   title="Добавить продукт"
                    th:title="#{product.add_new}"
                    data-toggle="tooltip">
                     <i class="fa fa-plus"></i>
@@ -24,6 +25,7 @@
                 <a class="float-right btn btn-green"
                    th:href="@{/products}"
                    href="products.html"
+                   title="Обновить"
                    th:title="#{product.refresh_list}"
                    data-toggle="tooltip">
                     <i class="fa fa-sync"></i>
@@ -41,11 +43,11 @@
                     <table class="table table-striped mt-4 text-center">
                         <thead class="table-head text-white">
                         <tr>
-                            <th th:text="#{product.category}" scope="col">Категории</th>
-                            <th th:text="#{product.subcategory}" scope="col">Подкатегория</th>
-                            <th th:text="#{product.name}" scope="col">Наименование</th>
-                            <th th:text="#{product.date_added}" scope="col">Дата добавления</th>
-                            <th th:text="#{product.total_amount_of_products}" scope="col">Количество товаров</th>
+                            <th scope="col" th:text="#{product.category}">Категории</th>
+                            <th scope="col" th:text="#{product.subcategory}">Подкатегория</th>
+                            <th scope="col" th:text="#{product.name}">Наименование</th>
+                            <th scope="col" th:text="#{product.date_added}">Дата добавления</th>
+                            <th scope="col" th:text="#{product.total_amount_of_products}">Количество товаров</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
@@ -57,36 +59,18 @@
                             <td th:text="${product.dateAdded}">2018-01-01</td>
                             <td th:text="${product.productAmount}">2500</td>
                             <td>
-                                <a th:href="${'/product/' + product.productId}"><i class="fa fa-pencil-alt"></i></a>
-                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
+                                <a th:href="${'/product/' + product.productId}"
+                                   th:title="#{product.edit}">
+                                    <i class="fa fa-pencil-alt"></i></a>
+                                <span th:title="#{product.delete}" data-toggle="tooltip">
+                                <a class="pl-3"
+                                   data-toggle="modal"
+                                   data-target="#userDialog"
+                                   th:attr="data-id=${product.productId}"
+                                   th:onclick="@{'deleteProduct(this)'}">
                                     <i class="fa fa-trash"></i>
                                 </a>
-                            </td>
-                        </tr>
-                        <tr th:remove="all">
-                            <th scope="row">Кирпичи и блоки</th>
-                            <td>Кирпичи</td>
-                            <td>Кирпич красный</td>
-                            <td>2018-01-01</td>
-                            <td>2500</td>
-                            <td>
-                                <a><i class="fa fa-pencil-alt"></i></a>
-                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr th:remove="all">
-                            <th scope="row">Кирпичи и блоки</th>
-                            <td>Кирпичи</td>
-                            <td>Кирпич красный</td>
-                            <td>2018-01-01</td>
-                            <td>2500</td>
-                            <td>
-                                <a><i class="fa fa-pencil-alt"></i></a>
-                                <a class="pl-3" data-toggle="modal" data-target="#userDialog">
-                                    <i class="fa fa-trash"></i>
-                                </a>
+                                </span>
                             </td>
                         </tr>
                         </tbody>
@@ -97,16 +81,16 @@
         <div class="col-3">
             <div class="card">
                 <div class="card-header">
-                    <p>Filters</p>
+                    <p th:text="#{product.filter.name}">Filters</p>
                 </div>
                 <div class="card-body">
                     <form>
                         <div class="form-group">
-                            <label th:text="#{product.filter.name}" for="date-from">Date From</label>
+                            <label for="date-from" th:text="#{product.filter.from}">Date From</label>
                             <input class="form-control" type="date" id="date-from">
                         </div>
                         <div class="form-group">
-                            <label th:text="#{product.filter.to}" for="date-to">Date To</label>
+                            <label for="date-to" th:text="#{product.filter.to}">Date To</label>
                             <input class="form-control" type="date" id="date-to">
                         </div>
                     </form>
@@ -115,5 +99,34 @@
         </div>
     </div>
 </div>
+
+<!--Modal window -->
+<div class="modal fade" id="userDialog" tabindex="-1" role="dialog" aria-labelledby="userDialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 th:text="#{navigation.confirmation_popup}" class="modal-title" id="exampleModalLabel">Подтвердите
+                    действие</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p th:text="#{category.delete_confirm_message}"
+                   class="h3 text-center">Вы точно хотите удалить выбранную категорию?</p>
+            </div>
+            <div class="modal-footer">
+                <a th:text="#{category.delete_confirm_no}" class="btn btn-outline-green" data-dismiss="modal">No</a>
+                <a th:text="#{category.delete_confirm_yes}" id="confirmDelete" class="btn btn-green">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script>
+    function deleteProduct(element) {
+        document.getElementById("confirmDelete")
+            .href = "/products/" + element.dataset.id;
+    }
+</script>
 </html>

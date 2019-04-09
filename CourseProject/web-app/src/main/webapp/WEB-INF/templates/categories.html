@@ -79,7 +79,7 @@
                                         </div>
                                     </div>
                                     <small th:text="#{category.total_amount_of_products} + ': '
-                                            + ${category.totalProductsAmount}"
+                                            + ${category.productsAmount}"
                                            th:id="${'product-amount-' + iter.count}">Товаров: 150
                                     </small>
                                 </div>
@@ -128,12 +128,11 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
-
     function getTable(element) {
         $('#error-plate').remove();
         if (element.dataset.updated === "false") {
             $.ajax({
-                url: '/categories/info/' + element.dataset.id,
+                url: '/categories/info/' + element.dataset.id + '/subs',
                 dataType: "html",
                 success: function (data, textStatus) {
                     $('#table-place-' + element.dataset.id).html(data);
@@ -141,9 +140,7 @@
             });
         }
     }
-
     function deleteCategory(element) {
-        console.log(123);
         document.getElementById("confirmDelete")
             .href = "/categories/" + element.dataset.id;
     }

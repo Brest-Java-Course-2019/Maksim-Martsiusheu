@@ -11,12 +11,14 @@
     <div class="container-fluid">
         <div class="card">
             <nav class="navbar">
-                <span th:text="${isNew} ? 'Adding' : 'Edit'" class="text-uppercase mr-auto">Adding</span>
-                <a th:text="${isNew} ? 'Add' : 'Save'"
+                <span th:text="${isNew} ? #{product.add_new} : #{product.edit}" class="text-uppercase mr-auto">Adding</span>
+                <a th:text="#{product.save}"
                    th:onclick="@{document.forms['productForm'].submit(); return false;}"
                    class="float-right btn btn-green">Добавить</a>
                 <a class="float-right btn btn-green"
-                   th:href="@{/products}" href="categories.html">Back</a>
+                   th:href="@{/products}"
+                   th:text="#{product.cancel}"
+                   href="categories.html">Back</a>
             </nav>
         </div>
     </div>
@@ -27,7 +29,8 @@
         <div class="card-body">
             <div class="row justify-content-center">
                 <div class="col-6">
-                    <p th:text="#{product.details}" class="h2 text-center">Данные продукта</p>
+                    <p class="h2 text-center"
+                        th:text="#{product.details}">Данные продукта</p>
                     <form id="productForm" th:object="${product}"
                           th:action="@{${#httpServletRequest.servletPath}}"
                           th:method="@{post}">
@@ -36,11 +39,13 @@
                                type="hidden"
                                th:field="*{productId}"/>
                         <input class="form-control mt-4" type="text"
-                               th:placeholder="#{product.enter_name}"
-                               th:field="*{productName}">
+                               placeholder="Введите название продукта"
+                               th:field="*{productName}"
+                               th:placeholder="#{product.enter_name}">
                         <input class="form-control mt-4" type="text"
-                               th:placeholder="#{product.enter_amount}"
-                               th:field="*{productAmount}">
+                               placeholder="Введите количество продукта"
+                               th:field="*{productAmount}"
+                               th:placeholder="#{product.enter_amount}">
 
                         <select class="form-control mt-4" name="categoryId">
                             <option value="5">Bricks</option>
