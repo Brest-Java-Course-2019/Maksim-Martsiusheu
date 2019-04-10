@@ -42,22 +42,23 @@
                         <input id="productId"
                                type="hidden"
                                th:field="*{productId}"/>
-                        <input class="form-control mb-4" type="text"
+
+                        <input class="form-control pt-4" type="text"
                                placeholder="Введите название продукта"
                                th:field="*{productName}"
                                th:placeholder="#{product.enter_name}"
-                               th:class="${#fields.hasErrors('productName')} ? 'form-control is-invalid' : 'form-control'">
+                               th:class="${#fields.hasErrors('productName')} ? 'form-control is-invalid mt-4' : 'form-control mt-4'"/>
 
                         <div th:if="${#fields.hasErrors('productName')}"
                              class="invalid-feedback"
                              th:errors="*{productName}">[errors]
                         </div>
 
-                        <input class="form-control mt-4" type="text"
+                        <input class="form-control pt-4" type="text"
                                placeholder="Введите количество продукта"
                                th:field="*{productAmount}"
                                th:placeholder="#{product.enter_amount}"
-                               th:class="${#fields.hasErrors('productAmount')} ? 'form-control is-invalid' : 'form-control'">
+                               th:class="${#fields.hasErrors('productAmount')} ? 'form-control is-invalid mt-4' : 'form-control mt-4'"/>
 
                         <div th:if="${#fields.hasErrors('productAmount')}"
                              class="invalid-feedback"

@@ -49,15 +49,16 @@ public class ProductController {
     }
 
     @PostMapping(value = "/product/{id}")
-    public final String updateProduct(@Valid Product product, BindingResult result, @PathVariable Integer id) {
+    public final String updateProduct(@Valid Product product, BindingResult result, Model model) {
 
         LOGGER.debug("update product {}", product);
 
         productValidator.validate(product, result);
         if (result.hasErrors()) {
-            return "product/" + id;
+            model.addAttribute(categoryService.findAllSubCategories());
+            return "product";
         } else {
-            productService.add(product);
+            productService.update(product);
             return "redirect:/products";
         }
     }
@@ -75,13 +76,14 @@ public class ProductController {
     }
 
     @PostMapping(value = "/product")
-    public final String addProduct(@Valid Product product, BindingResult result) {
+    public final String addProduct(@Valid Product product, BindingResult result, Model model) {
 
         LOGGER.debug("addProduct({})", product);
 
         productValidator.validate(product, result);
 
         if (result.hasErrors()) {
+            model.addAttribute("categories", categoryService.findAllSubCategories());
             return "product";
         } else {
             productService.add(product);
