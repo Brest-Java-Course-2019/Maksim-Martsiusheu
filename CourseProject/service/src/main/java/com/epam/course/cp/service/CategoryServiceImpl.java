@@ -49,6 +49,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findAllSubCategories() {
+
+        LOGGER.debug("findAllSubCategories()");
+        return categoryDao.findAllSubCategories().collect(Collectors.toList());
+    }
+
+    @Override
     public List<CategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId) {
 
         LOGGER.debug("findSubCategoryDTOsByCategoryId({})", categoryId);

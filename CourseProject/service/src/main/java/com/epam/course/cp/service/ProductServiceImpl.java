@@ -74,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDateAdded(LocalDate.now());
 
         return productDao.add(product)
-                .orElseThrow(()->new RuntimeException("Field to add product to DB"));
+                .orElseThrow(() -> new RuntimeException("Field to add product to DB"));
     }
 
     @Override

@@ -40,6 +40,13 @@ public class CategoryRestController {
         return categoryService.findById(id);
     }
 
+    @GetMapping(value = "/subs")
+    public List<Category> findAllSubCategories() {
+
+        LOGGER.debug("findAllSubCategories");
+        return categoryService.findAllSubCategories();
+    }
+
     @GetMapping(value = "/info/{id}")
     public CategoryDTO findCategoryDTOById(@PathVariable Integer id) {
 

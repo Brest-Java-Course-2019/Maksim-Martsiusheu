@@ -135,7 +135,7 @@
                 url: '/categories/info/' + element.dataset.id + '/subs',
                 dataType: "html",
                 success: function (data, textStatus) {
-                    $('#table-place-' + element.dataset.id).html(data);
+                    $('#table-place-' + element.dataset.num).html(data);
                 }
             });
         }

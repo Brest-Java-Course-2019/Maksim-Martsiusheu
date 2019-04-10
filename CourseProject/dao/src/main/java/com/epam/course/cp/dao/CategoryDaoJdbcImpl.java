@@ -35,6 +35,9 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
     @Value("${category.selectParents}")
     private String getAllPossibleParentsForIdSql;
 
+    @Value("${category.selectChildren}")
+    private String getAllSybCategoriesSql;
+
     @Value("${category.selectById}")
     private String getCategoryByIdSql;
 
@@ -93,6 +96,15 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         List<CategoryDTO> categoryDTOList = namedParameterJdbcTemplate.query(getAllCategoryDTOsSql, categoryDTOMapper);
         return categoryDTOList.stream();
+    }
+
+    @Override
+    public Stream<Category> findAllSubCategories() {
+
+        LOGGER.debug("findAllSubCategories()");
+
+        List<Category> categories = namedParameterJdbcTemplate.query(getAllSybCategoriesSql, categoryMapper);
+        return categories.stream();
     }
 
     @Override

@@ -12,6 +12,8 @@ public interface CategoryDao {
 
     Optional<Category> findById(Integer categoryId);
 
+    Stream<Category> findAllSubCategories();
+
     Stream<CategoryDTO> findAllCategoryDTOs();
 
     Optional<CategoryDTO> findCategoryDTOById(Integer id);

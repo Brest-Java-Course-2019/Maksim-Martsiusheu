@@ -33,7 +33,7 @@ public class ProductRestConsumer implements ProductService {
         ClientHttpRequestInterceptor clientHttpRequestInterceptor = new ClientHttpRequestInterceptor() {
             @Override
             public ClientHttpResponse intercept(HttpRequest httpRequest, byte[] bytes, ClientHttpRequestExecution clientHttpRequestExecution) throws IOException {
-                 return clientHttpRequestExecution.execute(httpRequest, bytes);
+                return clientHttpRequestExecution.execute(httpRequest, bytes);
             }
         };
         restTemplate.setInterceptors(Arrays.asList(clientHttpRequestInterceptor));
@@ -87,6 +87,8 @@ public class ProductRestConsumer implements ProductService {
     public List<ProductDTO> findProductDTOsFromDateInterval(LocalDate dateBegin, LocalDate dateEnd) {
         LOGGER.debug("find product DTOs from date interval");
 
+        dateBegin = setToDayIfNull(dateBegin).withDayOfMonth(1);
+        dateEnd = setToDayIfNull(dateEnd);
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(url + "/filter")
@@ -102,6 +104,9 @@ public class ProductRestConsumer implements ProductService {
     public List<ProductDTO> findProductDTOsByMixedFilter(LocalDate dateBegin, LocalDate dateEnd, Integer categoryId) {
 
         LOGGER.debug("find product DTOs from date interval");
+
+        dateBegin = setToDayIfNull(dateBegin).withDayOfMonth(1);
+        dateEnd = setToDayIfNull(dateEnd);
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(url + "/filter")
@@ -133,5 +138,13 @@ public class ProductRestConsumer implements ProductService {
 
         LOGGER.debug("delete product with id = {}", productId);
         restTemplate.delete(url + "/" + productId);
+    }
+
+    private LocalDate setToDayIfNull(LocalDate date) {
+
+        if(date == null) {
+            date = LocalDate.now();
+        }
+        return date;
     }
 }

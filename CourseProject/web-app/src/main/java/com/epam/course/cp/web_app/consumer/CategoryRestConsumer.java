@@ -46,6 +46,14 @@ public class CategoryRestConsumer implements CategoryService {
     }
 
     @Override
+    public List<Category> findAllSubCategories() {
+
+        LOGGER.debug("findAllSubCategories()");
+        ResponseEntity responseEntity = restTemplate.getForEntity(url + "/subs", List.class);
+        return (List<Category>) responseEntity.getBody();
+    }
+
+    @Override
     public CategoryDTO findCategoryDTOById(Integer categoryId) {
 
         LOGGER.debug("findCategoryDTOById({})", categoryId);

@@ -11,6 +11,8 @@ public interface CategoryService {
 
     CategoryDTO findCategoryDTOById(Integer categoryId);
 
+    List<Category> findAllSubCategories();
+
     List<CategoryDTO> findAllCategoryDTOs();
 
     List<CategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId);
