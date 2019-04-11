@@ -1,7 +1,7 @@
 package com.epam.course.cp.service;
 
 import com.epam.course.cp.dao.CategoryDao;
-import com.epam.course.cp.dao.exception.DaoException;
+import com.epam.course.cp.dao.exception.DaoRuntimeException;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
 import org.slf4j.Logger;
@@ -80,7 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
 
             return ServiceResult.ok("Category updating", "Category category updated successfully");
 
-        } catch (DaoException ex) {
+        } catch (DaoRuntimeException ex) {
 
             return ServiceResult.error("Category updating", ex.getMessage());
         }
@@ -98,7 +98,7 @@ public class CategoryServiceImpl implements CategoryService {
 
             return result;
 
-        } catch (DaoException ex) {
+        } catch (DaoRuntimeException ex) {
 
             result = ServiceResult.error("Category deleting", ex.getMessage());
 

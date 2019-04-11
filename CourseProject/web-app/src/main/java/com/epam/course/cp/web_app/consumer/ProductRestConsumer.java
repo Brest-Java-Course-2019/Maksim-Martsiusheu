@@ -1,5 +1,6 @@
 package com.epam.course.cp.web_app.consumer;
 
+import com.epam.course.cp.dto.Filter;
 import com.epam.course.cp.dto.ProductDTO;
 import com.epam.course.cp.model.Product;
 import com.epam.course.cp.service.ProductService;
@@ -84,35 +85,22 @@ public class ProductRestConsumer implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findProductDTOsFromDateInterval(LocalDate dateBegin, LocalDate dateEnd) {
-        LOGGER.debug("find product DTOs from date interval");
+    public List<ProductDTO> findProductDTOsByFilter(Filter filter) {
 
-        dateBegin = setToDayIfNull(dateBegin).withDayOfMonth(1);
-        dateEnd = setToDayIfNull(dateEnd);
+        LOGGER.debug("findProductDTOsByFilter({})", filter);
 
-        UriComponentsBuilder builder = UriComponentsBuilder
-                .fromUriString(url + "/filter")
-                .queryParam("from", dateBegin)
-                .queryParam("to", dateEnd);
-
-        ResponseEntity<List> responseEntity = restTemplate.getForEntity(builder.toUriString(), List.class);
-
-        return (List<ProductDTO>) responseEntity.getBody();
-    }
-
-    @Override
-    public List<ProductDTO> findProductDTOsByMixedFilter(LocalDate dateBegin, LocalDate dateEnd, Integer categoryId) {
-
-        LOGGER.debug("find product DTOs from date interval");
-
-        dateBegin = setToDayIfNull(dateBegin).withDayOfMonth(1);
-        dateEnd = setToDayIfNull(dateEnd);
+        if (filter.getDateBegin() == null) {
+            filter.setDateBegin(LocalDate.now().withDayOfMonth(1));
+        }
+        if (filter.getDateEnd() == null) {
+            filter.setDateEnd(LocalDate.now());
+        }
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(url + "/filter")
-                .queryParam("from", dateBegin)
-                .queryParam("to", dateEnd)
-                .queryParam("id", categoryId);
+                .queryParam("from", filter.getDateBegin())
+                .queryParam("to", filter.getDateEnd())
+                .queryParam("id", filter.getId());
 
         ResponseEntity<List> responseEntity = restTemplate.getForEntity(builder.toUriString(), List.class);
 
@@ -138,13 +126,5 @@ public class ProductRestConsumer implements ProductService {
 
         LOGGER.debug("delete product with id = {}", productId);
         restTemplate.delete(url + "/" + productId);
-    }
-
-    private LocalDate setToDayIfNull(LocalDate date) {
-
-        if(date == null) {
-            date = LocalDate.now();
-        }
-        return date;
     }
 }

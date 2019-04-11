@@ -1,6 +1,7 @@
 package com.epam.course.cp.service;
 
 import com.epam.course.cp.dao.ProductDao;
+import com.epam.course.cp.dto.Filter;
 import com.epam.course.cp.dto.ProductDTO;
 import com.epam.course.cp.model.Product;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,6 +44,9 @@ class ProductServiceImplMockTest {
     private static ProductDTO FIRST_PRODUCT_DTO;
     private static ProductDTO SECOND_PRODUCT_DTO;
 
+    private static Filter FILTER_WITH_DATES;
+    private static Filter FILTER_WITH_DATES_ADN_ID;
+
     @Mock
     private ProductDao productDao;
 
@@ -58,6 +62,14 @@ class ProductServiceImplMockTest {
         FIRST_PRODUCT_DTO = createProductDTO(FIRST_PRODUCT_ID);
         SECOND_PRODUCT_DTO = createProductDTO(SECOND_PRODUCT_ID);
 
+        FILTER_WITH_DATES = new Filter();
+        FILTER_WITH_DATES.setDateBegin(LocalDate.parse("2015-01-01"));
+        FILTER_WITH_DATES.setDateEnd(LocalDate.parse(("2019-01-01")));
+
+        FILTER_WITH_DATES_ADN_ID = new Filter();
+        FILTER_WITH_DATES_ADN_ID.setDateBegin(LocalDate.parse("2015-01-01"));
+        FILTER_WITH_DATES_ADN_ID.setDateEnd(LocalDate.parse(("2019-01-01")));
+        FILTER_WITH_DATES_ADN_ID.setId(1);
     }
 
     @Test
@@ -125,7 +137,7 @@ class ProductServiceImplMockTest {
         Mockito.when(productDao.findProductDTOsFromDateInterval(any(), any()))
                 .thenReturn(Stream.of(FIRST_PRODUCT_DTO, SECOND_PRODUCT_DTO));
 
-        List<ProductDTO> productDTOs = productService.findProductDTOsFromDateInterval(any(), any());
+        List<ProductDTO> productDTOs = productService.findProductDTOsByFilter(FILTER_WITH_DATES);
 
         assertNotNull(productDTOs);
         assertTrue(PRODUCTS_AMOUNT == productDTOs.size());
@@ -140,7 +152,7 @@ class ProductServiceImplMockTest {
         Mockito.when(productDao.findProductDTOsByMixedFilter(any(), any(), any()))
                 .thenReturn(Stream.of(FIRST_PRODUCT_DTO, SECOND_PRODUCT_DTO));
 
-        List<ProductDTO> productDTOs = productService.findProductDTOsByMixedFilter(any(), any(), any());
+        List<ProductDTO> productDTOs = productService.findProductDTOsByFilter(FILTER_WITH_DATES_ADN_ID);
 
         assertNotNull(productDTOs);
         assertTrue(PRODUCTS_AMOUNT == productDTOs.size());

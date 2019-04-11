@@ -1,6 +1,6 @@
 package com.epam.course.cp.dao;
 
-import com.epam.course.cp.dao.exception.DaoException;
+import com.epam.course.cp.dao.exception.DaoRuntimeException;
 import com.epam.course.cp.dao.mapper.CategoryDTOMapper;
 import com.epam.course.cp.dao.mapper.CategoryMapper;
 import com.epam.course.cp.dto.CategoryDTO;
@@ -20,45 +20,105 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * Methods for direct access to data source using JDBC driver
+ *
+ * @see Optional
+ * @see Stream
+ * @see Category
+ * @see CategoryDTO
+ * @author Maksim Martsiusheu
+ */
 @Repository
 public class CategoryDaoJdbcImpl implements CategoryDao {
 
+    /**
+     * Default logger for current class
+     */
     private final static Logger LOGGER = LoggerFactory.getLogger(CategoryDaoJdbcImpl.class);
 
+    /**
+     * Jdbc template to execute actions to data source
+     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    /**
+     * Category mapper to create java object from result set
+     */
     private final CategoryMapper categoryMapper;
+
+    /**
+     * Category DTOs mapper to create java object from result set
+     */
     private final CategoryDTOMapper categoryDTOMapper;
 
+    /**
+     * Sql statement to select all categories
+     */
     @Value("${category.selectAll}")
     private String getAllCategoriesSql;
 
+    /**
+     * Sql statement to select all possible parents for  id
+     */
     @Value("${category.selectParents}")
     private String getAllPossibleParentsForIdSql;
 
+    /**
+     * Sql statement to select all sub-categories
+     */
     @Value("${category.selectChildren}")
-    private String getAllSybCategoriesSql;
+    private String getAllSubCategoriesSql;
 
+    /**
+     * Sql statement to select category by id
+     */
     @Value("${category.selectById}")
     private String getCategoryByIdSql;
 
+    /**
+     * Sql statement to select category dto by id
+     */
     @Value("${categoryDTO.selectCategoryDTOById}")
     private String getCategoryDTOByIdSql;
 
+    /**
+     * Sql statement to insert category to sql
+     */
     @Value("${category.insert}")
     private String insertCategorySql;
 
+    /**
+     * Sql statement to update already existing category
+     */
     @Value("${category.update}")
     private String updateCategorySql;
 
+    /**
+     * Sql statement to delete category
+     */
     @Value("${category.delete}")
     private String deleteCategorySql;
 
+    /**
+     * Sql statement to select all category DTOs
+     */
     @Value("${categoryDTO.selectAllCategoryDTOs}")
     private String getAllCategoryDTOsSql;
 
+    /**
+     * Sql statement to select all sub categories DTOs by category id
+     */
     @Value("${subCategoryDTO.selectSubCategoryDTOsByCategoryId}")
     private String getSubCategoryDTOsByCategoryIdSql;
 
+    /**
+     * Construct categoryDaoJdbcImpl
+     *
+     * @param namedParameterJdbcTemplate jdbc template to inject
+     * @param categoryMapper category mapper to inject
+     * @param categoryDTOMapper category dto mapper to inject
+     */
     @Autowired
     public CategoryDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                CategoryMapper categoryMapper,
@@ -69,6 +129,11 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         this.categoryDTOMapper = categoryDTOMapper;
     }
 
+    /**
+     * Returns all categories
+     *
+     * @return All categories as {@code Stream}
+     */
     @Override
     public Stream<Category> findAll() {
 
@@ -78,6 +143,12 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         return categoryList.stream();
     }
 
+    /**
+     * Returns found category by defined id
+     *
+     * @param categoryId Id of element to find
+     * @return {@code Optional} describing found category
+     */
     @Override
     public Optional<Category> findById(Integer categoryId) {
 
@@ -89,6 +160,11 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         return Optional.ofNullable(category);
     }
 
+    /**
+     * Returns all categories Data Transfer Objects(DTO)
+     *
+     * @return Category DTOs as {@code Stream}
+     */
     @Override
     public Stream<CategoryDTO> findAllCategoryDTOs() {
 
@@ -98,15 +174,26 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         return categoryDTOList.stream();
     }
 
+    /**
+     * Returns all sub categories
+     *
+     * @return Sub categories as {@code Stream}
+     */
     @Override
     public Stream<Category> findAllSubCategories() {
 
         LOGGER.debug("findAllSubCategories()");
 
-        List<Category> categories = namedParameterJdbcTemplate.query(getAllSybCategoriesSql, categoryMapper);
+        List<Category> categories = namedParameterJdbcTemplate.query(getAllSubCategoriesSql, categoryMapper);
         return categories.stream();
     }
 
+    /**
+     * Returns category Data Transfer Object with defined id
+     *
+     * @param categoryId Category id to find
+     * @return {@code Optional} describing found category DTOs
+     */
     @Override
     public Optional<CategoryDTO> findCategoryDTOById(Integer categoryId) {
 
@@ -119,6 +206,12 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         return Optional.ofNullable(categoryDTO);
     }
 
+    /**
+     * Returns all sub categories Data Transfer Objects(DTO) that fits defined category id
+     *
+     * @param categoryId Category id to find by
+     * @return Categories DTOs as {@code Stream}
+     */
     @Override
     public Stream<CategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId) {
 
@@ -134,6 +227,12 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         return categoryDTOs.stream();
     }
 
+    /**
+     * Save category to data source.
+     *
+     * @param category Category object to save in data source
+     * @return Saved category with generated id
+     */
     @Override
     public Optional<Category> add(Category category) {
 
@@ -149,6 +248,11 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         return Optional.of(category);
     }
 
+    /**
+     * Update already existing category by new object
+     *
+     * @param category Object to replace older
+     */
     @Override
     public void update(Category category) {
 
@@ -164,8 +268,14 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
     }
 
+    /**
+     * Delete category from data source
+     *
+     * @param categoryId Category id to delete
+     * @throws DaoRuntimeException If selected category is a parent for some products
+     */
     @Override
-    public void delete(Integer categoryId) throws DaoException {
+    public void delete(Integer categoryId) throws DaoRuntimeException {
 
         LOGGER.debug("delete({})", categoryId);
 
@@ -176,12 +286,18 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
                     .orElseThrow(() -> new RuntimeException("Failed to delete category"))
             ;
         } catch (DataIntegrityViolationException ex) {
-            throw new DaoException("There ara some products in category", ex);
+            throw new DaoRuntimeException("There ara some products in category", ex);
         }
 
 
     }
 
+    /**
+     * Returns all possible categories that are parents for the given id.
+     *
+     * @param id id to find parent categories
+     * @return Categories found as {@code Stream}
+     */
     @Override
     public Stream<Category> findAllPossibleParentsForId(Integer id) {
 
@@ -202,7 +318,7 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue(CategoryMapper.CATEGORY_NAME, category.getCategoryName());
-        namedParameters.addValue(CategoryMapper.PARENT_ID, category.getParentId());
+        namedParameters.addValue(CategoryMapper.CATEGORY_PARENT_ID, category.getParentId());
 
         return namedParameters;
     }

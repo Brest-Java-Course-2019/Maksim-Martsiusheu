@@ -1,9 +1,9 @@
 package com.epam.course.cp.service;
 
+import com.epam.course.cp.dto.Filter;
 import com.epam.course.cp.dto.ProductDTO;
 import com.epam.course.cp.model.Product;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface ProductService {
@@ -16,9 +16,7 @@ public interface ProductService {
 
     List<ProductDTO> findProductDTOsByCategoryId(Integer categoryId);
 
-    List<ProductDTO> findProductDTOsFromDateInterval(LocalDate dateBegin, LocalDate dateEnd);
-
-    List<ProductDTO> findProductDTOsByMixedFilter(LocalDate dateBegin, LocalDate dateEnd, Integer categoryId);
+    List<ProductDTO> findProductDTOsByFilter(Filter filter);
 
     Product add(Product product);
 

@@ -1,6 +1,7 @@
 package com.epam.course.cp.service;
 
 import com.epam.course.cp.dao.ProductDao;
+import com.epam.course.cp.dto.Filter;
 import com.epam.course.cp.dto.ProductDTO;
 import com.epam.course.cp.model.Product;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -53,17 +55,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findProductDTOsFromDateInterval(LocalDate dateBegin, LocalDate dateEnd) {
+    public List<ProductDTO> findProductDTOsByFilter(Filter filter) {
 
-        LOGGER.debug("findProductDTOsFromDateInterval({}, {})", dateBegin, dateEnd);
-        return productDao.findProductDTOsFromDateInterval(dateBegin, dateEnd).collect(Collectors.toList());
-    }
+        LOGGER.debug("findProductDTOsByFilter({})", filter);
 
-    @Override
-    public List<ProductDTO> findProductDTOsByMixedFilter(LocalDate dateBegin, LocalDate dateEnd, Integer categoryId) {
+        Stream<ProductDTO> productDTOs;
 
-        LOGGER.debug("findProductDTOsByMixedFilter({}, {}, {})", dateBegin, dateEnd, categoryId);
-        return productDao.findProductDTOsByMixedFilter(dateBegin, dateEnd, categoryId).collect(Collectors.toList());
+        if(filter.getId() == null) {
+            productDTOs = productDao.findProductDTOsFromDateInterval(filter.getDateBegin(), filter.getDateEnd());
+        } else {
+            productDTOs = productDao
+                    .findProductDTOsByMixedFilter(filter.getDateBegin(), filter.getDateEnd(), filter.getId());
+        }
+
+        return productDTOs.collect(Collectors.toList());
     }
 
     @Override

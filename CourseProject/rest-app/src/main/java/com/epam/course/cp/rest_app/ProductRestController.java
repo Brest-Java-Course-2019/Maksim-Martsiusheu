@@ -1,5 +1,6 @@
 package com.epam.course.cp.rest_app;
 
+import com.epam.course.cp.dto.Filter;
 import com.epam.course.cp.dto.ProductDTO;
 import com.epam.course.cp.model.Product;
 import com.epam.course.cp.service.ProductService;
@@ -55,11 +56,13 @@ public class ProductRestController {
             @RequestParam(value = "id", required = false) Integer id) {
 
         LOGGER.debug("findProductDTOsBYMixedFilter({},{},{})", dateBegin, dateEnd, id);
-        if (id == null) {
-            return productService.findProductDTOsFromDateInterval(dateBegin, dateEnd);
-        } else {
-            return productService.findProductDTOsByMixedFilter(dateBegin, dateEnd, id);
-        }
+
+        Filter filter = new Filter();
+        filter.setDateBegin(dateBegin);
+        filter.setDateEnd(dateEnd);
+        filter.setId(id);
+
+        return productService.findProductDTOsByFilter(filter);
     }
 
     @PostMapping(value = "")

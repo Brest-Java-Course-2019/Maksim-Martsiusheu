@@ -1,23 +1,22 @@
 package com.epam.course.cp.web_app;
 
+import com.epam.course.cp.dto.Filter;
 import com.epam.course.cp.model.Product;
 import com.epam.course.cp.service.CategoryService;
 import com.epam.course.cp.service.ProductService;
+import com.epam.course.cp.web_app.validator.FilterValidator;
 import com.epam.course.cp.web_app.validator.ProductValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 
 @Controller
 public class ProductController {
@@ -28,12 +27,18 @@ public class ProductController {
     private CategoryService categoryService;
 
     private ProductValidator productValidator;
+    private FilterValidator filterValidator;
 
     @Autowired
-    public ProductController(ProductService productService, CategoryService categoryService, ProductValidator productValidator) {
+    public ProductController(ProductService productService
+            , CategoryService categoryService
+            , ProductValidator productValidator
+            , FilterValidator filterValidator) {
+
         this.productService = productService;
         this.categoryService = categoryService;
         this.productValidator = productValidator;
+        this.filterValidator = filterValidator;
     }
 
     @GetMapping(value = "/product/{id}")
@@ -92,36 +97,32 @@ public class ProductController {
     }
 
     @GetMapping(value = "/products")
-    public final String findAllProductsDTOs(Model model) {
+    public final String findAllProductsDTOs(Filter filter, Model model) {
 
         LOGGER.debug("find allProducts({})", model);
+        model.addAttribute("filter", filter);
         model.addAttribute("categories", categoryService.findAllPossibleParentsForId(null));
-        model.addAttribute("products", productService.findProductDTOsFromDateInterval(null, null));
+        model.addAttribute("products", productService.findProductDTOsByFilter(new Filter()));
         model.addAttribute("location", "products");
         return "products";
 
     }
 
     @PostMapping(value = "/products/filter")
-    public final String findAllProductsDTOsFromDateInterval(@RequestParam(value = "from", required = false)
-                                                            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateBegin,
-                                                            @RequestParam(value = "to", required = false)
-                                                            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateEnd,
-                                                            @RequestParam(value = "id", required = false) Integer categoryId,
-                                                            Model model) {
+    public final String findAllProductsDTOsByFilter(@Valid Filter filter, BindingResult result, Model model) {
 
-        LOGGER.debug("findAllProductsDTOsFromDateInterval ({}, {}, {})", dateBegin, dateEnd, categoryId);
-
-        if (categoryId == null) {
-            model.addAttribute("products", productService.findProductDTOsFromDateInterval(dateBegin, dateEnd));
-        } else {
-            model.addAttribute("products", productService.findProductDTOsByMixedFilter(dateBegin, dateEnd, categoryId));
-        }
-
+        LOGGER.debug("findAllProductsDTOsFromDateInterval ({})", filter);
         model.addAttribute("categories", categoryService.findAllPossibleParentsForId(null));
         model.addAttribute("location", "products");
 
-        return "products";
+        filterValidator.validate(filter, result);
+
+        if (result.hasErrors()) {
+            return "products";
+        } else {
+            model.addAttribute("products", productService.findProductDTOsByFilter(filter));
+            return "products";
+        }
     }
 
     @GetMapping(value = "/products/{id}")
@@ -132,5 +133,4 @@ public class ProductController {
 
         return "redirect:/products";
     }
-
 }
