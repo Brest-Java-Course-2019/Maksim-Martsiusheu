@@ -87,18 +87,33 @@
                 <div class="card-body">
                     <form id="filterForm"
                           th:action="@{'/products/filter'}"
+                          th:object="${filter}"
                           th:method="@{post}">
+
+                        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                            <p>Please fix errors below:</p>
+                        </div>
+
                         <div class="form-group">
                             <label for="date-from" th:text="#{product.filter.from}">Date From</label>
-                            <input class="form-control" type="date" id="date-from" name="from">
+                            <input th:class="${#fields.hasErrors('dateBegin')} ? 'form-control is-invalid' : 'form-control'"
+                                   th:field="*{dateBegin}" class="form-control" type="date" id="date-from">
                         </div>
+
+                        <div th:if="${#fields.hasErrors('dateBegin')}"
+                            class="text-danger"
+                             th:errors="*{dateBegin}">[errors]
+                        </div>
+
                         <div class="form-group">
                             <label for="date-to" th:text="#{product.filter.to}">Date To</label>
-                            <input class="form-control" type="date" id="date-to" name="to">
+                            <input th:class="${#fields.hasErrors('dateBegin')} ? 'form-control is-invalid' : 'form-control'"
+                                   th:field="*{dateEnd}" class="form-control" type="date" id="date-to">
                         </div>
+
                         <div class="form-group">
                             <label for="categories">Parent Categories</label>
-                            <select class="form-control mt-4" name="id" id="categories">
+                            <select th:field="*{id}" class="form-control mt-4" id="categories">
                                 <option value="">All</option>
                                 <option th:each="category : ${categories}"
                                         th:text="${category.categoryName}"

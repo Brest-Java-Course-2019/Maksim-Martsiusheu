@@ -51,8 +51,7 @@
                         </div>
 
                         <select class="form-control mt-4" name="parentId">
-                             <!-- or product.amount == 0 -- th:remove="${${isNew} || (*{parentId} == 0) || (*{productsAmount == 0})}? all : none"-->
-                            <th:block th:if="${isNew} or *{parentId} == 0 or ${productsAmount} == 0"> <!-- or product.amount == 0 -->
+                            <th:block th:if="${isNew} or *{parentId} == 0 or ${productsAmount} == 0">
                                 <option value="-1" th:text="#{category.as_top_level}">Создать самостоятельную категорию</option>
                             </th:block>
                             <option th:each="parent : ${parentCategories}"
