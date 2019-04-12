@@ -101,8 +101,8 @@ public class ProductController {
 
         LOGGER.debug("find allProducts({})", model);
         model.addAttribute("filter", filter);
-        model.addAttribute("categories", categoryService.findAllPossibleParentsForId(null));
-        model.addAttribute("products", productService.findProductDTOsByFilter(new Filter()));
+        model.addAttribute("categories", categoryService.findAllPossibleParents());
+        model.addAttribute("products", productService.findProductDTOsByFilter(filter));
         model.addAttribute("location", "products");
         return "products";
 
@@ -112,7 +112,7 @@ public class ProductController {
     public final String findAllProductsDTOsByFilter(@Valid Filter filter, BindingResult result, Model model) {
 
         LOGGER.debug("findAllProductsDTOsFromDateInterval ({})", filter);
-        model.addAttribute("categories", categoryService.findAllPossibleParentsForId(null));
+        model.addAttribute("categories", categoryService.findAllPossibleParents());
         model.addAttribute("location", "products");
 
         filterValidator.validate(filter, result);
