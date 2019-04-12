@@ -61,9 +61,14 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
     /**
      * Sql statement to select all possible parents for  id
      */
-    @Value("${category.selectParents}")
+    @Value("${category.selectParentsForId}")
     private String getAllPossibleParentsForIdSql;
 
+    /**
+     * Sql statement to select all possible parents
+     */
+    @Value("${category.selectParents}")
+    private String getAllPossibleParentsSql;
     /**
      * Sql statement to select all sub-categories
      */
@@ -303,9 +308,25 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         LOGGER.debug("findAllPossibleParentsFromId({})", id);
 
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource(CategoryMapper.CATEGORY_ID, id == null ? -1 : id);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource(CategoryMapper.CATEGORY_ID, id);
         List<Category> categories = namedParameterJdbcTemplate
                 .query(getAllPossibleParentsForIdSql, namedParameters, categoryMapper);
+
+        return categories.stream();
+    }
+
+    /**
+     * Returns all possible categories that are parents.
+     *
+     * @return Categories found as {@code Stream}
+     */
+    @Override
+    public Stream<Category> findAllPossibleParents() {
+
+        LOGGER.debug("findAllPossibleParentsFromId()");
+
+        List<Category> categories = namedParameterJdbcTemplate
+                .query(getAllPossibleParentsSql, categoryMapper);
 
         return categories.stream();
     }

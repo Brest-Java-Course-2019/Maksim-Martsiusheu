@@ -126,4 +126,12 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryDao.findAllPossibleParentsForId(id).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Category> findAllPossibleParents() {
+
+        LOGGER.debug("findAllParents()");
+
+        return categoryDao.findAllPossibleParents().collect(Collectors.toList());
+    }
 }

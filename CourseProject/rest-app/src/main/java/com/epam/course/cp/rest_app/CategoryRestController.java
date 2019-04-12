@@ -85,9 +85,16 @@ public class CategoryRestController {
     }
 
     @GetMapping(value = "/possibleparents")
-    public List<Category> findAllPossibleParentsForId(@RequestParam(value = "id") Integer id) {
+    public List<Category> findAllPossibleParents() {
 
-        LOGGER.debug("findAllPossibleParentsForId({})", id);
+        LOGGER.debug("findAllPossibleParents()");
+        return categoryService.findAllPossibleParents();
+    }
+
+    @GetMapping(value = "/possibleparents/{id}")
+    public List<Category> findAllPossibleParentsById(@PathVariable Integer id) {
+
+        LOGGER.debug("indAllPossibleParentsById({})", id);
         return categoryService.findAllPossibleParentsForId(id);
     }
 }

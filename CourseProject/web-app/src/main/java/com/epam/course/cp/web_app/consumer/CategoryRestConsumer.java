@@ -10,7 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -65,7 +64,7 @@ public class CategoryRestConsumer implements CategoryService {
     public List<CategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId) {
 
         LOGGER.debug("find all categoryDTOs by id = {}", categoryId);
-        ResponseEntity responseEntity = restTemplate.getForEntity(url + "/info/" + categoryId +"/subs", List.class);
+        ResponseEntity responseEntity = restTemplate.getForEntity(url + "/info/" + categoryId + "/subs", List.class);
         return (List<CategoryDTO>) responseEntity.getBody();
     }
 
@@ -98,11 +97,14 @@ public class CategoryRestConsumer implements CategoryService {
 
         LOGGER.debug("findAllPossibleParentsForId({})", id);
 
-        UriComponentsBuilder builder = UriComponentsBuilder
-                .fromUriString(url + "/possibleparents")
-                .queryParam("id", id);
-
-        return (List<Category>) restTemplate.getForEntity(builder.toUriString(), List.class).getBody();
+        return (List<Category>) restTemplate.getForEntity(url + "/possibleparents/" + id, List.class).getBody();
     }
 
+    @Override
+    public List<Category> findAllPossibleParents() {
+
+        LOGGER.debug("findAllPossibleParentsForId()");
+
+        return (List<Category>) restTemplate.getForEntity(url + "/possibleparents", List.class).getBody();
+    }
 }

@@ -24,4 +24,6 @@ public interface CategoryService {
     ServiceResult delete(Integer categoryId);
 
     List<Category> findAllPossibleParentsForId(Integer id);
+
+    List<Category> findAllPossibleParents();
 }

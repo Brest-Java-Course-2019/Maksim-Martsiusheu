@@ -92,4 +92,5 @@ public interface CategoryDao {
      */
     Stream<Category> findAllPossibleParentsForId(Integer id);
 
+    Stream<Category> findAllPossibleParents();
 }

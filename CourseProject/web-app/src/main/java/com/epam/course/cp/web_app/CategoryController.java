@@ -58,7 +58,7 @@ public class CategoryController {
         Category category = new Category();
         model.addAttribute("isNew", true);
         model.addAttribute("category", category);
-        model.addAttribute("parentCategories", categoryService.findAllPossibleParentsForId(null));
+        model.addAttribute("parentCategories", categoryService.findAllPossibleParents());
         model.addAttribute("location", "categories");
 
         return "category";

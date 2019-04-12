@@ -1,5 +1,6 @@
 package com.epam.course.cp.dao;
 
+import com.epam.course.cp.dao.exception.DaoRuntimeException;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,10 @@ class CategoryDaoJdbcImplTest {
 
     private static final Integer CATEGORIES_AMOUNT = 7;
     private static final Integer CATEGORY_DTOS_AMOUNT = 4;
+
+    private static final Integer PARENTS_AMOUNT = 4;
+    private static final Integer SUBCATEGORIES_AMOUNT = 3;
+    private static final Integer PARENT_CATEGORY_PRODUCTS_AMOUNT = 10000;
 
     private static final Integer PARENT_CATEGORY_ID = 1;
     private static final Integer PARENT_CATEGORY_DTO_AMOUNT = 2;
@@ -57,6 +62,42 @@ class CategoryDaoJdbcImplTest {
         assertEquals(TEST_CATEGORY_NAME, category.getCategoryName());
         assertEquals(TEST_CATEGORY_PARENT_ID, category.getParentId());
 
+    }
+
+    @Test
+    void shouldFindCategoryDTOById() {
+
+        CategoryDTO categoryDTO = categoryDao.findCategoryDTOById(PARENT_CATEGORY_ID).get();
+
+        assertNotNull(categoryDTO);
+        assertEquals(PARENT_CATEGORY_PRODUCTS_AMOUNT, categoryDTO.getProductsAmount());
+    }
+
+    @Test
+    void shouldFindAllParents() {
+
+        Stream<Category> categories = categoryDao.findAllPossibleParents();
+
+        assertNotNull(categories);
+        assertTrue(PARENTS_AMOUNT == categories.count());
+    }
+
+    @Test
+    void shouldFindParentsById() {
+
+        Stream<Category> categories = categoryDao.findAllPossibleParentsForId(TEST_CATEGORY_PARENT_ID);
+
+        assertNotNull(categories);
+        assertTrue(PARENTS_AMOUNT - 1 == categories.count());
+    }
+
+    @Test
+    void shouldFindAllSubCategories() {
+
+        Stream<Category> categories = categoryDao.findAllSubCategories();
+
+        assertNotNull(categories);
+        assertTrue(SUBCATEGORIES_AMOUNT == categories.count());
     }
 
     @Test
@@ -120,6 +161,14 @@ class CategoryDaoJdbcImplTest {
 
         assertThrows(DataAccessException.class, () -> {
             categoryDao.findById(CATEGORY_ID_TO_DELETE);
+        });
+    }
+
+    @Test
+    void shouldNotDeleteCategoryWithChildren() {
+
+        assertThrows(DaoRuntimeException.class, () -> {
+            categoryDao.delete(PARENT_CATEGORY_ID);
         });
     }
 }
