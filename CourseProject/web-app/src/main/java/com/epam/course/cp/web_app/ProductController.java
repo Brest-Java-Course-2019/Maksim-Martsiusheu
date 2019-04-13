@@ -59,6 +59,7 @@ public class ProductController {
         LOGGER.debug("update product {}", product);
 
         productValidator.validate(product, result);
+        model.addAttribute("categories", categoryService.findAllSubCategories());
         if (result.hasErrors()) {
             model.addAttribute(categoryService.findAllSubCategories());
             return "product";

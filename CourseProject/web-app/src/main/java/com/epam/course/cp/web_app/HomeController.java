@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping(value = "/")
-    public final String getRedirect() {
+    public final String home() {
         return "redirect:categories";
     }
 }

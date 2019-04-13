@@ -14,25 +14,56 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of {@code CategoryService} interface
+ *
+ * @see Category
+ * @see CategoryDTO
+ * @see CategoryDao
+ * @see Optional
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+    /**
+     * Default logger for current class
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryServiceImpl.class);
+
+    /**
+     * Data access layer object to execute task to data source
+     */
     private CategoryDao categoryDao;
 
+    /**
+     * Constructs new object with given data access layer object
+     *
+     * @param categoryDao category data access layer object
+     */
     @Autowired
     public CategoryServiceImpl(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
 
+    /**
+     * Returns {@code Category} with given id
+     *
+     * @param categoryId category id to find {@code category} by
+     * @return {@code} Category that fits given id
+     */
     @Override
     public Category findById(Integer categoryId) {
 
         LOGGER.debug("findById({})", categoryId);
         return categoryDao.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Field to get category from DB"));
+                .orElseThrow(() -> new RuntimeException("Failed to get category from DB"));
     }
 
+    /**
+     * Returns all {@code CategoryDTOs}
+     *
+     * @return {@code List} describing all category DTOs found
+     */
     @Override
     public List<CategoryDTO> findAllCategoryDTOs() {
 
@@ -40,14 +71,25 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDao.findAllCategoryDTOs().collect(Collectors.toList());
     }
 
+    /**
+     * Returns {@code Category DTO} with given category id
+     *
+     * @param categoryId category id to category DTOs by
+     * @return {@code Category DTO} that fits given id
+     */
     @Override
     public CategoryDTO findCategoryDTOById(Integer categoryId) {
 
         LOGGER.debug("findCategoryDTOById({})", categoryId);
         return categoryDao.findCategoryDTOById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Field to get categoryDTO from DB"));
+                .orElseThrow(() -> new RuntimeException("Failed to get categoryDTO from DB"));
     }
 
+    /**
+     * Returns all sub{@code Categories} found
+     *
+     * @return {@code List} representing sub {@code Categories} found
+     */
     @Override
     public List<Category> findAllSubCategories() {
 
@@ -55,6 +97,12 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDao.findAllSubCategories().collect(Collectors.toList());
     }
 
+    /**
+     * Returns all sub {@code Categories DTOs} with given category id
+     *
+     * @param categoryId category id to find sub category DTOs by
+     * @return {@code List} representing {@code CategoryDTOs} that fits given category id
+     */
     @Override
     public List<CategoryDTO> findSubCategoryDTOsByCategoryId(Integer categoryId) {
 
@@ -62,14 +110,26 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDao.findSubCategoryDTOsByCategoryId(categoryId).collect(Collectors.toList());
     }
 
+    /**
+     * Saves given category to data storage
+     *
+     * @param category {@code category} to save
+     * @return just save category with generated id
+     */
     @Override
     public Category add(Category category) {
 
         LOGGER.debug("add({})", category);
         return categoryDao.add(category)
-                .orElseThrow(() -> new RuntimeException("Field to add category to DB"));
+                .orElseThrow(() -> new RuntimeException("Failed to add category to DB"));
     }
 
+    /**
+     * Updates already existing {@code category} with new one
+     *
+     * @param category {@code category} to update older one
+     * @return {@code ServiceResult} representing work result
+     */
     @Override
     public ServiceResult update(Category category) {
 
@@ -86,6 +146,12 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    /**
+     * Deletes {@code Category} with given id
+     *
+     * @param categoryId category id to delete by
+     * @return {@code ServiceResult} representing work result
+     */
     @Override
     public ServiceResult delete(Integer categoryId) {
 
@@ -106,6 +172,12 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    /**
+     * Finds all {@code categories} that are parents for given id
+     *
+     * @param id id to find parents
+     * @return {@code List} representing parent {@code categories} found
+     */
     @Override
     public List<Category> findAllPossibleParentsForId(Integer id) {
 
@@ -127,6 +199,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDao.findAllPossibleParentsForId(id).collect(Collectors.toList());
     }
 
+    /**
+     * Finds all parents {@code categories}
+     *
+     * @return {@code List} representing all parent {@code categories}
+     */
     @Override
     public List<Category> findAllPossibleParents() {
 

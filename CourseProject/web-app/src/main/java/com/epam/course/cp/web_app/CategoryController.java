@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
@@ -105,14 +104,6 @@ public class CategoryController {
             categoryService.update(category);
             return "redirect:/categories";
         }
-    }
-
-    @PostMapping(value = "/categories")
-    public final String addCategory(@RequestBody Category category) {
-
-        LOGGER.debug("add category: {}", category);
-        categoryService.add(category);
-        return "redirect:/categories";
     }
 
     @GetMapping(value = "/categories/{id}")
