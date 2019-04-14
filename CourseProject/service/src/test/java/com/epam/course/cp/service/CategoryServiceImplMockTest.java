@@ -3,6 +3,7 @@ package com.epam.course.cp.service;
 import com.epam.course.cp.dao.CategoryDao;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
+import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ class CategoryServiceImplMockTest {
 
     private static Category FIRST_CATEGORY;
     private static Category SECOND_CATEGORY;
+    private static Category PARENT_CATEGORY;
 
     private static CategoryDTO FIRST_CATEGORY_DTO;
     private static CategoryDTO SECOND_CATEGORY_DTO;
@@ -58,6 +60,9 @@ class CategoryServiceImplMockTest {
 
         FIRST_CATEGORY_DTO = createCategoryDTO(FIRST_CATEGORY_ID);
         SECOND_CATEGORY_DTO = createCategoryDTO(SECOND_CATEGORY_ID);
+
+        PARENT_CATEGORY = createCategory(FIRST_CATEGORY_ID);
+        PARENT_CATEGORY.setParentId(0);
     }
 
     @Test
@@ -146,21 +151,54 @@ class CategoryServiceImplMockTest {
     @Test
     void shouldUpdateCategory() {
 
-        categoryService.update(any(Category.class));
+        ServiceResult result = categoryService.update(any(Category.class));
+        assertTrue(result.isOk());
+
         Mockito.verify(categoryDao, Mockito.times(ONCE)).update(any());
     }
 
     @Test
     void shouldDeleteCategory() {
 
-        categoryService.delete(anyInt());
+        ServiceResult result = categoryService.delete(anyInt());
+        assertTrue(result.isOk());
+
         Mockito.verify(categoryDao, Mockito.times(ONCE)).delete(anyInt());
     }
 
+    @Test
+    void shouldFindAllPossibleParents() {
+
+        Mockito.when(categoryDao.findAllPossibleParents()).thenReturn(Stream.of(FIRST_CATEGORY, SECOND_CATEGORY));
+
+        List<Category> categories = categoryService.findAllPossibleParents();
+
+        assertNotNull(categories);
+        assertTrue(CATEGORY_AMOUNT == categories.size());
+
+        Mockito.verify(categoryDao, Mockito.times(ONCE)).findAllPossibleParents();
+    }
+
+    @Test
+    void shouldFindAllPossibleParentsForIdWithEmptyResult() {
+
+        Mockito.when(categoryDao.findById(any())).thenReturn(Optional.of(PARENT_CATEGORY));
+        Mockito.when(categoryDao.findSubCategoryDTOsByCategoryId(any())).thenReturn(Stream.of(SECOND_CATEGORY_DTO));
+
+        List<Category> categories = categoryService.findAllPossibleParentsForId(1);
+
+        assertNotNull(categories);
+        assertTrue(categories.isEmpty());
+
+        Mockito.verify(categoryDao, Mockito.times(ONCE)).findById(any());
+        Mockito.verify(categoryDao, Mockito.times(ONCE)).findSubCategoryDTOsByCategoryId(any());
+    }
+
     @AfterEach
-    void afterEach(){
+    void afterEach() {
 
         Mockito.verifyNoMoreInteractions(categoryDao);
+        Mockito.reset(categoryDao);
     }
 
     private static Category createCategory(Integer id) {

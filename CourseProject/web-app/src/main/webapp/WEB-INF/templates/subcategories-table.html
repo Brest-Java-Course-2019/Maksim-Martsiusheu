@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="includes/head-html::head">
+</head>
+<body>
 <table class="table table-striped mt-4 text-center">
     <thead class="table-head text-white">
     <tr>
@@ -19,16 +22,16 @@
         <td th:text="${subcategory.productsAmount}">50</td>
         <td>
             <a
-                th:href="@{'/category/' + ${subcategory.categoryId}}"
-                th:title="#{subcategory.edit}">
-                    <i class="fa fa-pencil-alt"></i></a>
+                    th:href="@{'/category/' + ${subcategory.categoryId}}"
+                    th:title="#{subcategory.edit}">
+                <i class="fa fa-pencil-alt"></i></a>
             <span th:title="#{subcategory.delete}" data-toggle="tooltip">
             <a
-                class="pl-3"
-                data-toggle="modal"
-                data-target="#userDialog"
-                th:attr="data-id=${subcategory.categoryId}"
-                th:onclick="@{'deleteCategory(this)'}">
+                    class="pl-3"
+                    data-toggle="modal"
+                    data-target="#userDialog"
+                    th:attr="data-id=${subcategory.categoryId}"
+                    th:onclick="@{'deleteCategory(this)'}">
                     <i class="fa fa-trash"></i>
             </a>
             </span>
@@ -36,4 +39,5 @@
     </tr>
     </tbody>
 </table>
+</body>
 </html>

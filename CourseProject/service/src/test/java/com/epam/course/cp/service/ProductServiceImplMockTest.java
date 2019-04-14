@@ -69,7 +69,7 @@ class ProductServiceImplMockTest {
         FILTER_WITH_DATES_ADN_ID = new Filter();
         FILTER_WITH_DATES_ADN_ID.setDateBegin(LocalDate.parse("2015-01-01"));
         FILTER_WITH_DATES_ADN_ID.setDateEnd(LocalDate.parse(("2019-01-01")));
-        FILTER_WITH_DATES_ADN_ID.setId(1);
+        FILTER_WITH_DATES_ADN_ID.setCategoryId(1);
     }
 
     @Test

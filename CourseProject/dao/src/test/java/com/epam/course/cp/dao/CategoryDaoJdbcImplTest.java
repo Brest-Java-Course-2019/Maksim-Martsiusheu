@@ -22,11 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Rollback
 class CategoryDaoJdbcImplTest {
 
-    private static final Integer CATEGORIES_AMOUNT = 7;
+    private static final Integer CATEGORIES_AMOUNT = 8;
     private static final Integer CATEGORY_DTOS_AMOUNT = 4;
 
     private static final Integer PARENTS_AMOUNT = 4;
-    private static final Integer SUBCATEGORIES_AMOUNT = 3;
+    private static final Integer SUBCATEGORIES_AMOUNT = 4;
     private static final Integer PARENT_CATEGORY_PRODUCTS_AMOUNT = 10000;
 
     private static final Integer PARENT_CATEGORY_ID = 1;

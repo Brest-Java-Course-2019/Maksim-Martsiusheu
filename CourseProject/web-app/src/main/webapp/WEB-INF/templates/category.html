@@ -52,7 +52,7 @@
 
                         <select class="form-control mt-4" name="parentId">
                             <th:block th:if="${isNew} or *{parentId} == 0 or ${productsAmount} == 0">
-                                <option value="-1" th:text="#{category.as_top_level}">Создать самостоятельную категорию</option>
+                                <option value="0" th:text="#{category.as_top_level}">Создать самостоятельную категорию</option>
                             </th:block>
                             <option th:each="parent : ${parentCategories}"
                                     th:text="${parent.categoryName}"

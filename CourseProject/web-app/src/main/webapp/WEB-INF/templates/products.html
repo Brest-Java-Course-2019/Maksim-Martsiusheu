@@ -113,7 +113,7 @@
 
                         <div class="form-group">
                             <label for="categories">Parent Categories</label>
-                            <select th:field="*{id}" class="form-control mt-4" id="categories">
+                            <select th:field="*{categoryId}" class="form-control mt-4" id="categories">
                                 <option value="">All</option>
                                 <option th:each="category : ${categories}"
                                         th:text="${category.categoryName}"

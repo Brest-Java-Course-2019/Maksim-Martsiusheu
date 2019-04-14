@@ -100,7 +100,7 @@ public class ProductRestConsumer implements ProductService {
                 .fromUriString(url + "/filter")
                 .queryParam("from", filter.getDateBegin())
                 .queryParam("to", filter.getDateEnd())
-                .queryParam("id", filter.getId());
+                .queryParam("id", filter.getCategoryId());
 
         ResponseEntity<List> responseEntity = restTemplate.getForEntity(builder.toUriString(), List.class);
 

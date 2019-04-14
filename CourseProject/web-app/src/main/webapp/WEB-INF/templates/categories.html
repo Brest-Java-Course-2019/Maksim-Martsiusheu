@@ -128,6 +128,7 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
+
     function getTable(element) {
         $('#error-plate').remove();
         if (element.dataset.updated === "false") {
@@ -136,10 +137,12 @@
                 dataType: "html",
                 success: function (data, textStatus) {
                     $('#table-place-' + element.dataset.num).html(data);
+                    element.dataset.updated = "true";
                 }
             });
         }
     }
+
     function deleteCategory(element) {
         document.getElementById("confirmDelete")
             .href = "/categories/" + element.dataset.id;

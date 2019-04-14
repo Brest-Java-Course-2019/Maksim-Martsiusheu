@@ -156,19 +156,15 @@ public class CategoryServiceImpl implements CategoryService {
     public ServiceResult delete(Integer categoryId) {
 
         LOGGER.debug("delete({})", categoryId);
-        ServiceResult result;
         try {
 
             categoryDao.delete(categoryId);
-            result = ServiceResult.ok("Category deleting", "Category deleted successfully");
 
-            return result;
+            return ServiceResult.ok("Category deleting", "Category deleted successfully");
 
         } catch (DaoRuntimeException ex) {
 
-            result = ServiceResult.error("Category deleting", ex.getMessage());
-
-            return result;
+            return ServiceResult.error("Category deleting", ex.getMessage());
         }
     }
 
@@ -183,19 +179,17 @@ public class CategoryServiceImpl implements CategoryService {
 
         LOGGER.debug("findAllPossibleParentsForId({})", id);
 
-        //if it's existing category
-        if (id != null) {
-            //and it's top level category (i.e. parent == null)
-            Optional<Category> currentCategory = categoryDao.findById(id);
-            if (currentCategory.isPresent() && currentCategory.get().getParentId() == 0) {
-                //and it has subcategories
-                Optional<CategoryDTO> anySubcategory = categoryDao.findSubCategoryDTOsByCategoryId(id).findAny();
-                if (anySubcategory.isPresent()) {
-                    //then the category cannot change its parent
-                    return Collections.emptyList();
-                }
+        //if it's top level category (i.e. parent == null)
+        Optional<Category> currentCategory = categoryDao.findById(id);
+        if (currentCategory.isPresent() && currentCategory.get().getParentId() == 0) {
+            //and it has subcategories
+            Optional<CategoryDTO> anySubcategory = categoryDao.findSubCategoryDTOsByCategoryId(id).findAny();
+            if (anySubcategory.isPresent()) {
+                //then the category cannot change its parent
+                return Collections.emptyList();
             }
         }
+
         return categoryDao.findAllPossibleParentsForId(id).collect(Collectors.toList());
     }
 

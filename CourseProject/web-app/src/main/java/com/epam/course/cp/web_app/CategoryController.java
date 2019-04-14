@@ -16,21 +16,56 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
+/**
+ * Controller used to operate with {@code Categories}.
+ * <p>
+ * All of methods of this controller return template name
+ * or redirect command as {@code String}
+ *
+ * @author Maksim Martsiusheu
+ * @see Controller
+ * @see Model
+ * @see BindingResult
+ * @see Category
+ * @see CategoryValidator
+ * @see CategoryService
+ */
 @Controller
 public class CategoryController {
 
+    /**
+     * Default logger for current class
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
 
+    /**
+     * Service layer object to get information of categories
+     */
     private CategoryService categoryService;
 
+    /**
+     * Object to validate product
+     */
     private CategoryValidator categoryValidator;
 
+    /**
+     * Constructs new object with given params
+     *
+     * @param categoryService   category service layer object to inject
+     * @param categoryValidator object for validate category to inject
+     */
     @Autowired
     public CategoryController(CategoryService categoryService, CategoryValidator categoryValidator) {
         this.categoryService = categoryService;
         this.categoryValidator = categoryValidator;
     }
 
+    /**
+     * Go to page with list of all categories
+     *
+     * @param model model to storage information for view rendering
+     * @return view template name
+     */
     @GetMapping(value = "/categories")
     public final String findAllCategoryDTOs(Model model) {
 
@@ -41,6 +76,14 @@ public class CategoryController {
 
     }
 
+    /**
+     * Go to page with list of all sub-categories parents of which
+     * has present id
+     *
+     * @param id    id of parant category
+     * @param model model to storage information for view rendering
+     * @return view template name
+     */
     @GetMapping(value = "/categories/info/{id}/subs")
     public final String findSubCategoriesByCategoryId(@PathVariable Integer id, Model model) {
 
@@ -50,6 +93,12 @@ public class CategoryController {
         return "subcategories-table";
     }
 
+    /**
+     * Go to page for adding new category
+     *
+     * @param model model to storage information for view rendering
+     * @return view template name
+     */
     @GetMapping(value = "/category")
     public final String gotoAddCategory(Model model) {
 
@@ -63,18 +112,40 @@ public class CategoryController {
         return "category";
     }
 
+    /**
+     * Save new {@code product} if it is valid
+     * and redirect to page with list of products
+     *
+     * @param category category for saving
+     * @param result   result object to storage information about product validation
+     * @param model    model to storage information for view rendering
+     * @return view template name or redirect to another uri
+     */
     @PostMapping(value = "/category")
-    public final String addCategory(Category category, Model model) {
+    public final String addCategory(@Valid Category category, BindingResult result, Model model) {
 
         LOGGER.debug("addCategory({})", model);
         if (category.getParentId() != null && category.getParentId() < 0) {
             category.setParentId(null);
         }
 
-        categoryService.add(category);
-        return "redirect:/categories";
+        categoryValidator.validate(category, result);
+        if (result.hasErrors()) {
+            model.addAttribute("parentCategories", categoryService.findAllPossibleParents());
+            return "category";
+        } else {
+            categoryService.add(category);
+            return "redirect:/categories";
+        }
     }
 
+    /**
+     * Go to page for updating information about category
+     *
+     * @param id category id for update
+     * @param model model to storage information for view rendering
+     * @return view template name
+     */
     @GetMapping(value = "/category/{id}")
     public final String gotoUpdateCategory(@PathVariable Integer id, Model model) {
 
@@ -87,25 +158,42 @@ public class CategoryController {
         return "category";
     }
 
+    /**
+     * Updates already existing {@code category} by new one if it is valid
+     * and redirect to page with list of categories
+     *
+     * @param category category for update
+     * @param result result object to storage information about validation
+     * @param model model to storage information for view rendering
+     * @return view template name or redirect to another uri
+     */
     @PostMapping(value = "/category/{id}")
-    public final String updateCategory(@Valid Category category, BindingResult result) {
+    public final String updateCategory(@Valid Category category, BindingResult result, Model model) {
 
         LOGGER.debug("updateCategory({}, {})", category, result);
-
-        if (category.getParentId() != null && category.getParentId() < 0) {
-            category.setParentId(null);
-        }
 
         categoryValidator.validate(category, result);
 
         if (result.hasErrors()) {
+            model.addAttribute("productsAmount", categoryService.findCategoryDTOById(category.getCategoryId())
+                    .getProductsAmount());
+            model.addAttribute("parentCategories", categoryService.findAllPossibleParentsForId(category.getCategoryId()));
             return "category";
         } else {
+            if (category.getParentId() != null && category.getParentId() == 0) {
+                category.setParentId(null);
+            }
             categoryService.update(category);
             return "redirect:/categories";
         }
     }
 
+    /**
+     * Delete category by id
+     *
+     * @param id category id to delete
+     * @return redirect to another uri
+     */
     @GetMapping(value = "/categories/{id}")
     public final String deleteCategory(@PathVariable Integer id, Model model) {
 

@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS product;
 
 CREATE TABLE product (
   prod_id INT NOT NULL AUTO_INCREMENT,
-  prod_name VARCHAR (255) NOT NULL,
+  prod_name VARCHAR (255) NOT NULL UNIQUE,
   prod_amount INT NOT NULL ,
   date_added DATE NOT NULL,
   category_id INT NOT NULL,

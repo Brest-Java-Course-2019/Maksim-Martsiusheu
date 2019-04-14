@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Rollback
 class ProductDaoJdbcImplTest {
 
-    private final static Integer PRODUCTS_AMOUNT = 6;
+    private final static Integer PRODUCTS_AMOUNT = 8;
 
     private static final Integer TEST_PRODUCT_ID = 1;
     private static final String TEST_PRODUCT_NAME = "Red bricks";

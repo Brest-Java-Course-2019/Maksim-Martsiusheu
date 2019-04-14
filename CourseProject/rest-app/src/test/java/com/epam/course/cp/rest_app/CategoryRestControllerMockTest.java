@@ -44,6 +44,8 @@ class CategoryRestControllerMockTest {
     private static Category FIRST_CATEGORY;
     private static Category SECOND_CATEGORY;
 
+    private static ServiceResult SERVICE_RESULT_OK;
+
     private static ArrayList<Category> ARRAY_LIST_OF_CATEGORIES;
 
     private static CategoryDTO FIRST_CATEGORY_DTO;
@@ -75,6 +77,8 @@ class CategoryRestControllerMockTest {
         ARRAY_LIST_OF_CATEGORY_DTOS = new ArrayList<>();
         ARRAY_LIST_OF_CATEGORY_DTOS.add(FIRST_CATEGORY_DTO);
         ARRAY_LIST_OF_CATEGORY_DTOS.add(SECOND_CATEGORY_DTO);
+
+        SERVICE_RESULT_OK = ServiceResult.ok("Test", "Test");
     }
 
 
@@ -159,13 +163,18 @@ class CategoryRestControllerMockTest {
     @Test
     void shouldUpdateCategory() throws Exception {
 
-        Mockito.when(categoryService.update(any())).thenReturn(ServiceResult.ok("Test", "Test"));
+        Mockito.when(categoryService.update(any())).thenReturn(SERVICE_RESULT_OK);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(MAPPER.writeValueAsString(FIRST_CATEGORY))
-        ).andExpect(MockMvcResultMatchers.status().isOk());
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(
+                        MockMvcResultMatchers.content()
+                                .string(MAPPER.writeValueAsString(SERVICE_RESULT_OK))
+                )
+        ;
 
         Mockito.verify(categoryService, Mockito.times(ONCE)).update(any());
     }
@@ -173,12 +182,85 @@ class CategoryRestControllerMockTest {
     @Test
     void shouldDeleteCategory() throws Exception {
 
-        Mockito.when(categoryService.delete(anyInt())).thenReturn(ServiceResult.ok("Test", "Test"));
+        Mockito.when(categoryService.delete(anyInt())).thenReturn(SERVICE_RESULT_OK);
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/categories/1")
-        ).andExpect(MockMvcResultMatchers.status().isOk());
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(
+                        MockMvcResultMatchers.content()
+                                .string(MAPPER.writeValueAsString(SERVICE_RESULT_OK))
+                )
+        ;
 
         Mockito.verify(categoryService, Mockito.times(ONCE)).delete(anyInt());
+    }
+
+    @Test
+    void shouldFindAllSubCategories() throws Exception {
+
+        Mockito.when(categoryService.findAllSubCategories()).thenReturn(ARRAY_LIST_OF_CATEGORIES);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/categories/subs")
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(
+                        MockMvcResultMatchers.content()
+                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORIES))
+                )
+        ;
+
+        Mockito.verify(categoryService, Mockito.times(ONCE)).findAllSubCategories();
+    }
+
+    @Test
+    void shouldFindCategoryDTOById() throws Exception {
+
+        Mockito.when(categoryService.findCategoryDTOById(anyInt())).thenReturn(FIRST_CATEGORY_DTO);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/categories/info/1")
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(
+                        MockMvcResultMatchers.content()
+                                .string(MAPPER.writeValueAsString(FIRST_CATEGORY_DTO))
+                )
+        ;
+
+        Mockito.verify(categoryService, Mockito.times(ONCE)).findCategoryDTOById(anyInt());
+    }
+
+    @Test
+    void shouldFindAllPossibleParents() throws Exception {
+
+        Mockito.when(categoryService.findAllPossibleParents()).thenReturn(ARRAY_LIST_OF_CATEGORIES);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/categories/possibleparents")
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(
+                        MockMvcResultMatchers.content()
+                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORIES))
+                )
+        ;
+
+        Mockito.verify(categoryService, Mockito.times(ONCE)).findAllPossibleParents();
+    }
+
+    @Test
+    void shouldFindAllPossibleParentsForId() throws Exception {
+
+        Mockito.when(categoryService.findAllPossibleParentsForId(anyInt())).thenReturn(ARRAY_LIST_OF_CATEGORIES);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/categories/possibleparents/1")
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(
+                        MockMvcResultMatchers.content()
+                                .string(MAPPER.writeValueAsString(ARRAY_LIST_OF_CATEGORIES))
+                )
+        ;
+
+        Mockito.verify(categoryService, Mockito.times(ONCE)).findAllPossibleParentsForId(anyInt());
     }
 
     @AfterEach
