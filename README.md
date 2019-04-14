@@ -21,14 +21,14 @@ Choose directory in which you want download project. After this, download projec
 ```
 $ git clone https://github.com/Brest-Java-Course-2019/Maksim-Martsiusheu
 ```
-###Build project
+### Build project
 For build project you can use next commands: 
 ```
 $ cd /<yout directory>/<downloaded project>/CourseProject/
 $ mvn clean install
 ```
 
-###Preparing reports
+### Preparing reports
 For preparing reports of project use:
 ````
 $ mvn site
