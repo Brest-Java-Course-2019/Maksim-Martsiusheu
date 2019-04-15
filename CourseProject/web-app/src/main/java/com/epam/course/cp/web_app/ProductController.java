@@ -177,7 +177,7 @@ public class ProductController {
      * @return view template name
      */
     @GetMapping(value = "/products")
-    public final String findAllProductsDTOs(Filter filter, Model model) {
+    public final String products(Filter filter, Model model) {
 
         LOGGER.debug("find allProducts({})", model);
         model.addAttribute("filter", filter);
@@ -197,7 +197,7 @@ public class ProductController {
      * @return view template name
      */
     @PostMapping(value = "/products/filter")
-    public final String findAllProductsDTOsByFilter(@Valid Filter filter, BindingResult result, Model model) {
+    public final String productsByFilter(@Valid Filter filter, BindingResult result, Model model) {
 
         LOGGER.debug("findAllProductsDTOsFromDateInterval ({})", filter);
         model.addAttribute("categories", categoryService.findAllPossibleParents());

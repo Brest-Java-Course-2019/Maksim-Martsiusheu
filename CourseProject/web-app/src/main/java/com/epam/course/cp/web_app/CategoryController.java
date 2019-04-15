@@ -67,7 +67,7 @@ public class CategoryController {
      * @return view template name
      */
     @GetMapping(value = "/categories")
-    public final String findAllCategoryDTOs(Model model) {
+    public final String categories(Model model) {
 
         LOGGER.debug("find allCategoryDTOs({})", model);
         model.addAttribute("categories", categoryService.findAllCategoryDTOs());
@@ -85,7 +85,7 @@ public class CategoryController {
      * @return view template name
      */
     @GetMapping(value = "/categories/info/{id}/subs")
-    public final String findSubCategoriesByCategoryId(@PathVariable Integer id, Model model) {
+    public final String subCategoriesByParentId(@PathVariable Integer id, Model model) {
 
         LOGGER.debug("findSubCategoriesByCategoryId({}, {})", id, model);
         model.addAttribute("subcategories", categoryService.findSubCategoryDTOsByCategoryId(id));
@@ -196,7 +196,7 @@ public class CategoryController {
         if (!result.isOk()) {
             model.addAttribute("hasErrors", true);
             model.addAttribute("errorMessage", result.getMessage());
-            return findAllCategoryDTOs(model);
+            return categories(model);
         }
         return "redirect:/categories";
     }
