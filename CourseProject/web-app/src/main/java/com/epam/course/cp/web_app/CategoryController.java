@@ -125,9 +125,6 @@ public class CategoryController {
     public final String addCategory(@Valid Category category, BindingResult result, Model model) {
 
         LOGGER.debug("addCategory({})", model);
-        if (category.getParentId() != null && category.getParentId() < 0) {
-            category.setParentId(null);
-        }
 
         categoryValidator.validate(category, result);
         if (result.hasErrors()) {
@@ -180,9 +177,6 @@ public class CategoryController {
             model.addAttribute("parentCategories", categoryService.findAllPossibleParentsForId(category.getCategoryId()));
             return "category";
         } else {
-            if (category.getParentId() != null && category.getParentId() == 0) {
-                category.setParentId(null);
-            }
             categoryService.update(category);
             return "redirect:/categories";
         }
