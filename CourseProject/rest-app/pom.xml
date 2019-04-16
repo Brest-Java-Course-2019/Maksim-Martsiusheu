@@ -83,9 +83,9 @@
     </dependencies>
 
     <build>
+        <finalName>rest</finalName>
 
         <plugins>
-            <!-- Embedded Jetty HTTP Server for testing web application -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>

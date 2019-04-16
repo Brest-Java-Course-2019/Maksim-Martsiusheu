@@ -60,7 +60,7 @@
                             <td th:text="${product.dateAdded}">2018-01-01</td>
                             <td th:text="${product.productAmount}">2500</td>
                             <td>
-                                <a th:href="${'/product/' + product.productId}"
+                                <a th:href="@{'/product/' + ${product.productId}}"
                                    th:title="#{product.edit}">
                                     <i class="fa fa-pencil-alt"></i></a>
                                 <span th:title="#{product.delete}" data-toggle="tooltip">
@@ -154,7 +154,7 @@
 <script>
     function deleteProduct(element) {
         document.getElementById("confirmDelete")
-            .href = "/products/" + element.dataset.id;
+            .href = "/web/products/" + element.dataset.id;
     }
 </script>
 </html>

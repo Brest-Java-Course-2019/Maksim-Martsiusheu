@@ -10,6 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 ```
 install git
+install tomcat
 install maven 3+
 install openjdk 8
 ```
@@ -24,7 +25,7 @@ $ git clone https://github.com/Brest-Java-Course-2019/Maksim-Martsiusheu
 ### Build project
 For build project you can use next commands: 
 ```
-$ cd /<yout directory>/<downloaded project>/CourseProject/
+$ cd /Maksim-Martsiusheu/CourseProject/
 $ mvn clean install
 ```
 
@@ -35,20 +36,29 @@ $ mvn site
 ````
 And open:
 ````
-/<yout directory>/<downloaded project>/CourseProject/target/site/index.html
+/Maksim-Martsiusheu/CourseProject/target/site/index.html
 ````
-## Running WEB application on Jetty server
+## Deploying application on Tomcat server
 
-To run web-application use:
+* In the *settings.xml* file ($M2_HOME/conf/settings.xml) write the settings for access to the server. Example:
+```
+ <server>
+     <id>TomcatServer</id>
+     <username>admin</username>
+     <password>admin</password>
+ </server>
+```
+> *Node*: server identifier in the settings.xml file must match the identifier in pom.xml in the root of the plugin project "tomcat7-maven-plugin"
+* When the settings are completed, run the following commands:
 ````
-$ cd /<yout directory>/<downloaded project>/CourseProject/rest-app/
-$ mvn jetty:run
+$ cd /Maksim-Martsiusheu/CourseProject/rest-app/
+$ mvn tomcat7:deploy
 
-$ cd /<yout directory>/<downloaded project>/CourseProject/web-app/
-$ mvn jetty:run
+$ cd /Maksim-Martsiusheu/CourseProject/web-app/
+$ mvn tomcat7:deploy
 ````
-After this you check web-application on http://localhost:8080
-Or rest-application on  http://localhost:8088
+After this you check web-application on http://localhost:8080/web
+Or rest-application on  http://localhost:8080/rest
 
 
 ## Author

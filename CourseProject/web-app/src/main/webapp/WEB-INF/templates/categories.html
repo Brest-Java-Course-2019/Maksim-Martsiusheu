@@ -133,7 +133,7 @@
         $('#error-plate').remove();
         if (element.dataset.updated === "false") {
             $.ajax({
-                url: '/categories/info/' + element.dataset.id + '/subs',
+                url: '/web/categories/info/' + element.dataset.id + '/subs',
                 dataType: "html",
                 success: function (data, textStatus) {
                     $('#table-place-' + element.dataset.num).html(data);
@@ -145,7 +145,7 @@
 
     function deleteCategory(element) {
         document.getElementById("confirmDelete")
-            .href = "/categories/" + element.dataset.id;
+            .href = "/web/categories/" + element.dataset.id;
     }
 </script>
 </body>

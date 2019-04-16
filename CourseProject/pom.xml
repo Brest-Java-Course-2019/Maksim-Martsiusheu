@@ -262,11 +262,23 @@
                     <configuration>
                         <scanIntervalSeconds>10</scanIntervalSeconds>
                         <webApp>
-                            <contextPath>/</contextPath>
+                            <contextPath>/${project.build.finalName}</contextPath>
                         </webApp>
                         <httpConnector>
                             <port>8080</port>
                         </httpConnector>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.2</version>
+                    <configuration>
+                        <url>http://localhost:8080/manager/text</url>
+                        <server>TomcatServer</server>
+                        <path>/${project.build.finalName}</path>
+                        <username>admin</username>
+                        <password>admin</password>
                     </configuration>
                 </plugin>
             </plugins>
@@ -430,6 +442,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
             </plugin>
 
             <plugin>
