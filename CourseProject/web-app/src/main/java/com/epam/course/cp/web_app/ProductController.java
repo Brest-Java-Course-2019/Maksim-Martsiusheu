@@ -45,22 +45,22 @@ public class ProductController {
     /**
      * Service layer object to get information of products
      */
-    private ProductService productService;
+    private final ProductService productService;
 
     /**
      * Service layer object to get information of categories
      */
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     /**
      * Object to validate product
      */
-    private ProductValidator productValidator;
+    private final ProductValidator productValidator;
 
     /**
      * Object to validate filter
      */
-    private FilterValidator filterValidator;
+    private final FilterValidator filterValidator;
 
     /**
      * Constructs new object with given params

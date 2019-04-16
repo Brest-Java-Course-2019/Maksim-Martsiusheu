@@ -18,9 +18,9 @@ public class CategoryRestConsumer implements CategoryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryRestConsumer.class);
 
-    private String url;
+    private final String url;
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public CategoryRestConsumer(String url, RestTemplate restTemplate) {
 

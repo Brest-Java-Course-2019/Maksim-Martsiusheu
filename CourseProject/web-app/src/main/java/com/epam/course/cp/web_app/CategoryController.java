@@ -41,12 +41,12 @@ public class CategoryController {
     /**
      * Service layer object to get information of categories
      */
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     /**
      * Object to validate product
      */
-    private CategoryValidator categoryValidator;
+    private final CategoryValidator categoryValidator;
 
     /**
      * Constructs new object with given params

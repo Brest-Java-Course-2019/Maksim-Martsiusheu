@@ -23,9 +23,9 @@ public class ProductRestConsumer implements ProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryRestConsumer.class);
 
-    private String url;
+    private final String url;
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public ProductRestConsumer(String url, RestTemplate restTemplate) {
 

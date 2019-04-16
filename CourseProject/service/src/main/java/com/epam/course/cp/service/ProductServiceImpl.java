@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Data access layer object to execute task to data source
      */
-    private ProductDao productDao;
+    private final ProductDao productDao;
 
     /**
      * Constructs new object with given data access layer object

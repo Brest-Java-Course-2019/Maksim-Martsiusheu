@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Data access layer object to execute task to data source
      */
-    private CategoryDao categoryDao;
+    private final CategoryDao categoryDao;
 
     /**
      * Constructs new object with given data access layer object
