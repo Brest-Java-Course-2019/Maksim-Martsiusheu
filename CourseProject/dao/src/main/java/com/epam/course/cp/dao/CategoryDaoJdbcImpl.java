@@ -268,7 +268,7 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
 
         Optional.of(namedParameterJdbcTemplate.update(updateCategorySql, namedParameters))
                 .filter(this::successfullyUpdate)
-                .orElseThrow(() -> new RuntimeException("Failed to update category in DB"))
+                .orElseThrow(() -> new DaoRuntimeException("Failed to update category in DB"))
         ;
 
     }
@@ -288,7 +288,7 @@ public class CategoryDaoJdbcImpl implements CategoryDao {
         try {
             Optional.of(namedParameterJdbcTemplate.update(deleteCategorySql, namedParameters))
                     .filter(this::successfullyUpdate)
-                    .orElseThrow(() -> new RuntimeException("Failed to delete category"))
+                    .orElseThrow(() -> new DaoRuntimeException("Failed to delete category"))
             ;
         } catch (DataIntegrityViolationException ex) {
             throw new DaoRuntimeException("There ara some products in category", ex);

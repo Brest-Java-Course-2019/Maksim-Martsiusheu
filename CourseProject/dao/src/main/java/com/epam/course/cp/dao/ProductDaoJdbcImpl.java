@@ -1,5 +1,6 @@
 package com.epam.course.cp.dao;
 
+import com.epam.course.cp.dao.exception.DaoRuntimeException;
 import com.epam.course.cp.dao.mapper.ProductDTOMapper;
 import com.epam.course.cp.dao.mapper.ProductMapper;
 import com.epam.course.cp.dto.ProductDTO;
@@ -272,7 +273,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
         Optional.of(namedParameterJdbcTemplate.update(updateProductSql, namedParameters))
                 .filter(this::successfullyUpdate)
-                .orElseThrow(() -> new RuntimeException("Failed to update product in DB"));
+                .orElseThrow(() -> new DaoRuntimeException("Failed to update product in DB"));
     }
 
     /**
@@ -286,7 +287,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
         Optional.of(namedParameterJdbcTemplate.update(deleteProductSql, namedParameters))
                 .filter(this::successfullyUpdate)
-                .orElseThrow(() -> new RuntimeException("Failed to delete product in DB"));
+                .orElseThrow(() -> new DaoRuntimeException("Failed to delete product in DB"));
     }
 
     private boolean successfullyUpdate(Integer numRowsUpdated) {
