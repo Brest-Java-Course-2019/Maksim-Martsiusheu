@@ -28,7 +28,7 @@ class ProductServiceImplMockTest {
 
     private static final String TEST_PRODUCT_NAME = "TestProduct";
     private static final Integer TEST_PRODUCT_AMOUNT = 2500;
-    private static final LocalDate TEST_DATE_ADDED = LocalDate.parse("2018-01-01");
+    private static final LocalDate TEST_DATE_ADDED = LocalDate.of(2018, 1, 1);
     private static final Integer TEST_CATEGORY_ID = 5;
     private static final String TEST_CATEGORY_NAME = "TestCategory";
     private static final String TEST_SUBCATEGORY_NAME = "TestSubCategory";
@@ -43,6 +43,9 @@ class ProductServiceImplMockTest {
 
     private static ProductDTO FIRST_PRODUCT_DTO;
     private static ProductDTO SECOND_PRODUCT_DTO;
+
+    private final static LocalDate FILTER_DATE_BEGIN = LocalDate.of(2015, 1, 1);
+    private final static LocalDate FILTER_DATE_END = LocalDate.of(2019, 1, 1);
 
     private static Filter FILTER_WITH_DATES;
     private static Filter FILTER_WITH_DATES_ADN_ID;
@@ -63,12 +66,12 @@ class ProductServiceImplMockTest {
         SECOND_PRODUCT_DTO = createProductDTO(SECOND_PRODUCT_ID);
 
         FILTER_WITH_DATES = new Filter();
-        FILTER_WITH_DATES.setDateBegin(LocalDate.parse("2015-01-01"));
-        FILTER_WITH_DATES.setDateEnd(LocalDate.parse(("2019-01-01")));
+        FILTER_WITH_DATES.setDateBegin(FILTER_DATE_BEGIN);
+        FILTER_WITH_DATES.setDateEnd(FILTER_DATE_END);
 
         FILTER_WITH_DATES_ADN_ID = new Filter();
-        FILTER_WITH_DATES_ADN_ID.setDateBegin(LocalDate.parse("2015-01-01"));
-        FILTER_WITH_DATES_ADN_ID.setDateEnd(LocalDate.parse(("2019-01-01")));
+        FILTER_WITH_DATES_ADN_ID.setDateBegin(FILTER_DATE_BEGIN);
+        FILTER_WITH_DATES_ADN_ID.setDateEnd(FILTER_DATE_END);
         FILTER_WITH_DATES_ADN_ID.setCategoryId(1);
     }
 

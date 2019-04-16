@@ -27,12 +27,12 @@ class ProductDaoJdbcImplTest {
     private static final Integer TEST_PRODUCT_ID = 1;
     private static final String TEST_PRODUCT_NAME = "Red bricks";
     private static final Integer TEST_PRODUCT_AMOUNT = 2500;
-    private static final LocalDate TEST_PRODUCT_DATE_ADDED = LocalDate.parse("2012-06-18");
+    private static final LocalDate TEST_PRODUCT_DATE_ADDED = LocalDate.of(2012, 6, 18);
     private static final Integer TEST_PRODUCT_CATEGORY_ID = 5;
 
     private static final String NEW_PRODUCT_NAME = "Yellow bricks";
     private static final Integer NEW_PRODUCT_AMOUNT = 1750;
-    private static final LocalDate NEW_PRODUCT_DATE_ADDED = LocalDate.parse("2016-07-16");
+    private static final LocalDate NEW_PRODUCT_DATE_ADDED = LocalDate.of(2016, 7, 16);
     private static final Integer NEW_PRODUCT_CATEGORY_ID = 1;
 
     private static final Integer PARENT_CATEGORY_ID = 1;
@@ -40,8 +40,8 @@ class ProductDaoJdbcImplTest {
 
     private static final Integer PRODUCT_ID_TO_DELETE = 1;
 
-    private static final LocalDate DATE_INTERVAL_BEGIN = LocalDate.parse("2018-01-01");
-    private static final LocalDate DATE_INTERVAL_END = LocalDate.parse("2019-01-01");
+    private static final LocalDate DATE_INTERVAL_BEGIN = LocalDate.of(2018,1,1);
+    private static final LocalDate DATE_INTERVAL_END = LocalDate.of(2019,1,1);
     private static final Integer PRODUCTS_AMOUNT_IN_DATE_INTERVAL = 4;
 
     private static final Integer PRODUCTS_AMOUNT_BY_MIXED_FILTER = 2;

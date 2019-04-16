@@ -41,7 +41,7 @@ class ProductRestControllerMockTest {
 
     private static final String TEST_PRODUCT_NAME = "TestProduct";
     private static final Integer TEST_PRODUCT_AMOUNT = 2500;
-    private static final String TEST_PRODUCT_DATE_ADDED = "2019-01-01";
+    private static final LocalDate TEST_PRODUCT_DATE_ADDED = LocalDate.of(2019, 1, 1);
     private static final Integer TEST_PRODUCT_CATEGORY_ID = 1;
     private static final String TEST_PRODUCT_CATEGORY_NAME = "TestCategory";
     private static final String TEST_PRODUCT_SUBCATEGORY_NAME = "TestSybCategory";
@@ -213,7 +213,7 @@ class ProductRestControllerMockTest {
         product.setProductId(id);
         product.setProductName(TEST_PRODUCT_NAME + id);
         product.setProductAmount(TEST_PRODUCT_AMOUNT);
-        product.setDateAdded(LocalDate.parse(TEST_PRODUCT_DATE_ADDED));
+        product.setDateAdded(TEST_PRODUCT_DATE_ADDED);
         product.setCategoryId(TEST_PRODUCT_CATEGORY_ID);
 
         return product;
@@ -225,7 +225,7 @@ class ProductRestControllerMockTest {
         productDTO.setProductId(id);
         productDTO.setProductName(TEST_PRODUCT_NAME + id);
         productDTO.setProductAmount(TEST_PRODUCT_AMOUNT + id);
-        productDTO.setDateAdded(LocalDate.parse(TEST_PRODUCT_DATE_ADDED));
+        productDTO.setDateAdded(TEST_PRODUCT_DATE_ADDED);
         productDTO.setCategoryId(TEST_PRODUCT_CATEGORY_ID);
         productDTO.setCategoryName(TEST_PRODUCT_CATEGORY_NAME);
         productDTO.setSubCategoryName(TEST_PRODUCT_SUBCATEGORY_NAME);
