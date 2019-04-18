@@ -1,5 +1,6 @@
 package com.epam.course.cp.dao;
 
+import com.epam.course.cp.dao.exception.DaoRuntimeException;
 import com.epam.course.cp.dto.ProductDTO;
 import com.epam.course.cp.model.Product;
 import org.junit.jupiter.api.Test;
@@ -40,8 +41,8 @@ class ProductDaoJdbcImplTest {
 
     private static final Integer PRODUCT_ID_TO_DELETE = 1;
 
-    private static final LocalDate DATE_INTERVAL_BEGIN = LocalDate.of(2018,1,1);
-    private static final LocalDate DATE_INTERVAL_END = LocalDate.of(2019,1,1);
+    private static final LocalDate DATE_INTERVAL_BEGIN = LocalDate.of(2018, 1, 1);
+    private static final LocalDate DATE_INTERVAL_END = LocalDate.of(2019, 1, 1);
     private static final Integer PRODUCTS_AMOUNT_IN_DATE_INTERVAL = 4;
 
     private static final Integer PRODUCTS_AMOUNT_BY_MIXED_FILTER = 2;
@@ -142,6 +143,21 @@ class ProductDaoJdbcImplTest {
     }
 
     @Test
+    void updateNonExistentProduct() {
+
+        Product product = createProduct();
+        product.setProductId(Integer.MAX_VALUE);
+
+        DaoRuntimeException exception =
+                assertThrows(DaoRuntimeException.class, () -> {
+                    productDao.update(product);
+                });
+
+        assertEquals("Failed to update product in DB", exception.getMessage());
+
+    }
+
+    @Test
     void shouldDeleteProduct() {
 
         productDao.delete(PRODUCT_ID_TO_DELETE);
@@ -149,6 +165,17 @@ class ProductDaoJdbcImplTest {
         assertThrows(DataAccessException.class, () -> {
             productDao.findById(PRODUCT_ID_TO_DELETE);
         });
+    }
+
+    @Test
+    void deleteNonExistentProduct() {
+
+        DaoRuntimeException exception =
+                assertThrows(DaoRuntimeException.class, () -> {
+                    productDao.delete(Integer.MAX_VALUE);
+                });
+
+        assertEquals("Failed to delete product in DB", exception.getMessage());
     }
 
     private Product createProduct() {

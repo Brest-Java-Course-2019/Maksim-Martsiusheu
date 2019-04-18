@@ -155,6 +155,22 @@ class CategoryDaoJdbcImplTest {
     }
 
     @Test
+    void updateNonExistentCategory() {
+
+        Category category = new Category();
+        category.setCategoryId(Integer.MAX_VALUE);
+        category.setCategoryName(NEW_CATEGORY_NAME);
+        category.setParentId(NEW_CATEGORY_PARENT_ID);
+
+        DaoRuntimeException exception =
+                assertThrows(DaoRuntimeException.class, () -> {
+                    categoryDao.update(category);
+                });
+
+        assertEquals("Failed to update category in DB", exception.getMessage());
+    }
+
+    @Test
     void shouldDeleteCategory() {
 
         categoryDao.delete(CATEGORY_ID_TO_DELETE);
@@ -165,10 +181,24 @@ class CategoryDaoJdbcImplTest {
     }
 
     @Test
-    void shouldNotDeleteCategoryWithChildren() {
+    void deleteCategoryWithProducts() {
 
-        assertThrows(DaoRuntimeException.class, () -> {
-            categoryDao.delete(PARENT_CATEGORY_ID);
-        });
+        DaoRuntimeException exception =
+                assertThrows(DaoRuntimeException.class, () -> {
+                    categoryDao.delete(PARENT_CATEGORY_ID);
+                });
+
+        assertEquals("There ara some products in category", exception.getMessage());
+    }
+
+    @Test
+    void deleteNonExistentCategory() {
+
+        DaoRuntimeException exception =
+                assertThrows(DaoRuntimeException.class, () -> {
+                    categoryDao.delete(Integer.MAX_VALUE);
+                });
+
+        assertEquals("Failed to delete category", exception.getMessage());
     }
 }
