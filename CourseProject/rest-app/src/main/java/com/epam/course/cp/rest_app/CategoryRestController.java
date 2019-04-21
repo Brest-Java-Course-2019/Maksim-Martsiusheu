@@ -3,12 +3,9 @@ package com.epam.course.cp.rest_app;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
-import com.epam.course.cp.service.ServiceResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -137,11 +134,10 @@ public class CategoryRestController {
      * @return {@code ResponseEntity} representing work result
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@RequestBody Category category) {
+    public void update(@RequestBody Category category) {
 
         LOGGER.debug("update category in DB {}", category);
-        ServiceResult result = categoryService.update(category);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        categoryService.update(category);
     }
 
     /**
@@ -151,11 +147,10 @@ public class CategoryRestController {
      * @return {@code ResponseEntity} representing work result
      */
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Integer id) {
 
         LOGGER.debug("delete category with id = {} from DB", id);
-        ServiceResult result = categoryService.delete(id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        categoryService.delete(id);
     }
 
     /**

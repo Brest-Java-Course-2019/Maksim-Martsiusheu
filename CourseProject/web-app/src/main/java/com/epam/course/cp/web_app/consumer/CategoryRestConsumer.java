@@ -3,15 +3,11 @@ package com.epam.course.cp.web_app.consumer;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
-import com.epam.course.cp.service.ServiceResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.List;
 
 public class CategoryRestConsumer implements CategoryService {
@@ -77,19 +73,17 @@ public class CategoryRestConsumer implements CategoryService {
     }
 
     @Override
-    public ServiceResult update(Category category) {
+    public void update(Category category) {
 
         LOGGER.debug("update({})", category);
         restTemplate.put(url + "/" + category.getCategoryId(), category);
-        return null;
     }
 
     @Override
-    public ServiceResult delete(Integer categoryId) {
+    public void delete(Integer categoryId) {
 
         LOGGER.debug("delete category with id = {}", categoryId);
-        return restTemplate.exchange(new RequestEntity(HttpMethod.DELETE, URI.create(url + "/" + categoryId)), ServiceResult.class)
-                .getBody();
+        restTemplate.delete(url + "/" + categoryId);
     }
 
     @Override
@@ -105,6 +99,7 @@ public class CategoryRestConsumer implements CategoryService {
 
         LOGGER.debug("findAllPossibleParentsForId()");
 
-        return (List<Category>) restTemplate.getForEntity(url + "/possibleparents", List.class).getBody();
+        ResponseEntity responseEntity = restTemplate.getForEntity(url + "/possibleparents", List.class);
+        return (List<Category>) responseEntity.getBody();
     }
 }

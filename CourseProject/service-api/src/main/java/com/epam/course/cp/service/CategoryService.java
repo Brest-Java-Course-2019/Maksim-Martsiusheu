@@ -65,17 +65,15 @@ public interface CategoryService {
      * Updates already existing {@code category} by new one
      *
      * @param category {@code category} to update older one
-     * @return {@code ServiceResult} representing work result
      */
-    ServiceResult update(Category category);
+    void update(Category category);
 
     /**
      * Deletes already existing {@code category} with given id
      *
      * @param categoryId category id to delete by
-     * @return {@code ServiceResult} representing work result
      */
-    ServiceResult delete(Integer categoryId);
+    void delete(Integer categoryId);
 
     /**
      * Finds all {@code categories} that are parents besides category with given id

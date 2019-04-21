@@ -3,7 +3,6 @@ package com.epam.course.cp.web_app;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
-import com.epam.course.cp.service.ServiceResult;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -37,7 +36,6 @@ class CategoryControllerTest {
     private static final Integer PRODUCTS_AMOUNT = 2500;
     private static final Integer TEST_CATEGORY_PARENT_ID = 1;
 
-    private static ServiceResult SERVICE_RESULT_OK;
     private static ArrayList<Category> ARRAY_LIST_OF_CATEGORIES;
     private static ArrayList<CategoryDTO> ARRAY_LIST_OF_CATEGORY_DTOS;
 
@@ -51,8 +49,6 @@ class CategoryControllerTest {
 
     @BeforeAll
     static void init() {
-
-        SERVICE_RESULT_OK = ServiceResult.ok("TestTitle", "TestMessage");
 
         ARRAY_LIST_OF_CATEGORIES = new ArrayList<>();
         ARRAY_LIST_OF_CATEGORIES.add(createCategory(1));
@@ -172,8 +168,6 @@ class CategoryControllerTest {
 
     @Test
     void deleteCategory() throws Exception {
-
-        Mockito.when(categoryService.delete(anyInt())).thenReturn(SERVICE_RESULT_OK);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/categories/1")

@@ -1,7 +1,6 @@
 package com.epam.course.cp.service;
 
 import com.epam.course.cp.dao.CategoryDao;
-import com.epam.course.cp.dao.exception.DaoRuntimeException;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
 import org.slf4j.Logger;
@@ -128,44 +127,25 @@ public class CategoryServiceImpl implements CategoryService {
      * Updates already existing {@code category} with new one
      *
      * @param category {@code category} to update older one
-     * @return {@code ServiceResult} representing work result
      */
     @Override
-    public ServiceResult update(Category category) {
+    public void update(Category category) {
 
         LOGGER.debug("update({})", category);
-        try {
+        categoryDao.update(category);
 
-            categoryDao.update(category);
-
-            return ServiceResult.ok("Category updating", "Category category updated successfully");
-
-        } catch (DaoRuntimeException ex) {
-
-            return ServiceResult.error("Category updating", ex.getMessage());
-        }
     }
 
     /**
      * Deletes {@code Category} with given id
      *
      * @param categoryId category id to delete by
-     * @return {@code ServiceResult} representing work result
      */
     @Override
-    public ServiceResult delete(Integer categoryId) {
+    public void delete(Integer categoryId) {
 
         LOGGER.debug("delete({})", categoryId);
-        try {
-
-            categoryDao.delete(categoryId);
-
-            return ServiceResult.ok("Category deleting", "Category deleted successfully");
-
-        } catch (DaoRuntimeException ex) {
-
-            return ServiceResult.error("Category deleting", ex.getMessage());
-        }
+        categoryDao.delete(categoryId);
     }
 
     /**

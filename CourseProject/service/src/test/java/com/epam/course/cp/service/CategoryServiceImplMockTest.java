@@ -3,7 +3,6 @@ package com.epam.course.cp.service;
 import com.epam.course.cp.dao.CategoryDao;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
-import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -151,18 +150,14 @@ class CategoryServiceImplMockTest {
     @Test
     void shouldUpdateCategory() {
 
-        ServiceResult result = categoryService.update(any(Category.class));
-        assertTrue(result.isOk());
-
+        categoryService.update(any(Category.class));
         Mockito.verify(categoryDao, Mockito.times(ONCE)).update(any());
     }
 
     @Test
     void shouldDeleteCategory() {
 
-        ServiceResult result = categoryService.delete(anyInt());
-        assertTrue(result.isOk());
-
+        categoryService.delete(anyInt());
         Mockito.verify(categoryDao, Mockito.times(ONCE)).delete(anyInt());
     }
 

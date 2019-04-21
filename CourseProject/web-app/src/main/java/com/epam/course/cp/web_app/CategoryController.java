@@ -2,7 +2,6 @@ package com.epam.course.cp.web_app;
 
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
-import com.epam.course.cp.service.ServiceResult;
 import com.epam.course.cp.web_app.validator.CategoryValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,12 +191,7 @@ public class CategoryController {
     public final String deleteCategory(@PathVariable Integer id, Model model) {
 
         LOGGER.debug("delete");
-        ServiceResult result = categoryService.delete(id);
-        if (!result.isOk()) {
-            model.addAttribute("hasErrors", true);
-            model.addAttribute("errorMessage", result.getMessage());
-            return categories(model);
-        }
+        categoryService.delete(id);
         return "redirect:/categories";
     }
 

@@ -3,7 +3,6 @@ package com.epam.course.cp.rest_app;
 import com.epam.course.cp.dto.CategoryDTO;
 import com.epam.course.cp.model.Category;
 import com.epam.course.cp.service.CategoryService;
-import com.epam.course.cp.service.ServiceResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,8 +43,6 @@ class CategoryRestControllerMockTest {
     private static Category FIRST_CATEGORY;
     private static Category SECOND_CATEGORY;
 
-    private static ServiceResult SERVICE_RESULT_OK;
-
     private static ArrayList<Category> ARRAY_LIST_OF_CATEGORIES;
 
     private static CategoryDTO FIRST_CATEGORY_DTO;
@@ -78,7 +75,6 @@ class CategoryRestControllerMockTest {
         ARRAY_LIST_OF_CATEGORY_DTOS.add(FIRST_CATEGORY_DTO);
         ARRAY_LIST_OF_CATEGORY_DTOS.add(SECOND_CATEGORY_DTO);
 
-        SERVICE_RESULT_OK = ServiceResult.ok("Test", "Test");
     }
 
 
@@ -163,17 +159,11 @@ class CategoryRestControllerMockTest {
     @Test
     void shouldUpdateCategory() throws Exception {
 
-        Mockito.when(categoryService.update(any())).thenReturn(SERVICE_RESULT_OK);
-
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(MAPPER.writeValueAsString(FIRST_CATEGORY))
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(
-                        MockMvcResultMatchers.content()
-                                .string(MAPPER.writeValueAsString(SERVICE_RESULT_OK))
-                )
         ;
 
         Mockito.verify(categoryService, Mockito.times(ONCE)).update(any());
@@ -182,14 +172,9 @@ class CategoryRestControllerMockTest {
     @Test
     void shouldDeleteCategory() throws Exception {
 
-        Mockito.when(categoryService.delete(anyInt())).thenReturn(SERVICE_RESULT_OK);
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/categories/1")
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(
-                        MockMvcResultMatchers.content()
-                                .string(MAPPER.writeValueAsString(SERVICE_RESULT_OK))
-                )
         ;
 
         Mockito.verify(categoryService, Mockito.times(ONCE)).delete(anyInt());
