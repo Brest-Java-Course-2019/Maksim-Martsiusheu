@@ -1,5 +1,7 @@
 package com.epam.course.cp.model;
 
+import java.util.Objects;
+
 /**
  * Class describing {@code Category}
  *
@@ -74,6 +76,21 @@ public class Category {
      */
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return categoryId.equals(category.categoryId) &&
+                categoryName.equals(category.categoryName) &&
+                parentId.equals(category.parentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(categoryId, categoryName, parentId);
     }
 
     @Override

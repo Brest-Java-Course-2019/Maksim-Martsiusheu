@@ -3,6 +3,7 @@ package com.epam.course.cp.dto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * {@code Filter} class wraps date interval filter and category
@@ -82,6 +83,21 @@ public class Filter {
      */
     public void setDateEnd(LocalDate dateEnd) {
         this.dateEnd = dateEnd;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Filter filter = (Filter) o;
+        return categoryId.equals(filter.categoryId) &&
+                dateBegin.equals(filter.dateBegin) &&
+                dateEnd.equals(filter.dateEnd);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(categoryId, dateBegin, dateEnd);
     }
 
     @Override

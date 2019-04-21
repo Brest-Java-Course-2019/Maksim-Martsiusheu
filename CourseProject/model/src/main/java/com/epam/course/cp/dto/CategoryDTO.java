@@ -1,5 +1,7 @@
 package com.epam.course.cp.dto;
 
+import java.util.Objects;
+
 /**
  * Class representing {@code category Data Transfer Object}
  *
@@ -97,6 +99,22 @@ public class CategoryDTO {
      */
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CategoryDTO that = (CategoryDTO) o;
+        return categoryId.equals(that.categoryId) &&
+                categoryName.equals(that.categoryName) &&
+                parentId.equals(that.parentId) &&
+                productsAmount.equals(that.productsAmount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(categoryId, categoryName, parentId, productsAmount);
     }
 
     @Override

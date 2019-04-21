@@ -3,6 +3,7 @@ package com.epam.course.cp.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Class describing product from a {@code Category}
@@ -126,6 +127,23 @@ public class Product {
      */
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return productId.equals(product.productId) &&
+                productName.equals(product.productName) &&
+                productAmount.equals(product.productAmount) &&
+                dateAdded.equals(product.dateAdded) &&
+                categoryId.equals(product.categoryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, productName, productAmount, dateAdded, categoryId);
     }
 
     @Override

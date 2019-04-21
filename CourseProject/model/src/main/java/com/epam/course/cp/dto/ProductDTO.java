@@ -3,6 +3,7 @@ package com.epam.course.cp.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Class representing {@code product Data Transfer Object}
@@ -172,6 +173,25 @@ public class ProductDTO {
      */
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDTO that = (ProductDTO) o;
+        return productId.equals(that.productId) &&
+                categoryName.equals(that.categoryName) &&
+                subCategoryName.equals(that.subCategoryName) &&
+                productName.equals(that.productName) &&
+                productAmount.equals(that.productAmount) &&
+                dateAdded.equals(that.dateAdded) &&
+                categoryId.equals(that.categoryId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, categoryName, subCategoryName, productName, productAmount, dateAdded, categoryId);
     }
 
     @Override
