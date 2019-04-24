@@ -69,9 +69,5 @@
           p:basename="/WEB-INF/messages">
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
-
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="defaultErrorView" value="exception"/>
-    </bean>
-
+    
 </beans>
