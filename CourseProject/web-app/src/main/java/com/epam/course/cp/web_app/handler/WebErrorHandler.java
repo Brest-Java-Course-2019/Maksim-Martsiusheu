@@ -2,6 +2,7 @@ package com.epam.course.cp.web_app.handler;
 
 import com.epam.course.cp.response.ExceptionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +18,13 @@ import java.io.IOException;
 
 @ControllerAdvice("com.epam.course.cp.web_app")
 public class WebErrorHandler {
+
+    private final ObjectMapper mapper;
+
+    @Autowired
+    public WebErrorHandler(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
 
     /**
      * Handle http client error exception.
@@ -66,7 +74,6 @@ public class WebErrorHandler {
 
         try {
 
-            ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(json, ExceptionResponse.class);
 
         } catch (IOException e) {
