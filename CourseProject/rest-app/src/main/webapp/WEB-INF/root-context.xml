@@ -18,9 +18,9 @@
 
     <mvc:annotation-driven/>
 
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
-
-    <context:component-scan base-package="com.epam.course.cp.*"/>
+    <context:component-scan base-package="com.epam.course.cp.*">
+        <context:exclude-filter type="regex" expression="com.epam.course.cp.rest_app.handler.*Test*"/>
+    </context:component-scan>
 
     <context:property-placeholder location="classpath:sql-query.properties"/>
 
