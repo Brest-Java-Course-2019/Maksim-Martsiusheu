@@ -14,13 +14,7 @@
         <constructor-arg value="com.epam.course.cp.service.CategoryService"/>
     </bean>
 
-    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
-        <property name="messageConverters">
-            <list>
-                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
-            </list>
-        </property>
-    </bean>
+    <bean id="converter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
 
     <!-- Thymeleaf Template Resolver -->
     <bean id="templateResolver"
@@ -51,10 +45,6 @@
           class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
           p:basename="/WEB-INF/messages">
         <property name="defaultEncoding" value="UTF-8"/>
-    </bean>
-
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="defaultErrorView" value="exception"/>
     </bean>
 
 </beans>
